@@ -14,11 +14,15 @@ class InvoiceDetailFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
 
-        $invoiceDetail = new InvoiceDetail();
-        $invoiceDetail->setQuantity(rand(1, 100));
-        $invoiceDetail->setSubTotal($faker->randomFloat(2, 0, 1000));
-        $invoiceDetail->setInvoice($this->getReference(InvoiceFixtures::INVOICE_REFERENCE . rand(1, InvoiceFixtures::INVOICE_COUNT_REFERENCE)));
-        $invoiceDetail->setProduct($this->getReference(ProductFixtures::PRODUCT_REFERENCE . rand(1, ProductFixtures::PRODUCT_COUNT_REFERENCE)));
+        for ($i = 0; $i < InvoiceFixtures::INVOICE_COUNT_REFERENCE; ++$i) {
+            $invoiceDetail = new InvoiceDetail();
+            $invoiceDetail->setQuantity(rand(1, 100));
+            $invoiceDetail->setSubTotal($faker->randomFloat(2, 0, 1000));
+            $invoiceDetail->setInvoice($this->getReference(InvoiceFixtures::INVOICE_REFERENCE . rand(1, InvoiceFixtures::INVOICE_COUNT_REFERENCE)));
+            $invoiceDetail->setProduct($this->getReference(ProductFixtures::PRODUCT_REFERENCE . rand(1, ProductFixtures::PRODUCT_COUNT_REFERENCE)));
+            
+            $manager->persist($invoiceDetail);
+        }
 
         $manager->flush();
     }
