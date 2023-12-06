@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "eb18210bfbb5887b0c1b100869e2b91c",
-=======
     "content-hash": "3ea7482c74ea5f3720eb990295806255",
->>>>>>> ece086c (create register form, modify entity user)
     "packages": [
         {
             "name": "doctrine/annotations",
