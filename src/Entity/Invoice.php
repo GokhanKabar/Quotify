@@ -28,15 +28,16 @@ class Invoice
     #[ORM\ManyToOne(inversedBy: 'invoices')]
     private ?User $userReference = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?File $file = null;
-
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceDetail::class)]
     private Collection $invoiceDetails;
+
+    #[ORM\ManyToMany(targetEntity: File::class, inversedBy: 'invoices', cascade: ['persist'])]
+    private Collection $file;
 
     public function __construct()
     {
         $this->invoiceDetails = new ArrayCollection();
+        $this->file = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,18 +93,6 @@ class Invoice
         return $this;
     }
 
-    public function getFile(): ?File
-    {
-        return $this->file;
-    }
-
-    public function setFile(?File $file): static
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, InvoiceDetail>
      */
@@ -130,6 +119,30 @@ class Invoice
                 $invoiceDetail->setInvoice(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, File>
+     */
+    public function getFile(): Collection
+    {
+        return $this->file;
+    }
+
+    public function addFile(File $file): static
+    {
+        if (!$this->file->contains($file)) {
+            $this->file->add($file);
+        }
+
+        return $this;
+    }
+
+    public function removeFile(File $file): static
+    {
+        $this->file->removeElement($file);
 
         return $this;
     }

@@ -33,6 +33,9 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: QuotationDetail::class)]
     private Collection $quotationDetails;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?User $userReference = null;
+
     public function __construct()
     {
         $this->invoiceDetails = new ArrayCollection();
@@ -148,6 +151,18 @@ class Product
                 $quotationDetail->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUserReference(): ?User
+    {
+        return $this->userReference;
+    }
+
+    public function setUserReference(?User $userReference): static
+    {
+        $this->userReference = $userReference;
 
         return $this;
     }

@@ -28,15 +28,16 @@ class Quotation
     #[ORM\ManyToOne(inversedBy: 'quotations')]
     private ?User $userReference = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?File $file = null;
-
     #[ORM\OneToMany(mappedBy: 'quotation', targetEntity: QuotationDetail::class)]
     private Collection $quotationDetails;
+
+    #[ORM\ManyToMany(targetEntity: File::class, inversedBy: 'quotations')]
+    private Collection $file;
 
     public function __construct()
     {
         $this->quotationDetails = new ArrayCollection();
+        $this->file = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,18 +93,6 @@ class Quotation
         return $this;
     }
 
-    public function getFile(): ?File
-    {
-        return $this->file;
-    }
-
-    public function setFile(?File $file): static
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, QuotationDetail>
      */
@@ -130,6 +119,30 @@ class Quotation
                 $quotationDetail->setQuotation(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, File>
+     */
+    public function getFile(): Collection
+    {
+        return $this->file;
+    }
+
+    public function addFile(File $file): static
+    {
+        if (!$this->file->contains($file)) {
+            $this->file->add($file);
+        }
+
+        return $this;
+    }
+
+    public function removeFile(File $file): static
+    {
+        $this->file->removeElement($file);
 
         return $this;
     }
