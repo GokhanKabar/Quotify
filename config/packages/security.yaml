@@ -39,7 +39,7 @@ security:
   # Note: Only the *first* access control that matches will be used
   access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }
-    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+    - { path: ^/login, roles: PUBLIC_ACCESS }
     - { path: ^/user, roles: ROLE_USER}
     - { path: ^/company, roles: ROLE_COMPANY }
     - { path: ^/accountant, roles: ROLE_ACCOUNTANT }
