@@ -40,6 +40,7 @@ security:
   access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/register, roles: PUBLIC_ACCESS }
     - { path: ^/user, roles: ROLE_USER}
     - { path: ^/company, roles: ROLE_COMPANY }
     - { path: ^/accountant, roles: ROLE_ACCOUNTANT }
