@@ -14,7 +14,7 @@ class UserFixtures extends Fixture
     const USER_COUNT_REFERENCE = 10;
     const USER_PASSWORD = 'test';
     const USER_ROLES = [
-        'ROLE_CLIENT',
+        'ROLE_USER',
         'ROLE_ADMIN',
         'ROLE_COMPANY',
         'ROLE_ACCOUNTANT',
