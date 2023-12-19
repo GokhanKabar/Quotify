@@ -10,6 +10,7 @@ use Faker\Factory;
 class CompanyFixtures extends Fixture
 {
     const COMPANY_COUNT_REFERENCE = 10;
+    const COMPANY_REFERENCE = 'company';
 
     public function load(ObjectManager $manager): void
     {
@@ -29,6 +30,8 @@ class CompanyFixtures extends Fixture
             $company->setNumberPhone($phoneNumber);
 
             $manager->persist($company);
+
+            $this->addReference(sprintf('%s%d', self::COMPANY_REFERENCE, $i + 1), $company);
         }
 
         $manager->flush();

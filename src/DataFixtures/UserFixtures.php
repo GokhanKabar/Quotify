@@ -7,12 +7,13 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use DateTimeImmutable;
 
 class UserFixtures extends Fixture
 {
     const USER_REFERENCE = 'user';
     const USER_COUNT_REFERENCE = 10;
-    const USER_PASSWORD = 'test';
+    const USER_PLAIN_PASSWORD = 'test123';
     const USER_ROLES = [
         'ROLE_USER',
         'ROLE_ADMIN',
@@ -42,19 +43,14 @@ class UserFixtures extends Fixture
         for ($i = 0; $i < self::USER_COUNT_REFERENCE; ++$i) {
             $user = new User();
             $user->setEmail(($faker->email));
-            $plainPassword = 'test123';
-            $user->setPassword($this->passwordHasher->hashPassword($user, $plainPassword));            $user->setFirstName($faker->firstName);
+            $user->setPassword($this->passwordHasher->hashPassword($user, self::USER_PLAIN_PASSWORD));            
+            $user->setFirstName($faker->firstName);
             $user->setLastName($faker->lastName);
-            $user->setAddress($faker->address);
-
-            $phoneNumber = preg_replace(
-                '/\s+/',
-                '',
-                str_replace(['+33', '(0)', ' '], ['0', '', ''], $faker->phoneNumber)
-            );
-            $user->setNumberPhone($phoneNumber);
-
             $user->setRoles($this->getRandomElements(self::USER_ROLES, rand(1, count(self::USER_ROLES))));
+            $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTime()));
+            $user->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTime()));
+            $user->setIsVerified(true);
+            $user->setCompany($this->getReference(CompanyFixtures::COMPANY_REFERENCE . rand(1, CompanyFixtures::COMPANY_COUNT_REFERENCE)));
 
             $manager->persist($user);
 
