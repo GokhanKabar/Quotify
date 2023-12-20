@@ -24,7 +24,7 @@ class Company
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 10)]
     private ?int $numberPhone = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Company;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,6 +30,7 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $company = new Company();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -44,8 +46,10 @@ class RegistrationController extends AbstractController
             $user->setCreatedAt(new \DateTimeImmutable());
             $user->setUpdatedAt(new \DateTimeImmutable());
 
-            $user->setRoles(['ROLE_USER']);
+            $company->setCompanyName($form->get('company')->getData());
 
+            $user->setRoles(['ROLE_USER']);
+            
             $entityManager->persist($user);
             $entityManager->flush();
 
