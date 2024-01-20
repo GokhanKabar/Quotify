@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -36,24 +37,42 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'Mot de passe',
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'options' => [
+                    'attr' => [
+                        'autocomplete' => 'new-password',
+                    ],
+                ],
+                'first_options' => [
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Mettre un mot de passe svp',
+                        ]),
+                        new Length([
+                            'min' => 6,
+                            'minMessage' => 'Ton mot de passe devrait avoir au moins {{ limit }} caractères',
+                            // max length allowed by Symfony for security reasons
+                            'max' => 4096,
+                        ]),
+                    ],
+                    'label' => 'Nouveau mot de passe',
+                    'attr' => [
+                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                        'placeholder' => 'Mot de passe',
+                    ],
+                ],
+                'second_options' => [
+                    'label' => 'Répéter votre mot de passe',
+                    'attr' => [
+                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                        'placeholder' => 'Répéter votre mot de passe'
+                    ],
+                ],
+                'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
+                // Instead of being set onto the object directly,
+                // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => [
-                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                    'autocomplete' => 'new-password',
-                    'placeholder' => 'Mot de passe',
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir un mot de passe valide',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
-                        'max' => 4096,
-                    ]),
-                ],
             ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,

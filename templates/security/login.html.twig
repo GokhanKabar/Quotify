@@ -1,3 +1,4 @@
+{% extends 'base.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
 
@@ -25,6 +26,9 @@
             <button class="btn btn-lg btn-primary" type="submit">
                 Sign in
             </button>
+            <div class="flex items-center justify-between">
+                <a href="{{ path('app_forgot_password_request') }}" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Mot de pass oublié ?</a>
+            </div>
         </form>
     {% endif %}
 {% endblock %}

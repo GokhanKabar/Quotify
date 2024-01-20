@@ -24,9 +24,8 @@
 
 					{{ form_start(registrationForm) }}
 					{{ form_row(registrationForm.email) }}
-					{{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
+					{{ form_row(registrationForm.plainPassword.first) }}
+					{{ form_row(registrationForm.plainPassword.second) }}
 					{{ form_row(registrationForm.company) }}
 					{{ form_row(registrationForm.firstname) }}
 					{{ form_row(registrationForm.lastname) }}
@@ -34,8 +33,12 @@
 
 					<button type="submit" class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
 					<p class="text-sm font-light text-gray-500 dark:text-gray-400">
-						Already have an account?
-						<a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
+						Vous avez déjà un compte?
+						<a href="/login" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Connectez-vous</a>
+					</p><br>
+					<p class="text-sm font-light text-gray-500 dark:text-gray-400">
+						Votre entreprise n'est pas dans la liste?
+						<a href="/register_company" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Créer la ici</a>
 					</p>
 					{{ form_end(registrationForm) }}
 				</div>
