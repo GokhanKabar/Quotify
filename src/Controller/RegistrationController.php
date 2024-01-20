@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Company;
 use App\Form\RegistrationFormType;
+use App\Form\CompanyType;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -44,8 +46,10 @@ class RegistrationController extends AbstractController
             $user->setCreatedAt(new \DateTimeImmutable());
             $user->setUpdatedAt(new \DateTimeImmutable());
 
-            $user->setRoles(['ROLE_USER']);
+            $user->setCompany($form->get('company')->getData());
 
+            $user->setRoles(['ROLE_USER']);
+            
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -85,5 +89,31 @@ class RegistrationController extends AbstractController
         $this->addFlash('success', 'Your email address has been verified.');
 
         return $this->redirectToRoute('app_register');
+    }
+
+    // company registration
+    #[Route('/register_company', name: 'app_register_company')]
+    public function registerCompany(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $company = new Company();
+
+        $companyForm = $this->createForm(CompanyType::class, $company);
+        $companyForm->handleRequest($request);
+
+        if ($companyForm->isSubmitted() && $companyForm->isValid()) {
+
+            $company->setIsVerified(false);
+            $company->setCreatedAt(new \DateTimeImmutable());
+            $company->setUpdatedAt(new \DateTimeImmutable());
+            
+            $entityManager->persist($company);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('_profiler_home');
+        }
+
+        return $this->render('registration/companyRegister.html.twig', [
+            'CompanyType' => $companyForm->createView(),
+        ]);
     }
 }
