@@ -43,7 +43,11 @@ class UserFixtures extends Fixture
         for ($i = 0; $i < self::USER_COUNT_REFERENCE; ++$i) {
             $user = new User();
             $user->setEmail(($faker->email));
-            $user->setPassword($this->passwordHasher->hashPassword($user, self::USER_PLAIN_PASSWORD));            
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $user,
+                'password123'
+            );
+            $user->setPassword($hashedPassword);          
             $user->setFirstName($faker->firstName);
             $user->setLastName($faker->lastName);
             $user->setRoles($this->getRandomElements(self::USER_ROLES, rand(1, count(self::USER_ROLES))));
