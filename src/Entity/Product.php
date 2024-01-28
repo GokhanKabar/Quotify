@@ -27,13 +27,13 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Category $category = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: InvoiceDetail::class)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: InvoiceDetail::class, cascade: ['persist', 'remove'])]
     private Collection $invoiceDetails;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: QuotationDetail::class)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: QuotationDetail::class, cascade: ['persist', 'remove'])]
     private Collection $quotationDetails;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\ManyToOne(inversedBy: 'products', cascade: ['persist', 'remove'])]
     private ?User $userReference = null;
 
     public function __construct()

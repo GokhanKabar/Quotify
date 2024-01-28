@@ -38,10 +38,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
-    #[ORM\OneToMany(mappedBy: 'userReference', targetEntity: Quotation::class)]
+    #[ORM\OneToMany(mappedBy: 'userReference', targetEntity: Quotation::class, cascade: ['remove'])]
     private Collection $quotations;
 
-    #[ORM\OneToMany(mappedBy: 'userReference', targetEntity: Invoice::class)]
+    #[ORM\OneToMany(mappedBy: 'userReference', targetEntity: Invoice::class, cascade: ['remove'])]
     private Collection $invoices;
 
     #[ORM\Column(type: 'boolean')]
@@ -53,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $updatedAt;
 
-    #[ORM\OneToMany(mappedBy: 'userReference', targetEntity: Product::class)]
+    #[ORM\OneToMany(mappedBy: 'userReference', targetEntity: Product::class, cascade: ['remove'])]
     private Collection $products;
 
     #[ORM\ManyToOne(inversedBy: 'users', cascade: ['persist'])]
