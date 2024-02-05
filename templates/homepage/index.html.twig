@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quotify{% endblock %}
+
+{% block body %}
+    <section class="flex flex-col justify-center items-center bg-homepage bg-cover h-screen">
+        <div class="bg-white bg-opacity-70 w-full flex md:flex-col lg:flex-row flex-col justify-center items-center h-3/5 p-5">
+            <div>
+                <img class="w-64" src="{{ asset('images/Logo.svg') }}" alt="Quotify" />
+            </div>
+            <div class="flex flex-col gap-5 text-center">
+                <h1 class="lg:text-9xl md:text-6xl text-6xl">10 000</h1>
+                <p class="lg:text-4xl md:text-2xl text-2xl">entreprises utilisent Quotify pour réaliser <br> leurs devis et factures </p>
+            </div>
+        </div>
+        <div class="flex lg:flex-row md:flex-row flex-col items-center lg:gap-x-20 md:gap-x-10 gap-y-5 lg:mt-10 md:mt-5 mt-5">
+            <a class="bg-gray-50 rounded-full p-3" href="{{ path('app_register') }}">Créez votre compte gratuitement</a>
+            <a class="bg-gray-50 rounded-full p-3" href="">Démarrer la démonstration</a>
+        </div>
+    </section>
+    <section class="flex justify-center flex-wrap lg:gap-32 md:gap-20 gap-20 bg-gray-300 h-2/4 p-10">
+        <div class="flex flex-1/3 flex-col items-center text-center">
+            <img src="{{ asset('images/earn_time.svg') }}" alt="earn_time" />
+            <div class="flex flex-col gap-y-5">
+                <h3 class="text-3xl">Gagnez du temps</h3>
+                <p class="text-xl">Profitez enfin d’un outil qui permet de <br> créer ses devis et factures de <br> manière simple et efficace.</p>
+            </div>
+        </div>
+        <div class="flex flex-1/3 flex-col items-center text-center">
+            <img src="{{ asset('images/simplify_manage.svg') }}" alt="earn_time" />
+            <div class="flex flex-col gap-y-5">
+                <h3 class="text-3xl">Simplifiez votre gestion</h3>
+                <p class="text-xl">Nous avons réuni au même endroit <br> vos devis et factures, vos clients et <br> vos matériaux.</p>
+            </div>
+        </div>
+        <div class="flex flex-1/3 flex-col items-center text-center">
+            <img src="{{ asset('images/pleasure_client.svg') }}" alt="pleasure_client" />
+            <div class="flex flex-col gap-y-5">
+                <h3 class="text-3xl">Améliorez votre satisfaction client</h3>
+                <p class="text-xl">Remportez plus de devis en faisant <br> rapidement des documents <br> structurés, clairs et professionnels.</p>
+            </div>
+        </div>
+    </section>
+    <section class="flex flex-col px-20 gap-y-4">
+        <div class="flex lg:flex-col md:flex-col flex-col">
+            <h3 class="text-3xl font-bold my-4">Devis en ligne instantané</h3>
+            <div class="flex lg:flex-row md:flex-col flex-col">
+                <img src="{{ asset('images/quotation_image.svg') }}" alt="quotation_image" />
+                <p class="text-2xl lg:px-10 md:px-0 px-0 lg:mt-0 md:mt-5 mt-5">Obtenez des devis rapidement et facilement en utilisant notre outil de devis en ligne. Remplissez simplement les détails requis, et recevez instantanément une estimation précise pour vos besoins.</p>
+            </div>
+        </div>
+        <div class="flex lg:even:flex-col md:even:flex-col even:flex-col">
+            <h3 class="text-3xl text-right font-bold my-4">Support client réactif</h3>
+            <div class="flex lg:flex-row-reverse md:flex-col flex-col">
+                <img src="{{ asset('images/support_image.svg') }}" alt="quotation_image" />
+                <p class="text-2xl lg:px-10 md:px-0 px-0 lg:mt-0 md:mt-5 mt-5">Profitez de notre service clientèle réactif. Notre équipe est là pour répondre à vos questions et vous aider à résoudre tout problème lié à notre plateforme.</p>
+            </div>
+        </div>
+        <div class="flex lg:flex-col md:flex-col flex-col">
+            <h3 class="text-3xl font-bold my-4">Sécurité des données</h3>
+            <div class="flex lg:flex-row md:flex-col flex-col">
+                <img src="{{ asset('images/security_image.svg') }}" alt="quotation_image" />
+                <p class="text-2xl lg:px-10 md:px-0 px-0 lg:mt-0 md:mt-5 mt-5">Nous accordons une grande importance à la sécurité de vos données. Soyez assuré que toutes vos informations sont traitées de manière sécurisée et conforme aux normes de confidentialité.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
