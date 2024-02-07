@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Back;
 
 use App\Entity\User;
 use App\Entity\Company;
@@ -66,7 +66,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('_profiler_home');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('back/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
@@ -112,7 +112,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('_profiler_home');
         }
 
-        return $this->render('registration/companyRegister.html.twig', [
+        return $this->render('back/registration/companyRegister.html.twig', [
             'CompanyType' => $companyForm->createView(),
         ]);
     }
