@@ -36,9 +36,13 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]
     private Collection $users;
 
+    #[ORM\OneToMany(mappedBy: 'companyReference', targetEntity: Product::class, cascade: ['remove'])]
+    private Collection $products;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -144,6 +148,36 @@ class Company
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setCompanyReference($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getCompanyReference() === $this) {
+                $product->setCompanyReference(null);
+            }
+        }
 
         return $this;
     }

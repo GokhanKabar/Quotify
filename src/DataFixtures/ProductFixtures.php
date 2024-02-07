@@ -23,7 +23,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
             $product->setDescription($faker->text);
             $product->setUnitPrice($faker->randomFloat(2, 0, 1000));
             $product->setCategory($this->getReference(CategoryFixtures::CATEGORY_REFERENCE . rand(1, count(CategoryFixtures::CATEGORY_ARRAY))));
-            $product->setUserReference($this->getReference(UserFixtures::USER_REFERENCE . rand(1, UserFixtures::USER_COUNT_REFERENCE)));
+            $product->setCompanyReference($this->getReference(CompanyFixtures::COMPANY_REFERENCE . rand(1, CompanyFixtures::COMPANY_COUNT_REFERENCE)));
 
             $manager->persist($product);
 

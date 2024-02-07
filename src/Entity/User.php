@@ -53,9 +53,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $updatedAt;
 
-    #[ORM\OneToMany(mappedBy: 'userReference', targetEntity: Product::class, cascade: ['remove'])]
-    private Collection $products;
-
     #[ORM\ManyToOne(inversedBy: 'users', cascade: ['persist'])]
     private ?Company $company = null;
 
@@ -63,7 +60,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->quotations = new ArrayCollection();
         $this->invoices = new ArrayCollection();
-        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -259,36 +255,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->firstname . ' ' . $this->lastname;
-    }
-
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): static
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->setUserReference($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): static
-    {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getUserReference() === $this) {
-                $product->setUserReference(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getCompany(): ?Company
