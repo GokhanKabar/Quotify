@@ -62,10 +62,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-symfony}
     volumes:
       - db_data:/var/lib/postgresql/data:rw
-    ports:
-      - target: 5432
-        published: ${POSTGRES_PORT:-5432}
-        protocol: tcp
 
   adminer:
     image: adminer
