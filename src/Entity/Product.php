@@ -34,7 +34,7 @@ class Product
     private Collection $quotationDetails;
 
     #[ORM\ManyToOne(inversedBy: 'products', cascade: ['persist', 'remove'])]
-    private ?User $userReference = null;
+    private ?Company $companyReference = null;
 
     public function __construct()
     {
@@ -155,14 +155,14 @@ class Product
         return $this;
     }
 
-    public function getUserReference(): ?User
+    public function getCompanyReference(): ?Company
     {
-        return $this->userReference;
+        return $this->companyReference;
     }
 
-    public function setUserReference(?User $userReference): static
+    public function setCompanyReference(?Company $companyReference): static
     {
-        $this->userReference = $userReference;
+        $this->companyReference = $companyReference;
 
         return $this;
     }

@@ -21,13 +21,7 @@ class CompanyFixtures extends Fixture
             $company->setCompanyName($faker->name);
             $company->setAddress($faker->address);
             $company->setEmail($faker->email);
-
-            $phoneNumber = preg_replace(
-                '/\s+/',
-                '',
-                str_replace(['+33', '(0)', ' '], ['0', '', ''], $faker->phoneNumber)
-            );
-            $company->setNumberPhone($phoneNumber);
+            $company->setSiretNumber($faker->randomNumber(9, true));
 
             $manager->persist($company);
 

@@ -19,9 +19,6 @@ class Quotation
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
 
-    #[ORM\Column]
-    private ?float $totalPrice = null;
-
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
@@ -31,13 +28,9 @@ class Quotation
     #[ORM\OneToMany(mappedBy: 'quotation', targetEntity: QuotationDetail::class, cascade: ['persist', 'remove'])]
     private Collection $quotationDetails;
 
-    #[ORM\ManyToMany(targetEntity: File::class, inversedBy: 'quotations')]
-    private Collection $file;
-
     public function __construct()
     {
         $this->quotationDetails = new ArrayCollection();
-        $this->file = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,18 +46,6 @@ class Quotation
     public function setCreationDate(\DateTimeInterface $creationDate): static
     {
         $this->creationDate = $creationDate;
-
-        return $this;
-    }
-
-    public function getTotalPrice(): ?float
-    {
-        return $this->totalPrice;
-    }
-
-    public function setTotalPrice(float $totalPrice): static
-    {
-        $this->totalPrice = $totalPrice;
 
         return $this;
     }
@@ -119,30 +100,6 @@ class Quotation
                 $quotationDetail->setQuotation(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, File>
-     */
-    public function getFile(): Collection
-    {
-        return $this->file;
-    }
-
-    public function addFile(File $file): static
-    {
-        if (!$this->file->contains($file)) {
-            $this->file->add($file);
-        }
-
-        return $this;
-    }
-
-    public function removeFile(File $file): static
-    {
-        $this->file->removeElement($file);
 
         return $this;
     }

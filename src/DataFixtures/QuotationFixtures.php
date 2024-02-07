@@ -24,11 +24,9 @@ class QuotationFixtures extends Fixture implements DependentFixtureInterface
 
         for ($i = 0; $i < self::QUOTATION_COUNT_REFERENCE; ++$i) {
             $quotation = new Quotation();
-            $quotation->setTotalPrice($faker->randomFloat(2, 0, 1000));
             $quotation->setStatus(self::QUOTATION_STATUS[rand(0, count(self::QUOTATION_STATUS) - 1)]);
             $quotation->setCreationDate($faker->dateTimeBetween('-1 years', 'now'));
             $quotation->setUserReference($this->getReference(UserFixtures::USER_REFERENCE . rand(1, UserFixtures::USER_COUNT_REFERENCE)));
-            $quotation->addFile($this->getReference(FileFixtures::FILE_REFERENCE . rand(1, FileFixtures::FILE_COUNT_REFERENCE)));
 
             $manager->persist($quotation);
 

@@ -19,9 +19,6 @@ class Invoice
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
 
-    #[ORM\Column]
-    private ?float $totalPrice = null;
-
     #[ORM\Column(length: 255)]
     private ?string $paymentStatus = null;
 
@@ -31,13 +28,9 @@ class Invoice
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceDetail::class, cascade: ['persist', 'remove'])]
     private Collection $invoiceDetails;
 
-    #[ORM\ManyToMany(targetEntity: File::class, inversedBy: 'invoices', cascade: ['persist'])]
-    private Collection $file;
-
     public function __construct()
     {
         $this->invoiceDetails = new ArrayCollection();
-        $this->file = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,18 +46,6 @@ class Invoice
     public function setCreationDate(\DateTimeInterface $creationDate): static
     {
         $this->creationDate = $creationDate;
-
-        return $this;
-    }
-
-    public function getTotalPrice(): ?float
-    {
-        return $this->totalPrice;
-    }
-
-    public function setTotalPrice(float $totalPrice): static
-    {
-        $this->totalPrice = $totalPrice;
 
         return $this;
     }
@@ -119,30 +100,6 @@ class Invoice
                 $invoiceDetail->setInvoice(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, File>
-     */
-    public function getFile(): Collection
-    {
-        return $this->file;
-    }
-
-    public function addFile(File $file): static
-    {
-        if (!$this->file->contains($file)) {
-            $this->file->add($file);
-        }
-
-        return $this;
-    }
-
-    public function removeFile(File $file): static
-    {
-        $this->file->removeElement($file);
 
         return $this;
     }
