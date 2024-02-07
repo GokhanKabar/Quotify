@@ -24,11 +24,8 @@ class Company
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 10)]
-    private ?int $numberPhone = null;
-
-    #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
+    #[ORM\Column(length: 16, nullable: true)]
+    private ?int $siretNumber = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $createdAt;
@@ -85,14 +82,14 @@ class Company
         return $this;
     }
 
-    public function getNumberPhone(): ?int
+    public function getSiretNumber(): ?int
     {
-        return $this->numberPhone;
+        return $this->siretNumber;
     }
 
-    public function setNumberPhone(int $numberPhone): static
+    public function setSiretNumber(int $siretNumber): static
     {
-        $this->numberPhone = $numberPhone;
+        $this->siretNumber = $siretNumber;
 
         return $this;
     }
@@ -123,18 +120,6 @@ class Company
                 $user->setCompany(null);
             }
         }
-
-        return $this;
-    }
-
-    public function isVerified(): bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setIsVerified(bool $isVerified): static
-    {
-        $this->isVerified = $isVerified;
 
         return $this;
     }
