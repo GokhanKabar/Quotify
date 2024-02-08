@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use App\Repository\CompanyRepository;
 
 #[Route('/customer')]
 class CustomerController extends AbstractController
@@ -32,6 +33,28 @@ class CustomerController extends AbstractController
         $users = $userRepository->findBy(['company' => $company]);
 
         return $this->render('back/customer/index.html.twig', ['users' => $users, 'company' => $company,]);
+    }
+
+    #[Route('/invoices', name: 'customer_invoices')]
+    public function invoices_list(CompanyRepository $companyRepository): Response
+    {
+        $user = $this->security->getUser();
+        $invoices = $companyRepository->getInvoices($user->getCompany()->getId());
+
+        return $this->render('back/customer/invoices_list.html.twig', [
+            'invoices' => $invoices,
+        ]);
+    }
+
+    #[Route('/quotations', name: 'customer_quotations')]
+    public function quotations_list(CompanyRepository $companyRepository): Response
+    {
+        $user = $this->security->getUser();
+        $quotations = $companyRepository->getQuotations($user->getCompany()->getId());
+
+        return $this->render('back/customer/quotations_list.html.twig', [
+            'quotations' => $quotations,
+        ]);
     }
 
     #[Route('/new', name: 'customer_new', methods: ['GET', 'POST'])]
