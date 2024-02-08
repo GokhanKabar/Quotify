@@ -16,9 +16,6 @@ class QuotationDetail
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column(length: 255)]
-    private ?float $subtotal = null;
-
     #[ORM\ManyToOne(inversedBy: 'quotationDetails')]
     private ?Quotation $quotation = null;
 
@@ -38,18 +35,6 @@ class QuotationDetail
     public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    public function getSubtotal(): ?float
-    {
-        return $this->subtotal;
-    }
-
-    public function setSubtotal(float $subtotal): static
-    {
-        $this->subtotal = $subtotal;
 
         return $this;
     }
