@@ -49,7 +49,7 @@ class CompanyController extends AbstractController
             $entityManager->flush();
 
             // Rediriger vers la liste des utilisateurs après la création
-            return $this->redirectToRoute('app_company_index');
+            return $this->redirectToRoute('company_app_company_index');
         }
 
         return $this->render('company/new.html.twig', ['user' => $user, 'form' => $form->createView(),]);
@@ -70,7 +70,7 @@ class CompanyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_company_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_app_company_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('company/edit.html.twig', ['user' => $user, 'form' => $form->createView(),]);
@@ -89,7 +89,7 @@ class CompanyController extends AbstractController
             $this->addFlash('error', 'Jeton de sécurité invalide, impossible de supprimer l\'utilisateur.');
         }
 
-        return $this->redirectToRoute('app_company_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('company_app_company_index', [], Response::HTTP_SEE_OTHER);
     }
 }
 
