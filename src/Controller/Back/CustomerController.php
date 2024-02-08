@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Company;
+namespace App\Controller\Back;
 
 use App\Entity\User;
 use App\Form\UserType;
@@ -14,8 +14,8 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route('/')]
-class CompanyController extends AbstractController
+#[Route('/customer')]
+class CustomerController extends AbstractController
 {
     private $security;
 
@@ -24,17 +24,17 @@ class CompanyController extends AbstractController
         $this->security = $security;
     }
 
-    #[Route('/', name: 'app_company_index', methods: ['GET'])]
+    #[Route('/', name: 'customer_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         $company = $this->getUser()->getCompany();
 
         $users = $userRepository->findBy(['company' => $company]);
 
-        return $this->render('company/index.html.twig', ['users' => $users, 'company' => $company,]);
+        return $this->render('back/customer/index.html.twig', ['users' => $users, 'company' => $company,]);
     }
 
-    #[Route('/new', name: 'app_company_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'customer_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -49,19 +49,19 @@ class CompanyController extends AbstractController
             $entityManager->flush();
 
             // Rediriger vers la liste des utilisateurs après la création
-            return $this->redirectToRoute('company_app_company_index');
+            return $this->redirectToRoute('back_customer_index');
         }
 
-        return $this->render('company/new.html.twig', ['user' => $user, 'form' => $form->createView(),]);
+        return $this->render('back/customer/new.html.twig', ['user' => $user, 'form' => $form->createView(),]);
     }
 
-    #[Route('/{id}', name: 'app_company_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'customer_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-        return $this->render('company/show.html.twig', ['user' => $user,]);
+        return $this->render('back/customer/show.html.twig', ['user' => $user,]);
     }
 
-    #[Route('/{id}/edit', name: 'app_company_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'customer_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);
@@ -70,13 +70,13 @@ class CompanyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('company_app_company_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('back_customer_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('company/edit.html.twig', ['user' => $user, 'form' => $form->createView(),]);
+        return $this->render('back/customer/edit.html.twig', ['user' => $user, 'form' => $form->createView(),]);
     }
 
-    #[Route('/{id}', name: 'app_company_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'customer_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
         $token = new CsrfToken('delete' . $user->getId(), $request->request->get('_token'));
@@ -89,7 +89,7 @@ class CompanyController extends AbstractController
             $this->addFlash('error', 'Jeton de sécurité invalide, impossible de supprimer l\'utilisateur.');
         }
 
-        return $this->redirectToRoute('company_app_company_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('back_customer_index', [], Response::HTTP_SEE_OTHER);
     }
 }
 

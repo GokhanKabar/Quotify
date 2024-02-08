@@ -43,6 +43,7 @@ security:
     - { path: ^/register, roles: ROLE_ADMIN }
     - { path: ^/user, roles: ROLE_USER}
     - { path: ^/company, roles: ROLE_COMPANY }
+    - { path: ^/customer, roles: ROLE_COMPANY }
     - { path: ^/accountant, roles: ROLE_ACCOUNTANT }
 
   role_hierarchy:
