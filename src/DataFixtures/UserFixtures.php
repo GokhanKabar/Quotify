@@ -45,9 +45,9 @@ class UserFixtures extends Fixture
             $user->setEmail(($faker->email));
             $hashedPassword = $this->passwordHasher->hashPassword(
                 $user,
-                self::USER_PLAIN_PASSWORD
+                'password123'
             );
-            $user->setPassword($hashedPassword);          
+            $user->setPassword($hashedPassword);
             $user->setFirstName($faker->firstName);
             $user->setLastName($faker->lastName);
             $user->setRoles($this->getRandomElements(self::USER_ROLES, rand(1, count(self::USER_ROLES))));
