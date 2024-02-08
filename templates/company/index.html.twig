@@ -30,8 +30,8 @@
                 <td>{{ user.createdAt ? user.createdAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td>
-                 <a href="{{ path('company_app_company_show', {'id': user.id}) }}">Voir</a>
-                 <a href="{{ path('company_app_company_edit', {'id': user.id}) }}">Modifier</a>
+                    <a href="{{ path('company_app_company_show', {'id': user.id}) }}">Voir</a>
+                    <a href="{{ path('company_app_company_edit', {'id': user.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
