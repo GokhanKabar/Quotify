@@ -13,8 +13,24 @@
             <td>{{ user.lastName }}</td>
         </tr>
         <tr>
+            <th>Prénom :</th>
+            <td>{{ user.firstName }}</td>
+        </tr>
+        <tr>
             <th>Email :</th>
             <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Vérifié :</th>
+            <td>{{ user.verified ? 'Oui' : 'Non' }}</td>
+        </tr>
+        <tr>
+            <th>Créé le :</th>
+            <td>{{ user.createdAt ? user.createdAt|date('d/m/Y H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Modifié le :</th>
+            <td>{{ user.updatedAt ? user.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
         </tr>
     </table>
 

@@ -12,7 +12,6 @@
             <th>Nom</th>
             <th>Prénom</th>
             <th>Email</th>
-            <th>Roles</th>
             <th>Vérifié</th>
             <th>Créé le</th>
             <th>Modifié le</th>
@@ -25,7 +24,6 @@
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.roles|join(', ') }}</td>
                 <td>{{ user.verified ? 'Oui' : 'Non' }}</td>
                 <td>{{ user.createdAt ? user.createdAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
