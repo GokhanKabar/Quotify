@@ -1,0 +1,16 @@
+{# templates/company/new.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un nouveau client{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouveau client</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-success">Créer</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('company_app_company_index') }}">Retour à la liste</a>
+{% endblock %}
