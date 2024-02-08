@@ -17,7 +17,6 @@ class QuotationDetailFixtures extends Fixture implements DependentFixtureInterfa
         for ($i = 0; $i < QuotationFixtures::QUOTATION_COUNT_REFERENCE; ++$i) {
             $quotationDetail = new QuotationDetail();
             $quotationDetail->setQuantity(rand(1, 100));
-            $quotationDetail->setSubTotal($faker->randomFloat(2, 0, 1000));
             $quotationDetail->setQuotation($this->getReference(QuotationFixtures::QUOTATION_REFERENCE . rand(1, QuotationFixtures::QUOTATION_COUNT_REFERENCE)));
             $quotationDetail->setProduct($this->getReference(ProductFixtures::PRODUCT_REFERENCE . rand(1, ProductFixtures::PRODUCT_COUNT_REFERENCE)));
             

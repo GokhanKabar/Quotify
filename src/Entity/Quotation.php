@@ -28,6 +28,36 @@ class Quotation
     #[ORM\OneToMany(mappedBy: 'quotation', targetEntity: QuotationDetail::class, cascade: ['persist', 'remove'])]
     private Collection $quotationDetails;
 
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
+    private ?float $totalHT = null;
+
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
+    private ?float $totalTTC = null;
+
+    public function getTotalHT(): ?float
+    {
+        return $this->totalHT;
+    }
+
+    public function setTotalHT(float $totalHT): static
+    {
+        $this->totalHT = $totalHT;
+
+        return $this;
+    }
+
+    public function getTotalTTC(): ?float
+    {
+        return $this->totalTTC;
+    }
+
+    public function setTotalTTC(float $totalTTC): static
+    {
+        $this->totalTTC = $totalTTC;
+
+        return $this;
+    }
+
     public function __construct()
     {
         $this->quotationDetails = new ArrayCollection();
