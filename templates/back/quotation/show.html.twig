@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quotation{% endblock %}
+
+{% block body %}
+    <h1>Quotation</h1>
+    {% embed "_components/_table.html.twig" with {
+        'arrayLabel': [
+            'Id', 'CreationDate', 'Status'
+        ],
+        'properties': [
+            'id', 'creationDate', 'status'
+        ],
+        'arrayList': [
+            {
+                'id': quotation.id, 
+                'creationDate': quotation.creationDate, 
+                'status': quotation.status
+            }
+        ],
+    } %}
+    {% endembed %}
+
+    {% set arrayList = [] %}
+    {% for detail in quotation.quotationDetails %}
+        {% set detailObject = {
+            'quantity': detail.quantity, 
+            'productName': detail.product.productName, 
+            'description': detail.product.description, 
+            'unitPrice': detail.product.unitPrice, 
+            'categoryName': detail.product.category.categoryName
+        } %}
+        {% set arrayList = arrayList|merge([detailObject]) %}
+    {% endfor %}
+
+    {% embed "_components/_table.html.twig" with {
+        'arrayLabel': [
+            'Quantity', 'Product Name', 'Product Description', 'Unit price', 'Category'
+        ],
+        'properties': [
+            'quantity', 'productName', 'description', 'unitPrice', 'categoryName'
+        ],
+        'arrayList': arrayList,
+    } %}
+    {% endembed %}
+
+    <a href="{{ path('back_customer_quotations') }}">back to list</a>
+
+    <a href="{{ path('back_quotation_edit', {'id': quotation.id}) }}">edit</a>
+
+    {{ include('back/quotation/_delete_form.html.twig') }}
+{% endblock %}

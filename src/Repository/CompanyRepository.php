@@ -45,4 +45,28 @@ class CompanyRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function getInvoices($company_id): ?array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('u.firstname', 'u.lastname', 'u.email', 'i.id', 'i.creationDate', 'i.paymentStatus', 'i.totalHT', 'i.totalTTC')
+            ->innerJoin('c.users', 'u') 
+            ->innerJoin('u.invoices', 'i')
+            ->where('c.id = :company_id')
+            ->setParameter('company_id', $company_id)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getQuotations($company_id): ?array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('u.firstname', 'u.lastname', 'u.email', 'q.id', 'q.creationDate', 'q.status', 'q.totalHT', 'q.totalTTC')
+            ->innerJoin('c.users', 'u')
+            ->innerJoin('u.quotations', 'q')
+            ->where('c.id = :company_id')
+            ->setParameter('company_id', $company_id)
+            ->getQuery()
+            ->getResult();
+    }
 }
