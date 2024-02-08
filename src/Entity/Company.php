@@ -24,8 +24,8 @@ class Company
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 16, nullable: true)]
-    private ?int $siretNumber = null;
+    #[ORM\Column(length: 14, nullable: true)]
+    private ?string $siretNumber = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $createdAt;

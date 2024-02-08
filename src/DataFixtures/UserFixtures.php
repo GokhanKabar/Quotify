@@ -45,7 +45,7 @@ class UserFixtures extends Fixture
             $user->setEmail(($faker->email));
             $hashedPassword = $this->passwordHasher->hashPassword(
                 $user,
-                self::USER_PLAIN_PASSWORD
+                'password123'
             );
             $user->setPassword($hashedPassword);
             $user->setFirstName($faker->firstName);

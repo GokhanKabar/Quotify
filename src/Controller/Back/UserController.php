@@ -3,17 +3,30 @@
 namespace App\Controller\Back;
 
 use App\Entity\User;
+use App\Entity\Company;
 use App\Form\UserType;
+use App\Security\EmailVerifier;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
+    private EmailVerifier $emailVerifier;
+
+    public function __construct(EmailVerifier $emailVerifier)
+    {
+        $this->emailVerifier = $emailVerifier;
+    }
+
     #[Route('/', name: 'user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -23,13 +36,26 @@ class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            $user->setCreatedAt(new \DateTimeImmutable());
+            $user->setUpdatedAt(new \DateTimeImmutable());
+
+            $user->setCompany($form->get('company')->getData());
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -78,4 +104,5 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('back_user_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }
