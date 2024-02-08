@@ -16,9 +16,6 @@ class InvoiceDetail
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column]
-    private ?float $subtotal = null;
-
     #[ORM\ManyToOne(inversedBy: 'invoiceDetails')]
     private ?Invoice $invoice = null;
 
@@ -38,18 +35,6 @@ class InvoiceDetail
     public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    public function getSubtotal(): ?float
-    {
-        return $this->subtotal;
-    }
-
-    public function setSubtotal(float $subtotal): static
-    {
-        $this->subtotal = $subtotal;
 
         return $this;
     }

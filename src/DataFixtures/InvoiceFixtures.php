@@ -26,6 +26,8 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             $invoice = new Invoice();
             $invoice->setPaymentStatus(self::INVOICE_PAYMENT_STATUS[rand(0, count(self::INVOICE_PAYMENT_STATUS) - 1)]);
             $invoice->setCreationDate($faker->dateTimeBetween('-1 years', 'now'));
+            $invoice->setTotalHT($faker->randomFloat(2, 0, 1000));
+            $invoice->setTotalTTC($faker->randomFloat(2, 0, 1000));
             $invoice->setUserReference($this->getReference(UserFixtures::USER_REFERENCE . rand(1, UserFixtures::USER_COUNT_REFERENCE)));
 
             $manager->persist($invoice);
