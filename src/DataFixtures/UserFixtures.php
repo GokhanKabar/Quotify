@@ -13,7 +13,7 @@ class UserFixtures extends Fixture
 {
     const USER_REFERENCE = 'user';
     const USER_COUNT_REFERENCE = 10;
-    const USER_PLAIN_PASSWORD = 'test123';
+    const USER_PLAIN_PASSWORD = 'password123';
     const USER_ROLES = [
         'ROLE_USER',
         'ROLE_ADMIN',
@@ -45,7 +45,7 @@ class UserFixtures extends Fixture
             $user->setEmail(($faker->email));
             $hashedPassword = $this->passwordHasher->hashPassword(
                 $user,
-                'password123'
+                self::USER_PLAIN_PASSWORD
             );
             $user->setPassword($hashedPassword);
             $user->setFirstName($faker->firstName);
