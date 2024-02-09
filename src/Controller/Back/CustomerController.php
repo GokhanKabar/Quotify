@@ -3,7 +3,8 @@
 namespace App\Controller\Back;
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\CustomerType;
+use App\Repository\CompanyRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +14,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use App\Repository\CompanyRepository;
 
 #[Route('/customer')]
 class CustomerController extends AbstractController
@@ -41,9 +41,7 @@ class CustomerController extends AbstractController
         $user = $this->security->getUser();
         $invoices = $companyRepository->getInvoices($user->getCompany()->getId());
 
-        return $this->render('back/customer/invoices_list.html.twig', [
-            'invoices' => $invoices,
-        ]);
+        return $this->render('back/customer/invoices_list.html.twig', ['invoices' => $invoices,]);
     }
 
     #[Route('/quotations', name: 'customer_quotations')]
@@ -52,9 +50,7 @@ class CustomerController extends AbstractController
         $user = $this->security->getUser();
         $quotations = $companyRepository->getQuotations($user->getCompany()->getId());
 
-        return $this->render('back/customer/quotations_list.html.twig', [
-            'quotations' => $quotations,
-        ]);
+        return $this->render('back/customer/quotations_list.html.twig', ['quotations' => $quotations,]);
     }
 
     #[Route('/new', name: 'customer_new', methods: ['GET', 'POST'])]
@@ -64,7 +60,7 @@ class CustomerController extends AbstractController
 
         $user->setCompany($this->security->getUser()->getCompany());
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(CustomerType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -87,7 +83,7 @@ class CustomerController extends AbstractController
     #[Route('/{id}/edit', name: 'customer_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(CustomerType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
