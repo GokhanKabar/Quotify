@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -54,11 +55,12 @@ class CustomerController extends AbstractController
     }
 
     #[Route('/new', name: 'customer_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
-
         $user->setCompany($this->security->getUser()->getCompany());
+        // on génère un mot de passe aléatoire
+        $user->setPassword($passwordHasher->hashPassword($user, bin2hex(random_bytes(6))));
 
         $form = $this->createForm(CustomerType::class, $user);
         $form->handleRequest($request);
