@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Back;
+namespace App\Controller\Company;
 
 use App\Entity\Invoice;
 use App\Entity\File;
@@ -13,16 +13,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use App\Repository\CompanyRepository;
 
-#[IsGrandted('ROLE_ADMIN')]
 #[Route('/invoice')]
 class InvoiceController extends AbstractController
 {
-    #[Route('/', name: 'invoice_index', methods: ['GET'])]
-    public function index(InvoiceRepository $invoiceRepository): Response
+    #[Route('/', name: 'invoice_index')]
+    public function index(CompanyRepository $companyRepository, Security $security): Response
     {
-        return $this->render('back/invoice/index.html.twig', [
-            'invoices' => $invoiceRepository->findAll(),
+        $user = $security->getUser();
+        $invoices = $companyRepository->getInvoices($user->getCompany()->getId());
+
+        return $this->render('back/invoice/invoices_list.html.twig', [
+            'invoices' => $invoices,
         ]);
     }
 
@@ -41,7 +44,7 @@ class InvoiceController extends AbstractController
             $entityManager->persist($invoice);
             $entityManager->flush();
 
-            return $this->redirectToRoute('back_customer_invoices', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('back/invoice/new.html.twig', [
@@ -72,7 +75,7 @@ class InvoiceController extends AbstractController
             $entityManager->persist($invoice);
             $entityManager->flush();
 
-            return $this->redirectToRoute('back_customer_invoices', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('back/invoice/edit.html.twig', [
@@ -89,6 +92,6 @@ class InvoiceController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('back_customer_invoices', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
     }
 }

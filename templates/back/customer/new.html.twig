@@ -1,6 +1,6 @@
 {# templates/back/customer/new.html.twig #}
 
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Créer un nouveau client{% endblock %}
 
@@ -12,5 +12,5 @@
     <button class="btn btn-success">Créer</button>
     {{ form_end(form) }}
 
-    <a href="{{ path('back_customer_index') }}">Retour à la liste</a>
+    <a href="{{ path('company_customer_index') }}">Retour à la liste</a>
 {% endblock %}

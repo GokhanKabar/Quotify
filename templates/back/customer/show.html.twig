@@ -1,6 +1,6 @@
 {# templates/back/customer/show.html.twig #}
 
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Détails du client{% endblock %}
 
@@ -34,6 +34,6 @@
         </tr>
     </table>
 
-    <a href="{{ path('back_customer_index') }}">Retour à la liste des clients</a>
-    <a href="{{ path('back_customer_edit', {id: user.id}) }}">Modifier</a>
+    <a href="{{ path('company_customer_index') }}">Retour à la liste des clients</a>
+    <a href="{{ path('company_customer_edit', {id: user.id}) }}">Modifier</a>
 {% endblock %}

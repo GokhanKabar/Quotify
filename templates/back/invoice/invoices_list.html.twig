@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Invoices{% endblock %}
 
@@ -9,7 +9,7 @@
                 <h1 class="lg:text-4xl md:text-2xl text-2xl">Factures</h1>
             </div>
             <div class="flex">
-                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('back_invoice_new') }}">Créer une nouvelle facture</a>
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_invoice_new') }}">Créer une nouvelle facture</a>
             </div>
         </div>
 
@@ -21,8 +21,8 @@
                 'id', 'firstname', 'lastname', 'email', 'creationDate', 'paymentStatus', 'totalHT', 'totalTTC'
             ],
             'arrayList': invoices,
-            'route_show': 'back_invoice_show',
-            'route_edit': 'back_invoice_edit',
+            'route_show': 'company_invoice_show',
+            'route_edit': 'company_invoice_edit',
         } %}
         {% endembed %}
     </div>

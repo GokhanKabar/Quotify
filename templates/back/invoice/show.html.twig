@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Invoice{% endblock %}
 
@@ -22,9 +22,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('back_customer_invoices') }}">back to list</a>
+    <a href="{{ path('company_invoice_index') }}">back to list</a>
 
-    <a href="{{ path('back_invoice_edit', {'id': invoice.id}) }}">edit</a>
+    <a href="{{ path('company_invoice_edit', {'id': invoice.id}) }}">edit</a>
 
     {{ include('back/invoice/_delete_form.html.twig') }}
 {% endblock %}

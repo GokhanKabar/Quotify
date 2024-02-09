@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Quotation{% endblock %}
 
@@ -44,9 +44,9 @@
     } %}
     {% endembed %}
 
-    <a href="{{ path('back_customer_quotations') }}">back to list</a>
+    <a href="{{ path('company_quotation_index') }}">back to list</a>
 
-    <a href="{{ path('back_quotation_edit', {'id': quotation.id}) }}">edit</a>
+    <a href="{{ path('company_quotation_edit', {'id': quotation.id}) }}">edit</a>
 
     {{ include('back/quotation/_delete_form.html.twig') }}
 {% endblock %}
