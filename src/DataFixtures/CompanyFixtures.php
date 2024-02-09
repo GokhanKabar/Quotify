@@ -21,7 +21,8 @@ class CompanyFixtures extends Fixture
             $company->setCompanyName($faker->name);
             $company->setAddress($faker->address);
             $company->setEmail($faker->email);
-            $company->setSiretNumber($faker->numerify('##############'));
+            $company->setSiretNumber($faker->numerify(str_repeat('#', 14)));
+
 
             $manager->persist($company);
 
