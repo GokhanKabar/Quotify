@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240207151412 extends AbstractMigration
+final class Version20240208131323 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,21 +31,21 @@ final class Version20240207151412 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE reset_password_request_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE "user_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE category (id INT NOT NULL, category_name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE company (id INT NOT NULL, company_name VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, siret_number INT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE company (id INT NOT NULL, company_name VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, siret_number VARCHAR(14) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN company.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN company.updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE file (id INT NOT NULL, path VARCHAR(255) NOT NULL, extension VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, size VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE invoice (id INT NOT NULL, user_reference_id INT DEFAULT NULL, creation_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, payment_status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE invoice (id INT NOT NULL, user_reference_id INT DEFAULT NULL, creation_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, payment_status VARCHAR(255) NOT NULL, total_ht DOUBLE PRECISION DEFAULT NULL, total_ttc DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_906517449689A2AB ON invoice (user_reference_id)');
-        $this->addSql('CREATE TABLE invoice_detail (id INT NOT NULL, invoice_id INT DEFAULT NULL, product_id INT DEFAULT NULL, quantity INT NOT NULL, subtotal DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE invoice_detail (id INT NOT NULL, invoice_id INT DEFAULT NULL, product_id INT DEFAULT NULL, quantity INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_9530E2C02989F1FD ON invoice_detail (invoice_id)');
         $this->addSql('CREATE INDEX IDX_9530E2C04584665A ON invoice_detail (product_id)');
-        $this->addSql('CREATE TABLE product (id INT NOT NULL, category_id INT DEFAULT NULL, company_reference_id INT DEFAULT NULL, product_name VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, unit_price DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE product (id INT NOT NULL, category_id INT DEFAULT NULL, company_reference_id INT DEFAULT NULL, product_name VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, unit_price DOUBLE PRECISION NOT NULL, tva DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_D34A04AD12469DE2 ON product (category_id)');
         $this->addSql('CREATE INDEX IDX_D34A04ADE8881467 ON product (company_reference_id)');
-        $this->addSql('CREATE TABLE quotation (id INT NOT NULL, user_reference_id INT DEFAULT NULL, creation_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE quotation (id INT NOT NULL, user_reference_id INT DEFAULT NULL, creation_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, status VARCHAR(255) NOT NULL, total_ht DOUBLE PRECISION DEFAULT NULL, total_ttc DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_474A8DB99689A2AB ON quotation (user_reference_id)');
-        $this->addSql('CREATE TABLE quotation_detail (id INT NOT NULL, quotation_id INT DEFAULT NULL, product_id INT DEFAULT NULL, quantity INT NOT NULL, subtotal DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE quotation_detail (id INT NOT NULL, quotation_id INT DEFAULT NULL, product_id INT DEFAULT NULL, quantity INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_D476B509B4EA4E60 ON quotation_detail (quotation_id)');
         $this->addSql('CREATE INDEX IDX_D476B5094584665A ON quotation_detail (product_id)');
         $this->addSql('CREATE TABLE reset_password_request (id INT NOT NULL, user_id INT NOT NULL, selector VARCHAR(20) NOT NULL, hashed_token VARCHAR(100) NOT NULL, requested_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, expires_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');

@@ -23,6 +23,7 @@ class CompanyFixtures extends Fixture
             $company->setEmail($faker->email);
             $company->setSiretNumber($faker->numerify(str_repeat('#', 14)));
 
+
             $manager->persist($company);
 
             $this->addReference(sprintf('%s%d', self::COMPANY_REFERENCE, $i + 1), $company);

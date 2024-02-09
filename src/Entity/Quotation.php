@@ -22,7 +22,7 @@ class Quotation
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'quotations', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'quotations')]
     private ?User $userReference = null;
 
     #[ORM\OneToMany(mappedBy: 'quotation', targetEntity: QuotationDetail::class, cascade: ['persist', 'remove'])]

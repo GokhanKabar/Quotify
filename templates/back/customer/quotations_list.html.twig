@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invoices{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Devis</h1>
+            </div>
+            <div class="flex">
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('back_quotation_new') }}">Créer un nouveau devis</a>
+            </div>
+        </div>
+        {% embed "_components/_table.html.twig" with {
+            'arrayLabel': [
+                '#', 'Prénom', 'Nom', 'Adresse mail', 'Date de création', 'Status de paiement', 'Total HT', 'Total TTC',
+            ],
+            'properties': [
+                'id', 'firstname', 'lastname', 'email', 'creationDate', 'status', 'totalHT', 'totalTTC'
+            ],
+            'arrayList': quotations,
+            'route_show': 'back_quotation_show',
+            'route_edit': 'back_quotation_edit',
+        } %}
+        {% endembed %}
+    </div>
+{% endblock %}
