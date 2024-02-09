@@ -9,6 +9,12 @@ controllers_back:
     name_prefix: back_
     prefix: /admin/
 
+controllers_company:
+    resource: ../src/Controller/Company
+    type: attribute
+    name_prefix: company_
+    prefix: /dashboard/
+
 controller_reset_password:
     resource: ../src/Controller/ResetPasswordController.php
     type: attribute
@@ -24,5 +30,4 @@ controller_mail:
 controller_dashboard:
     resource: ../src/Controller/Dashboard/DashboardController.php
     type: attribute
-    name_prefix: dashboard_
     prefix: /dashboard/

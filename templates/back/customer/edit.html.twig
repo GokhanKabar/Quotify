@@ -1,6 +1,6 @@
 {# templates/back/customer/edit.html.twig #}
 
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Modifier le client{% endblock %}
 
@@ -12,5 +12,5 @@
     <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Sauvegarder les modifications</button>
     {{ form_end(form) }}
 
-    <a href="{{ path('back_customer_show', {id: user.id}) }}">Retour à la fiche du client</a>
+    <a href="{{ path('company_customer_show', {id: user.id}) }}">Retour à la fiche du client</a>
 {% endblock %}

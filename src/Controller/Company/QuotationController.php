@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Back;
+namespace App\Controller\Company;
 
 use App\Entity\Quotation;
 use App\Form\QuotationType;
@@ -11,15 +11,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use App\Repository\CompanyRepository;
 
 #[Route('/quotation')]
 class QuotationController extends AbstractController
 {
-    #[Route('/', name: 'quotation_index', methods: ['GET'])]
-    public function index(QuotationRepository $quotationRepository): Response
+    #[Route('/', name: 'quotation_index')]
+    public function index(CompanyRepository $companyRepository, Security $security): Response
     {
-        return $this->render('back/quotation/index.html.twig', [
-            'quotations' => $quotationRepository->findAll(),
+        $user = $security->getUser();
+        $quotations = $companyRepository->getQuotations($user->getCompany()->getId());
+
+        return $this->render('back/quotation/quotations_list.html.twig', [
+            'quotations' => $quotations,
         ]);
     }
 
@@ -38,7 +42,7 @@ class QuotationController extends AbstractController
             $entityManager->persist($quotation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('back_customer_quotations', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('back/quotation/new.html.twig', [
@@ -69,7 +73,7 @@ class QuotationController extends AbstractController
             $entityManager->persist($quotation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('back_customer_quotations', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('back/quotation/edit.html.twig', [
@@ -86,6 +90,6 @@ class QuotationController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('back_customer_quotations', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -1,6 +1,6 @@
 {# templates/back/customer/index.html.twig #}
 
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Liste des clients{% endblock %}
 
@@ -28,8 +28,8 @@
                 <td class="px-4 py-2 border border-gray-400">{{ user.createdAt ? user.createdAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td class="px-4 py-2 border border-gray-400">{{ user.updatedAt ? user.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td class="px-4 py-2 border border-gray-400">
-                    <a href="{{ path('back_customer_show', {'id': user.id}) }}">Voir</a>
-                    <a href="{{ path('back_customer_edit', {'id': user.id}) }}">Modifier</a>
+                    <a href="{{ path('company_customer_show', {'id': user.id}) }}">Voir</a>
+                    <a href="{{ path('company_customer_edit', {'id': user.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -40,5 +40,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('back_customer_new') }}">Créer un nouveau client </a>
+    <a href="{{ path('company_customer_new') }}">Créer un nouveau client </a>
 {% endblock %}

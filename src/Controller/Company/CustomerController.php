@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Back;
+namespace App\Controller\Company;
 
 use App\Entity\User;
 use App\Form\UserType;
@@ -18,51 +18,21 @@ use App\Repository\CompanyRepository;
 #[Route('/customer')]
 class CustomerController extends AbstractController
 {
-    private $security;
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
-
     #[Route('/', name: 'customer_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, Security $security): Response
     {
-        $company = $this->getUser()->getCompany();
+        $company = $security->getUser()->getCompany();
 
         $users = $userRepository->findBy(['company' => $company]);
 
-        return $this->render('back/customer/index.html.twig', ['users' => $users, 'company' => $company,]);
-    }
-
-    #[Route('/invoices', name: 'customer_invoices')]
-    public function invoices_list(CompanyRepository $companyRepository): Response
-    {
-        $user = $this->security->getUser();
-        $invoices = $companyRepository->getInvoices($user->getCompany()->getId());
-
-        return $this->render('back/customer/invoices_list.html.twig', [
-            'invoices' => $invoices,
-        ]);
-    }
-
-    #[Route('/quotations', name: 'customer_quotations')]
-    public function quotations_list(CompanyRepository $companyRepository): Response
-    {
-        $user = $this->security->getUser();
-        $quotations = $companyRepository->getQuotations($user->getCompany()->getId());
-
-        return $this->render('back/customer/quotations_list.html.twig', [
-            'quotations' => $quotations,
-        ]);
+        return $this->render('back/customer/index.html.twig', ['users' => $users, 'company' => $company]);
     }
 
     #[Route('/new', name: 'customer_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $user = new User();
-
-        $user->setCompany($this->security->getUser()->getCompany());
+        $user->setCompany($security->getUser()->getCompany());
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -72,7 +42,7 @@ class CustomerController extends AbstractController
             $entityManager->flush();
 
             // Rediriger vers la liste des utilisateurs après la création
-            return $this->redirectToRoute('back_customer_index');
+            return $this->redirectToRoute('company_customer_index');
         }
 
         return $this->render('back/customer/new.html.twig', ['user' => $user, 'form' => $form->createView(),]);
@@ -93,7 +63,7 @@ class CustomerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('back_customer_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_customer_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('back/customer/edit.html.twig', ['user' => $user, 'form' => $form->createView(),]);
@@ -112,7 +82,7 @@ class CustomerController extends AbstractController
             $this->addFlash('error', 'Jeton de sécurité invalide, impossible de supprimer l\'utilisateur.');
         }
 
-        return $this->redirectToRoute('back_customer_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('company_customer_index', [], Response::HTTP_SEE_OTHER);
     }
 }
 
