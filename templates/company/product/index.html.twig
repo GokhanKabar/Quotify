@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Product index{% endblock %}
 
@@ -25,8 +25,8 @@
                 <td>{{ product.unitPrice }}</td>
                 <td>{{ product.tva }}</td>
                 <td>
-                    <a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                    <a href="{{ path('company_product_show', {'id': product.id}) }}">show</a>
+                    <a href="{{ path('company_product_edit', {'id': product.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +37,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_product_new') }}">Create new</a>
+    <a href="{{ path('company_product_new') }}">Create new</a>
 {% endblock %}

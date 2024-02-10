@@ -12,7 +12,7 @@
                 <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_quotation_index') }}">Retour à la liste</a>
             </div>
         </div>
-        {{ include('back/quotation/_form.html.twig', {'button_label': 'Update'}) }}
-        {{ include('back/quotation/_delete_form.html.twig') }}
+        {{ include('company/quotation/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('company/quotation/_delete_form.html.twig') }}
     </div>
 {% endblock %}

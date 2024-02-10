@@ -24,7 +24,7 @@ class InvoiceController extends AbstractController
         $user = $security->getUser();
         $invoices = $companyRepository->getInvoices($user->getCompany()->getId());
 
-        return $this->render('back/invoice/invoices_list.html.twig', [
+        return $this->render('company/invoice/invoices_list.html.twig', [
             'invoices' => $invoices,
         ]);
     }
@@ -47,7 +47,7 @@ class InvoiceController extends AbstractController
             return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('back/invoice/new.html.twig', [
+        return $this->render('company/invoice/new.html.twig', [
             'invoice' => $invoice,
             'form' => $form,
         ]);
@@ -56,7 +56,7 @@ class InvoiceController extends AbstractController
     #[Route('/{id}', name: 'invoice_show', methods: ['GET'])]
     public function show(Invoice $invoice): Response
     {
-        return $this->render('back/invoice/show.html.twig', [
+        return $this->render('company/invoice/show.html.twig', [
             'invoice' => $invoice,
         ]);
     }
@@ -78,7 +78,7 @@ class InvoiceController extends AbstractController
             return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('back/invoice/edit.html.twig', [
+        return $this->render('company/invoice/edit.html.twig', [
             'invoice' => $invoice,
             'form' => $form,
         ]);

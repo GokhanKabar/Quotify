@@ -22,7 +22,7 @@ class QuotationController extends AbstractController
         $user = $security->getUser();
         $quotations = $companyRepository->getQuotations($user->getCompany()->getId());
 
-        return $this->render('back/quotation/quotations_list.html.twig', [
+        return $this->render('company/quotation/quotations_list.html.twig', [
             'quotations' => $quotations,
         ]);
     }
@@ -45,7 +45,7 @@ class QuotationController extends AbstractController
             return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('back/quotation/new.html.twig', [
+        return $this->render('company/quotation/new.html.twig', [
             'quotation' => $quotation,
             'form' => $form,
         ]);
@@ -54,7 +54,7 @@ class QuotationController extends AbstractController
     #[Route('/{id}', name: 'quotation_show', methods: ['GET'])]
     public function show(Quotation $quotation): Response
     {
-        return $this->render('back/quotation/show.html.twig', [
+        return $this->render('company/quotation/show.html.twig', [
             'quotation' => $quotation,
         ]);
     }
@@ -76,7 +76,7 @@ class QuotationController extends AbstractController
             return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('back/quotation/edit.html.twig', [
+        return $this->render('company/quotation/edit.html.twig', [
             'quotation' => $quotation,
             'form' => $form,
         ]);
