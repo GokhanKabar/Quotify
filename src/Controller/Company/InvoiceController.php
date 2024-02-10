@@ -3,7 +3,6 @@
 namespace App\Controller\Company;
 
 use App\Entity\Invoice;
-use App\Form\FileType;
 use App\Form\InvoiceType;
 use App\Repository\CompanyRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[Route('/invoice')]
 class InvoiceController extends AbstractController
