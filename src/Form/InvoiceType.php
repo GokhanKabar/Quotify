@@ -39,7 +39,8 @@ class InvoiceType extends AbstractType
                 },
             ])
             ->add('totalHT')
-            ->add('totalTTC');
+            ->add('totalTTC')
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

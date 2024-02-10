@@ -22,9 +22,6 @@ class Invoice
     #[ORM\Column(length: 255)]
     private ?string $paymentStatus = null;
 
-    #[ORM\Column(type: Types::FLOAT)]
-    private ?float $totalPrice = null;
-
     #[ORM\ManyToOne(inversedBy: 'invoices')]
     private ?User $userReference = null;
 
@@ -69,16 +66,6 @@ class Invoice
         $this->paymentStatus = $paymentStatus;
 
         return $this;
-    }
-
-    public function getTotalPrice(): ?float
-    {
-        return $this->totalPrice;
-    }
-
-    public function setTotalPrice(?float $totalPrice): void
-    {
-        $this->totalPrice = $totalPrice;
     }
 
     public function getUserReference(): ?User

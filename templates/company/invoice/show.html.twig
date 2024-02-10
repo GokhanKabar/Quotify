@@ -1,0 +1,30 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Invoice{% endblock %}
+
+{% block body %}
+    <h1>Invoice</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ invoice.id }}</td>
+            </tr>
+            <tr>
+                <th>CreationDate</th>
+                <td>{{ invoice.creationDate ? invoice.creationDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>PaymentStatus</th>
+                <td>{{ invoice.paymentStatus }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('company_invoice_index') }}">back to list</a>
+
+    <a href="{{ path('company_invoice_edit', {'id': invoice.id}) }}">edit</a>
+
+    {{ include('company/invoice/_delete_form.html.twig') }}
+{% endblock %}
