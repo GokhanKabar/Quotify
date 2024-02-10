@@ -85,6 +85,6 @@ class InvoiceController extends AbstractController
     {
         $html = $this->renderView('company/invoice/pdf.html.twig', ['invoice' => $invoice,]);
 
-        return $dompdfWrapper->getStreamResponse($html, "invoice-{$invoice->getId()}.pdf", ['Attachment' => false,]);
+        return $dompdfWrapper->getStreamResponse($html, "invoice-{$invoice->getId()}.pdf", ['Attachment' => true,]);
     }
 }

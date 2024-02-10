@@ -84,6 +84,6 @@ class QuotationController extends AbstractController
     {
         $html = $this->renderView('company/quotation/pdf.html.twig', ['quotation' => $quotation,]);
 
-        return $dompdfWrapper->getStreamResponse($html, "quotation-{$quotation->getId()}.pdf", ['Attachment' => false,]);
+        return $dompdfWrapper->getStreamResponse($html, "quotation-{$quotation->getId()}.pdf", ['Attachment' => true,]);
     }
 }
