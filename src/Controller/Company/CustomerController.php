@@ -25,7 +25,7 @@ class CustomerController extends AbstractController
 
         $users = $userRepository->findBy(['company' => $company]);
 
-        return $this->render('back/customer/index.html.twig', ['users' => $users, 'company' => $company]);
+        return $this->render('company/customer/index.html.twig', ['users' => $users, 'company' => $company]);
     }
 
     #[Route('/new', name: 'customer_new', methods: ['GET', 'POST'])]
@@ -45,13 +45,13 @@ class CustomerController extends AbstractController
             return $this->redirectToRoute('company_customer_index');
         }
 
-        return $this->render('back/customer/new.html.twig', ['user' => $user, 'form' => $form->createView(),]);
+        return $this->render('company/customer/new.html.twig', ['user' => $user, 'form' => $form->createView(),]);
     }
 
     #[Route('/{id}', name: 'customer_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-        return $this->render('back/customer/show.html.twig', ['user' => $user,]);
+        return $this->render('company/customer/show.html.twig', ['user' => $user,]);
     }
 
     #[Route('/{id}/edit', name: 'customer_edit', methods: ['GET', 'POST'])]
@@ -66,7 +66,7 @@ class CustomerController extends AbstractController
             return $this->redirectToRoute('company_customer_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('back/customer/edit.html.twig', ['user' => $user, 'form' => $form->createView(),]);
+        return $this->render('company/customer/edit.html.twig', ['user' => $user, 'form' => $form->createView(),]);
     }
 
     #[Route('/{id}', name: 'customer_delete', methods: ['POST'])]
