@@ -35,10 +35,13 @@ class InvoiceController extends AbstractController
         $invoice = new Invoice();
         $company = $security->getUser()->getCompany();
 
+        $invoice->setCreationDate(new \DateTime());
+
         $form = $this->createForm(InvoiceType::class, $invoice, [
             'company_id' => $company->getId(),
         ]);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($invoice);

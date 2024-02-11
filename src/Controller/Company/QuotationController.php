@@ -33,6 +33,8 @@ class QuotationController extends AbstractController
         $quotation = new Quotation();
         $company = $security->getUser()->getCompany();
 
+        $quotation->setCreationDate(new \DateTime());
+
         $form = $this->createForm(QuotationType::class, $quotation, [
             'company_id' => $company->getId(),
         ]);

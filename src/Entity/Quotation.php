@@ -25,7 +25,7 @@ class Quotation
     #[ORM\ManyToOne(inversedBy: 'quotations')]
     private ?User $userReference = null;
 
-    #[ORM\OneToMany(mappedBy: 'quotation', targetEntity: QuotationDetail::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'quotation', targetEntity: QuotationDetail::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $quotationDetails;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]

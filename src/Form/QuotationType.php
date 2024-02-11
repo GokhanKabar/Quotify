@@ -12,15 +12,17 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Doctrine\ORM\EntityRepository;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Form\QuotationDetailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class QuotationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $company = $options['company_id'];
+
         $builder
-            ->add('creationDate', DateTimeType::class, [
-                'widget' => 'single_text',
-            ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
                     'En attente' => 'En attente',
@@ -30,14 +32,30 @@ class QuotationType extends AbstractType
             ])
             ->add('userReference', EntityType::class, [
                 'class' => User::class,
+                'label' => 'Client',
                 'query_builder' => function(EntityRepository $userRepository) use ($options) {
                     return $userRepository->createQueryBuilder('u')
                         ->where('u.company = :company_id')
                         ->setParameter('company_id', $options['company_id']);
                 },
             ])
-            ->add('totalHT')
-            ->add('totalTTC')
+            ->add('totalHT', HiddenType::class, [
+                'label' => 'Total HT',
+            ])
+            ->add('totalTTC', HiddenType::class, [
+                'label' => 'Total TTC',
+            ])
+            ->add('quotationDetails', CollectionType::class, [
+                'entry_type' => QuotationDetailType::class,
+                'entry_options' => [
+                    'label' => false,
+                    'company_id' => $options['company_id'],
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label'=> false,
+            ])
         ;
     }
 
