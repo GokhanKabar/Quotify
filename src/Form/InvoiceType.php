@@ -12,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Doctrine\ORM\EntityRepository;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Form\InvoiceDetailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class InvoiceType extends AbstractType
 {
@@ -20,9 +23,6 @@ class InvoiceType extends AbstractType
         $company = $options['company_id'];
 
         $builder
-            ->add('creationDate', DateTimeType::class, [
-                'widget' => 'single_text',
-            ])
             ->add('paymentStatus', ChoiceType::class, [
                 'choices' => [
                     'En attente' => 'En attente',
@@ -32,14 +32,30 @@ class InvoiceType extends AbstractType
             ])
             ->add('userReference', EntityType::class, [
                 'class' => User::class,
+                'label' => 'Client',
                 'query_builder' => function(EntityRepository $userRepository) use ($options) {
                     return $userRepository->createQueryBuilder('u')
                         ->where('u.company = :company_id')
                         ->setParameter('company_id', $options['company_id']);
                 },
             ])
-            ->add('totalHT')
-            ->add('totalTTC')
+            ->add('totalHT', HiddenType::class, [
+                'label' => 'Total HT',
+            ])
+            ->add('totalTTC', HiddenType::class, [
+                'label' => 'Total TTC',
+            ])
+            ->add('invoiceDetails', CollectionType::class, [
+                'entry_type' => InvoiceDetailType::class,
+                'entry_options' => [
+                    'label' => false,
+                    'company_id' => $options['company_id'],
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label'=> false,
+            ])
             ;
     }
 
@@ -48,7 +64,6 @@ class InvoiceType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Invoice::class,
             'company_id' => null,
-            'invoice' => null
         ]);
     }
 }

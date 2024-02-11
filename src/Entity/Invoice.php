@@ -25,7 +25,7 @@ class Invoice
     #[ORM\ManyToOne(inversedBy: 'invoices')]
     private ?User $userReference = null;
 
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceDetail::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceDetail::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $invoiceDetails;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]

@@ -24,9 +24,6 @@ class Product
     #[ORM\Column]
     private ?float $unitPrice = null;
 
-    #[ORM\Column]
-    private ?float $tva = null;
-
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Category $category = null;
 
@@ -94,18 +91,6 @@ class Product
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
-
-        return $this;
-    }
-
-    public function getTva(): ?float
-    {
-        return $this->tva;
-    }
-
-    public function setTva(float $tva): static
-    {
-        $this->tva = $tva;
 
         return $this;
     }

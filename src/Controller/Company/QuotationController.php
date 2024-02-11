@@ -31,7 +31,12 @@ class QuotationController extends AbstractController
         $quotation = new Quotation();
         $company = $security->getUser()->getCompany();
 
-        $form = $this->createForm(QuotationType::class, $quotation, ['company_id' => $company->getId(),]);
+        $quotation->setCreationDate(new \DateTime());
+
+        $form = $this->createForm(QuotationType::class, $quotation, [
+            'company_id' => $company->getId(),
+        ]);
+      
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
