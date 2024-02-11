@@ -1,4 +1,22 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{{ button_label|default('Sauvegarder') }}</button>
+{{ form_start(form, {'attr': {'class': 'flex flex-col'}}) }}
+    <button type="button" class="add-detail bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Ajouter</button>
+    <div class="order-3" id="quotationDetails" data-index="{{ form.quotationDetails|length }}" data-prototype="{{ form_widget(form.quotationDetails.vars.prototype)|e('html_attr') }}">
+        {% for quotationDetailForm in form.quotationDetails %}
+            <div class="quotationDetailItem">
+                {{ form_row(quotationDetailForm) }}
+                <button type="button" class="remove-detail bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Supprimer</button>
+            </div>
+        {% endfor %}
+    </div>
+    <div>
+        <p>Total TTC : <span class="totalTTC"></span></p>
+        <p>Total HT : <span class="totalHT"></span></p>
+    </div>
+    {{ form_row(form.status) }}
+    {{ form_row(form.userReference) }}
+    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{{ button_label|default('Créer') }}</button>
 {{ form_end(form) }}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('prototype') }}
+{% endblock %}

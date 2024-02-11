@@ -12,7 +12,6 @@
                 <th>ProductName</th>
                 <th>Description</th>
                 <th>UnitPrice</th>
-                <th>Tva</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,7 +22,6 @@
                 <td>{{ product.productName }}</td>
                 <td>{{ product.description }}</td>
                 <td>{{ product.unitPrice }}</td>
-                <td>{{ product.tva }}</td>
                 <td>
                     <a href="{{ path('company_product_show', {'id': product.id}) }}">show</a>
                     <a href="{{ path('company_product_edit', {'id': product.id}) }}">edit</a>

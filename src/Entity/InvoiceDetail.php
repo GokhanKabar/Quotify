@@ -22,6 +22,21 @@ class InvoiceDetail
     #[ORM\ManyToOne(inversedBy: 'invoiceDetails')]
     private ?Product $product = null;
 
+    #[ORM\Column]
+    private ?float $tva = null;
+
+    public function getTva(): ?float
+    {
+        return $this->tva;
+    }
+
+    public function setTva(float $tva): static
+    {
+        $this->tva = $tva;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
