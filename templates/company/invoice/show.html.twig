@@ -26,5 +26,7 @@
 
     <a href="{{ path('company_invoice_edit', {'id': invoice.id}) }}">edit</a>
 
+    <a href="{{ path('company_invoice_pdf', {'id': invoice.id}) }}">Download PDF</a>
+
     {{ include('company/invoice/_delete_form.html.twig') }}
 {% endblock %}

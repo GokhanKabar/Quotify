@@ -4,14 +4,14 @@ namespace App\Controller\Company;
 
 use App\Entity\Quotation;
 use App\Form\QuotationType;
-use App\Repository\QuotationRepository;
+use App\Repository\CompanyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Nucleos\DompdfBundle\Wrapper\DompdfWrapperInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
-use App\Repository\CompanyRepository;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[Route('/quotation')]
 class QuotationController extends AbstractController
@@ -22,9 +22,7 @@ class QuotationController extends AbstractController
         $user = $security->getUser();
         $quotations = $companyRepository->getQuotations($user->getCompany()->getId());
 
-        return $this->render('company/quotation/quotations_list.html.twig', [
-            'quotations' => $quotations,
-        ]);
+        return $this->render('company/quotation/quotations_list.html.twig', ['quotations' => $quotations,]);
     }
 
     #[Route('/new', name: 'quotation_new', methods: ['GET', 'POST'])]
@@ -38,6 +36,7 @@ class QuotationController extends AbstractController
         $form = $this->createForm(QuotationType::class, $quotation, [
             'company_id' => $company->getId(),
         ]);
+      
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -47,18 +46,13 @@ class QuotationController extends AbstractController
             return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('company/quotation/new.html.twig', [
-            'quotation' => $quotation,
-            'form' => $form,
-        ]);
+        return $this->render('company/quotation/new.html.twig', ['quotation' => $quotation, 'form' => $form,]);
     }
 
     #[Route('/{id}', name: 'quotation_show', methods: ['GET'])]
     public function show(Quotation $quotation): Response
     {
-        return $this->render('company/quotation/show.html.twig', [
-            'quotation' => $quotation,
-        ]);
+        return $this->render('company/quotation/show.html.twig', ['quotation' => $quotation,]);
     }
 
     #[Route('/{id}/edit', name: 'quotation_edit', methods: ['GET', 'POST'])]
@@ -66,9 +60,7 @@ class QuotationController extends AbstractController
     {
         $company = $security->getUser()->getCompany();
 
-        $form = $this->createForm(QuotationType::class, $quotation, [
-            'company_id' => $company->getId(),
-        ]);
+        $form = $this->createForm(QuotationType::class, $quotation, ['company_id' => $company->getId(),]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -78,20 +70,25 @@ class QuotationController extends AbstractController
             return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('company/quotation/edit.html.twig', [
-            'quotation' => $quotation,
-            'form' => $form,
-        ]);
+        return $this->render('company/quotation/edit.html.twig', ['quotation' => $quotation, 'form' => $form,]);
     }
 
     #[Route('/{id}', name: 'quotation_delete', methods: ['POST'])]
     public function delete(Request $request, Quotation $quotation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$quotation->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $quotation->getId(), $request->request->get('_token'))) {
             $entityManager->remove($quotation);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/pdf/{id}', name: 'quotation_pdf', methods: ['GET'])]
+    public function generatePdf(Quotation $quotation, DompdfWrapperInterface $dompdfWrapper): Response
+    {
+        $html = $this->renderView('company/quotation/pdf.html.twig', ['quotation' => $quotation,]);
+
+        return $dompdfWrapper->getStreamResponse($html, "quotation-{$quotation->getId()}.pdf", ['Attachment' => true,]);
     }
 }

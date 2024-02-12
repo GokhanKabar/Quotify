@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Devis {{ quotation.id }}</title>
+    <style>
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+        }
+
+        .header, .footer {
+            text-align: center;
+            color: #666;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Devis N°{{ quotation.id }}</h1>
+    <p>Date: {{ quotation.creationDate|date('d/m/Y') }}</p>
+    <p>Statut: {{ quotation.status }}</p>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Produit</th>
+        <th>Description</th>
+        <th>Quantité</th>
+        <th>Prix Unitaire</th>
+        <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for detail in quotation.quotationDetails %}
+        <tr>
+            <td>{{ detail.product.productName }}</td>
+            <td>{{ detail.product.description }}</td>
+            <td>{{ detail.quantity }}</td>
+            <td>{{ detail.product.unitPrice|number_format(2, ',', ' ') }} €</td>
+            <td>{{ (detail.quantity * detail.product.unitPrice)|number_format(2, ',', ' ') }} €</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="footer">
+    <p>Total HT : {{ quotation.totalHT|number_format(2, ',', ' ') }} €</p>
+    <p>TVA : {{ (quotation.totalTTC - quotation.totalHT)|number_format(2, ',', ' ') }} €</p>
+    <p>Total TTC : {{ quotation.totalTTC|number_format(2, ',', ' ') }} €</p>
+</div>
+</body>
+</html>

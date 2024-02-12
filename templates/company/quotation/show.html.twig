@@ -48,5 +48,7 @@
 
     <a href="{{ path('company_quotation_edit', {'id': quotation.id}) }}">edit</a>
 
+    <a href="{{ path('company_quotation_pdf', {'id': quotation.id}) }}">Download PDF</a>
+
     {{ include('company/quotation/_delete_form.html.twig') }}
 {% endblock %}
