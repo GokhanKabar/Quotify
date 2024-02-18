@@ -1,54 +1,58 @@
 {% extends 'dashboard.html.twig' %}
 
-{% block title %}Quotation{% endblock %}
+{% block title %}Détail du devis{% endblock %}
 
 {% block body %}
-    <h1>Quotation</h1>
-    {% embed "_components/_table.html.twig" with {
-        'arrayLabel': [
-            'Id', 'CreationDate', 'Status'
-        ],
-        'properties': [
-            'id', 'creationDate', 'status'
-        ],
-        'arrayList': [
-            {
-                'id': quotation.id, 
-                'creationDate': quotation.creationDate, 
-                'status': quotation.status
-            }
-        ],
-    } %}
-    {% endembed %}
-
-    {% set arrayList = [] %}
-    {% for detail in quotation.quotationDetails %}
-        {% set detailObject = {
-            'quantity': detail.quantity, 
-            'productName': detail.product.productName, 
-            'description': detail.product.description, 
-            'unitPrice': detail.product.unitPrice, 
-            'categoryName': detail.product.category.categoryName
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Détails du devis</h1>
+            </div>
+            <div class="flex gap-2">
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_quotation_index') }}">Retour à la liste</a>
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_quotation_edit', {'id': quotation.id}) }}">Modifier</a>
+                {{ include('company/quotation/_delete_form.html.twig') }}
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_quotation_pdf', {'id': quotation.id}) }}">Exporter le devis (PDF)</a>
+            </div>
+        </div>
+        {% embed "_components/_table.html.twig" with {
+            'arrayLabel': [
+                '#', 'Date de création', 'Status de paiement'
+            ],
+            'properties': [
+                'id', 'creationDate', 'status'
+            ],
+            'arrayList': [
+                {
+                    'id': quotation.id, 
+                    'creationDate': quotation.creationDate, 
+                    'status': quotation.status
+                }
+            ],
         } %}
-        {% set arrayList = arrayList|merge([detailObject]) %}
-    {% endfor %}
+        {% endembed %}
 
-    {% embed "_components/_table.html.twig" with {
-        'arrayLabel': [
-            'Quantity', 'Product Name', 'Product Description', 'Unit price', 'Category'
-        ],
-        'properties': [
-            'quantity', 'productName', 'description', 'unitPrice', 'categoryName'
-        ],
-        'arrayList': arrayList,
-    } %}
-    {% endembed %}
+        {% set arrayList = [] %}
+        {% for detail in quotation.quotationDetails %}
+            {% set detailObject = {
+                'productName': detail.product.productName,
+                'description': detail.product.description, 
+                'quantity': detail.quantity,  
+                'unitPrice': detail.product.unitPrice, 
+                'categoryName': detail.product.category.categoryName
+            } %}
+            {% set arrayList = arrayList|merge([detailObject]) %}
+        {% endfor %}
 
-    <a href="{{ path('company_quotation_index') }}">back to list</a>
-
-    <a href="{{ path('company_quotation_edit', {'id': quotation.id}) }}">edit</a>
-
-    <a href="{{ path('company_quotation_pdf', {'id': quotation.id}) }}">Download PDF</a>
-
-    {{ include('company/quotation/_delete_form.html.twig') }}
+        {% embed "_components/_table.html.twig" with {
+            'arrayLabel': [
+                'Nom du produit', 'Description', 'Quantité', 'Prix', 'Catégorie'
+            ],
+            'properties': [
+                'productName', 'description', 'quantity', 'unitPrice', 'categoryName'
+            ],
+            'arrayList': arrayList,
+        } %}
+        {% endembed %}
+    </div>
 {% endblock %}
