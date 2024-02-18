@@ -1,32 +1,58 @@
 {% extends 'dashboard.html.twig' %}
 
-{% block title %}Invoice{% endblock %}
+{% block title %}Détail de la facture{% endblock %}
 
 {% block body %}
-    <h1>Invoice</h1>
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Détails de la facture</h1>
+            </div>
+            <div class="flex gap-2">
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_invoice_index') }}">Retour à la liste</a>
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_invoice_edit', {'id': invoice.id}) }}">Modifier</a>
+                {{ include('company/invoice/_delete_form.html.twig') }}
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_invoice_pdf', {'id': invoice.id}) }}">Exporter la facture (PDF)</a>
+            </div>
+        </div>
+        {% embed "_components/_table.html.twig" with {
+            'arrayLabel': [
+                '#', 'Date de création', 'Status de paiement'
+            ],
+            'properties': [
+                'id', 'creationDate', 'status'
+            ],
+            'arrayList': [
+                {
+                    'id': invoice.id, 
+                    'creationDate': invoice.creationDate, 
+                    'status': invoice.paymentStatus
+                }
+            ],
+        } %}
+        {% endembed %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ invoice.id }}</td>
-            </tr>
-            <tr>
-                <th>CreationDate</th>
-                <td>{{ invoice.creationDate ? invoice.creationDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>PaymentStatus</th>
-                <td>{{ invoice.paymentStatus }}</td>
-            </tr>
-        </tbody>
-    </table>
+        {% set arrayList = [] %}
+        {% for detail in invoice.invoiceDetails %}
+            {% set detailObject = {
+                'productName': detail.product.productName,
+                'description': detail.product.description, 
+                'quantity': detail.quantity,  
+                'unitPrice': detail.product.unitPrice, 
+                'categoryName': detail.product.category.categoryName
+            } %}
+            {% set arrayList = arrayList|merge([detailObject]) %}
+        {% endfor %}
 
-    <a href="{{ path('company_invoice_index') }}">back to list</a>
-
-    <a href="{{ path('company_invoice_edit', {'id': invoice.id}) }}">edit</a>
-
-    <a href="{{ path('company_invoice_pdf', {'id': invoice.id}) }}">Download PDF</a>
-
-    {{ include('company/invoice/_delete_form.html.twig') }}
+        {% embed "_components/_table.html.twig" with {
+            'arrayLabel': [
+                'Nom du produit', 'Description', 'Quantité', 'Prix', 'Catégorie'
+            ],
+            'properties': [
+                'productName', 'description', 'quantity', 'unitPrice', 'categoryName'
+            ],
+            'arrayList': arrayList,
+        } %}
+        {% endembed %}
+    </div>
 {% endblock %}

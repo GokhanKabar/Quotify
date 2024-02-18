@@ -17,25 +17,25 @@ class QuotationDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('quantity', NumberType::class, [
-            'attr' => ['id' => 'quantity'],
-            'label' => 'Quantité',
-        ])
-        ->add('tva', NumberType::class, [
-            'attr' => ['id' => 'tva', 'step' => 0.01, 'min' => 0, 'max' => 100],
-            'label' => 'TVA',
-        ])
         ->add('product', EntityType::class, [
             'class' => Product::class,
             'choice_label' => function($product) {
                 return $product->getProductName() . ' - ' . $product->getUnitPrice();
             },
-            'label' => 'Product',
+            'label' => 'Produit',
             'query_builder' => function (ProductRepository $productRepository) use ($options) {
                 return $productRepository->createQueryBuilder('p')
                     ->where('p.companyReference = :company_id')
                     ->setParameter('company_id', $options['company_id']);
             },
+        ])
+        ->add('quantity', NumberType::class, [
+            'attr' => ['id' => 'quantity', 'type' => 'number', 'min' => 1, 'step' => 1, 'placeholder' => 'Quantité'],
+            'label' => 'Quantité',
+        ])
+        ->add('tva', NumberType::class, [
+            'attr' => ['id' => 'tva', 'step' => 0.01, 'min' => 0, 'max' => 100, 'type' => 'number', 'placeholder' => 'TVA'],
+            'label' => 'TVA',
         ])
         ;
     }

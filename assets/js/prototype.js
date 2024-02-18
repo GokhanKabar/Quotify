@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     addItemButton.addEventListener('click', function(e) {
         const newFormDiv = document.createElement('div');
+        newFormDiv.className = 'flex items-center justify-between bg-gray-100 p-4 rounded mb-4';
+        
         const index = collectionHolder.dataset.index;
         const newForm = collectionHolder.dataset.prototype.replace(/__name__/g, index);
 

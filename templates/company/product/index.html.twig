@@ -3,37 +3,27 @@
 {% block title %}Product index{% endblock %}
 
 {% block body %}
-    <h1>Product index</h1>
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Produits</h1>
+            </div>
+            <div class="flex">
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_product_new') }}">Créer un nouveau produit</a>
+            </div>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>ProductName</th>
-                <th>Description</th>
-                <th>UnitPrice</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.productName }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.unitPrice }}</td>
-                <td>
-                    <a href="{{ path('company_product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('company_product_edit', {'id': product.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('company_product_new') }}">Create new</a>
+        {% embed "_components/_table.html.twig" with {
+            'arrayLabel': [
+                'Id', 'Product', 'Description', 'Unit Price'
+            ],
+            'properties': [
+                'id', 'productName', 'description', 'unitPrice'
+            ],
+            'arrayList': products,
+            'route_show': 'company_product_show',
+            'route_edit': 'company_product_edit'
+        } %}
+        {% endembed %}
+    </div>
 {% endblock %}

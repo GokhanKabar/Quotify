@@ -32,6 +32,7 @@ class InvoiceController extends AbstractController
         $company = $security->getUser()->getCompany();
 
         $invoice->setCreationDate(new \DateTime());
+        $invoice->setPaymentStatus('En attente');
 
         $form = $this->createForm(InvoiceType::class, $invoice, [
             'company_id' => $company->getId(),

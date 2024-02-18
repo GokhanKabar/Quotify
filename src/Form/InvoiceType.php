@@ -23,13 +23,6 @@ class InvoiceType extends AbstractType
         $company = $options['company_id'];
 
         $builder
-            ->add('paymentStatus', ChoiceType::class, [
-                'choices' => [
-                    'En attente' => 'En attente',
-                    'Payé' => 'Payé',
-                    'Non payé' => 'Non payé',
-                ],
-            ])
             ->add('userReference', EntityType::class, [
                 'class' => User::class,
                 'label' => 'Client',
@@ -54,7 +47,12 @@ class InvoiceType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'label'=> false,
+                'label' => false,
+                'prototype_options' => [
+                    'attr' => [
+                        'class' => 'flex gap-5',
+                    ],
+                ],
             ])
             ;
     }
