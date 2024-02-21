@@ -3,12 +3,14 @@
 namespace App\Controller\Company;
 
 use App\Entity\User;
+use App\Form\CustomerType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -29,12 +31,14 @@ class CustomerController extends AbstractController
     }
 
     #[Route('/new', name: 'customer_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Security $security, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $user->setCompany($security->getUser()->getCompany());
-
-        $form = $this->createForm(UserType::class, $user);
+        // on génère un mot de passe aléatoire
+        $user->setPassword($passwordHasher->hashPassword($user, bin2hex(random_bytes(6))));
+        $user->setIsVerified(true);
+        $form = $this->createForm(CustomerType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,7 +61,7 @@ class CustomerController extends AbstractController
     #[Route('/{id}/edit', name: 'customer_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(CustomerType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
