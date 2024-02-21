@@ -2,42 +2,39 @@
 
 <table class="min-w-full text-center sm:text-left font-light">
     <thead class="border-b font-medium dark:border-neutral-500">
-        <tr>
-            {% for label in arrayLabel %}
-                <th scope="col" class="px-6 py-4">{{ label }}</th>
-            {% endfor %}
-            {% if route_show is defined or route_edit is defined %}
-                <th scope="col" class="px-6 py-4">Actions</th>
-            {% endif %}
-        </tr>
+    <tr>
+        {% for label in arrayLabel %}
+            <th scope="col" class="px-6 py-4">{{ label }}</th>
+        {% endfor %}
+        {% if route_show is defined or route_edit is defined %}
+            <th scope="col" class="px-6 py-4">Actions</th>
+        {% endif %}
+    </tr>
     </thead>
     <tbody>
-        {% for data in arrayList %}
-            <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                {% for property in properties %}
-                    {% set value = attribute(data, property) %}
-                    {% if property == 'isVerified' %}
-                        <td class="whitespace-nowrap px-6 py-4">{{ value ? '1' : '0' }}</td>
-                    {% elseif value.timestamp is defined %}
-                        <td class="whitespace-nowrap px-6 py-4">{{ value|date('d/m/Y') }}</td>
-                    {% else %}
-                        <td class="whitespace-nowrap px-6 py-4">{{ value }}</td>
-                    {% endif %}
-                {% endfor %}}
-                {% if route_show is defined or route_edit is defined %}
-                    <td class="whitespace-nowrap px-6 py-4">
-                        {% if data is same as(data) %}
-                            {# Traitez ici si data est un objet et possède une méthode getId() #}
-                            <a class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" href="{{ path(route_show, {'id': data.id }) }}">Voir</a>
-                            <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path(route_edit, {'id': data.id }) }}">Modifier</a>
-                        {% endif %}
-                    </td>
+    {% for data in arrayList %}
+        <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+            {% for property in properties %}
+                {% set value = attribute(data, property) %}
+                {% if property == 'isVerified' %}
+                    <td class="whitespace-nowrap px-6 py-4">{{ value ? '1' : '0' }}</td>
+                {% elseif value.timestamp is defined %}
+                    <td class="whitespace-nowrap px-6 py-4">{{ value|date('d/m/Y') }}</td>
+                {% else %}
+                    <td class="whitespace-nowrap px-6 py-4">{{ value }}</td>
                 {% endif %}
-            </tr>
-        {% else %}
-            <tr>
-                <td class="px-4 py-2 border border-gray-400" colspan="6">Aucune données</td>
-            </tr>
-        {% endfor %}
+            {% endfor %}
+            {% if route_show is defined or route_edit is defined %}
+                <td class="whitespace-nowrap px-6 py-4">
+                    <a class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" href="{{ path(route_show, {'id': data.id }) }}">Voir</a>
+                    <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path(route_edit, {'id': data.id }) }}">Modifier</a>
+                </td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr>
+            <td class="px-4 py-2 border border-gray-400" colspan="6">Aucune données</td>
+        </tr>
+    {% endfor %}
     </tbody>
 </table>
