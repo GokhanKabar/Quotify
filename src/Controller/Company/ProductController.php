@@ -10,30 +10,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use App\Repository\CompanyRepository;
 
 #[Route('/product')]
 class ProductController extends AbstractController
 {
     #[Route('/', name: 'product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository): Response
+    public function index(CompanyRepository $companyRepository, Security $security): Response
     {
+        $user = $security->getUser();
+        $company = $user->getCompany()->getId();
+
         return $this->render('company/product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' => $companyRepository->getProducts($company)
         ]);
     }
 
     #[Route('/new', name: 'product_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
+        $company = $security->getUser()->getCompany();
+
+        $form = $this->createForm(ProductType::class, $product, [
+            'company_id' => $company->getId(),
+        ]);
         $form->handleRequest($request);
+
+        // set user company reference to the product to limit the products to the company
+        $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($product);
             $entityManager->flush();
 
-            return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('company/product/new.html.twig', [
@@ -59,7 +71,7 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('company/product/edit.html.twig', [
@@ -76,6 +88,6 @@ class ProductController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('company_product_index', [], Response::HTTP_SEE_OTHER);
     }
 }

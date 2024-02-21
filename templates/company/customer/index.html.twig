@@ -5,40 +5,27 @@
 {% block title %}Liste des clients{% endblock %}
 
 {% block body %}
-    <h1 class="text-2xl font-bold mb-4">Liste des clients de la société {{ company.companyName }}</h1>
-    <table class="w-full border-collapse">
-        <thead>
-        <tr class="bg-gray-200">
-            <th class="px-4 py-2 border border-gray-400 text-left">Nom</th>
-            <th class="px-4 py-2 border border-gray-400 text-left">Prénom</th>
-            <th class="px-4 py-2 border border-gray-400 text-left">Email</th>
-            <th class="px-4 py-2 border border-gray-400 text-left">Vérifié</th>
-            <th class="px-4 py-2 border border-gray-400 text-left">Créé le</th>
-            <th class="px-4 py-2 border border-gray-400 text-left">Modifié le</th>
-            <th class="px-4 py-2 border border-gray-400 text-left">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr class="{{ loop.index is odd ? 'bg-white' : 'bg-gray-200' }}">
-                <td class="px-4 py-2 border border-gray-400">{{ user.lastName }}</td>
-                <td class="px-4 py-2 border border-gray-400">{{ user.firstName }}</td>
-                <td class="px-4 py-2 border border-gray-400">{{ user.email }}</td>
-                <td class="px-4 py-2 border border-gray-400">{{ user.verified ? 'Oui' : 'Non' }}</td>
-                <td class="px-4 py-2 border border-gray-400">{{ user.createdAt ? user.createdAt|date('d/m/Y H:i:s') : '' }}</td>
-                <td class="px-4 py-2 border border-gray-400">{{ user.updatedAt ? user.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
-                <td class="px-4 py-2 border border-gray-400">
-                    <a href="{{ path('company_customer_show', {'id': user.id}) }}">Voir</a>
-                    <a href="{{ path('company_customer_edit', {'id': user.id}) }}">Modifier</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td class="px-4 py-2 border border-gray-400" colspan="6">Aucun client trouvé</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Liste des clients de la société {{ company.companyName }}</h1>
+            </div>
+            <div class="flex">
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_customer_new') }}">Créer un nouveau client</a>
+            </div>
+        </div>
 
-    <a href="{{ path('company_customer_new') }}">Créer un nouveau client </a>
+        {% embed "_components/_table.html.twig" with {
+            'arrayLabel': [
+                'Nom', 'Prénom', 'Email', 'Vérifié', 'Créé le', 'Modifié le'
+            ],
+            'properties': [
+                'lastName', 'firstName', 'email', 'isVerified', 'createdAt', 'updatedAt'
+            ],
+            'arrayList': users,
+            'route_show': 'company_customer_show',
+            'route_edit': 'company_customer_edit',
+        } %}
+        {% endembed %}
+    </div>
 {% endblock %}

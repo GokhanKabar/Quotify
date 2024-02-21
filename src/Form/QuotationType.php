@@ -23,13 +23,6 @@ class QuotationType extends AbstractType
         $company = $options['company_id'];
 
         $builder
-            ->add('status', ChoiceType::class, [
-                'choices' => [
-                    'En attente' => 'En attente',
-                    'Accepté' => 'Approuvé',
-                    'Refusé' => 'Rejeté',
-                ],
-            ])
             ->add('userReference', EntityType::class, [
                 'class' => User::class,
                 'label' => 'Client',
@@ -55,6 +48,11 @@ class QuotationType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label'=> false,
+                'prototype_options' => [
+                    'attr' => [
+                        'class' => 'flex gap-5',
+                    ],
+                ],
             ])
         ;
     }

@@ -14,17 +14,15 @@ class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $company = $options['company_id'];
+
         $builder
             ->add('productName')
             ->add('description')
             ->add('unitPrice')
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-'choice_label' => 'id',
-            ])
-            ->add('companyReference', EntityType::class, [
-                'class' => Company::class,
-'choice_label' => 'id',
+                'choice_label' => 'categoryName',
             ])
         ;
     }
@@ -33,6 +31,7 @@ class ProductType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Product::class,
+            'company_id' => null,
         ]);
     }
 }

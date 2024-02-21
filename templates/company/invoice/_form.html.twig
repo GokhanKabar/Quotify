@@ -1,20 +1,27 @@
-{{ form_start(form, {'attr': {'class': 'flex flex-col'}}) }}
-    <button type="button" class="add-detail bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">+</button>
+{{ form_start(form) }}
+    <div class="flex items-center gap-5 mb-2">
+        <h2 class="text-xl">Ajouter une nouvelle ligne</h2>
+        <button type="button" class="add-detail bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">+</button>
+    </div>
     <div class="order-3" id="invoiceDetails" data-index="{{ form.invoiceDetails|length }}" data-prototype="{{ form_widget(form.invoiceDetails.vars.prototype)|e('html_attr') }}">
         {% for invoiceDetailForm in form.invoiceDetails %}
-            <div class="invoiceDetailItem">
-                {{ form_row(invoiceDetailForm) }}
+            <!-- invoiceDetail edit -->
+            <div class="invoiceDetailItem flex items-center justify-between bg-gray-100 p-4 rounded mb-4">
+                {{ form_row(invoiceDetailForm, {'attr': {'class': 'flex gap-5'}}) }}
                 <button type="button" class="remove-detail bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">x</button>
             </div>
         {% endfor %}
-    </div>
-    <div>
-        <p>Total TTC : <span class="totalTTC"></span></p>
-        <p>Total HT : <span class="totalHT"></span></p>
-    </div>
-    {{ form_row(form.paymentStatus) }}
+        </div>
     {{ form_row(form.userReference) }}
-    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{{ button_label|default('Créer') }}</button>
+    <div class="flex items-center justify-between">
+        <div>
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{{ button_label|default('Créer') }}</button>
+        </div>
+        <div>
+            <p>Total TTC : <span class="totalTTC">0.00 €</span></p>
+            <p>Total HT : <span class="totalHT">0.00 €</span></p>
+        </div>
+    </div>
 {{ form_end(form) }}
 
 {% block javascripts %}
