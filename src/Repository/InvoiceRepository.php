@@ -21,9 +21,38 @@ class InvoiceRepository extends ServiceEntityRepository
         parent::__construct($registry, Invoice::class);
     }
 
-    public function findInvoicesByCompany($companyId): array
+    public function getInvoiceStatusCounts(): array
     {
-        return $this->createQueryBuilder('i')->innerJoin('i.userReference', 'u')->innerJoin('u.company', 'c')->where('c.id = :companyId')->setParameter('companyId', $companyId)->getQuery()->getResult();
+        $qb = $this->createQueryBuilder('i')
+            ->select('i.paymentStatus AS paymentStatus, COUNT(i.id) AS statusCount')
+            ->groupBy('i.paymentStatus');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getProductSalesData()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p.productName, SUM(d.quantity) as totalSales
+            FROM App\Entity\Product p
+            JOIN p.invoiceDetails d
+            GROUP BY p.id'
+        );
+
+        return $query->getResult();
+    }
+
+    public function findTotalSalesByMonth()
+    {
+        // Assurez-vous d'utiliser le bon nom de champ totalTTC ici
+        return $this->createQueryBuilder('i')
+            ->select('SUBSTRING(i.creationDate, 1, 7) as month, SUM(i.totalTTC) as total')
+            ->groupBy('month')
+            ->orderBy('month', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

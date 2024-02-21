@@ -21,6 +21,16 @@ class InvoiceDetailRepository extends ServiceEntityRepository
         parent::__construct($registry, InvoiceDetail::class);
     }
 
+    public function getSalesData()
+    {
+        return $this->createQueryBuilder('id')
+            ->select('p.productName, SUM(id.quantity) as totalSales')
+            ->join('id.product', 'p')
+            ->groupBy('p.id')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return InvoiceDetail[] Returns an array of InvoiceDetail objects
 //     */

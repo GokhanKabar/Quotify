@@ -27,10 +27,6 @@ controller_mail:
     resource: ../src/Controller/MailerController.php
     type: attribute
 
-controller_home:
-    resource: ../src/Controller/HomeController.php
-    type: attribute
-
 controller_dashboard:
     resource: ../src/Controller/Dashboard/DashboardController.php
     type: attribute
