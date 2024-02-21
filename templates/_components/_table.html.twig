@@ -16,12 +16,14 @@
             <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                 {% for property in properties %}
                     {% set value = attribute(data, property) %}
-                    {% if value.timestamp is defined %}
+                    {% if property == 'isVerified' %}
+                        <td class="whitespace-nowrap px-6 py-4">{{ value ? '1' : '0' }}</td>
+                    {% elseif value.timestamp is defined %}
                         <td class="whitespace-nowrap px-6 py-4">{{ value|date('d/m/Y') }}</td>
                     {% else %}
                         <td class="whitespace-nowrap px-6 py-4">{{ value }}</td>
                     {% endif %}
-                {% endfor %}
+                {% endfor %}}
                 {% if route_show is defined or route_edit is defined %}
                     <td class="whitespace-nowrap px-6 py-4">
                         {% if data is same as(data) %}
