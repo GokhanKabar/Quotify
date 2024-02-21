@@ -16,6 +16,7 @@ use Dompdf\Options;
 use Dompdf\Dompdf;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 
 #[Route('/invoice')]
 class InvoiceController extends AbstractController
@@ -114,7 +115,7 @@ class InvoiceController extends AbstractController
 
         // Envoi du PDF par e-mail
         $email = (new Email())
-        ->from('no-reply@quotify.fr')
+        ->from(new Address('no-reply@quotify.fr', 'Quotify'))
         ->to($invoice->getUserReference()->getEmail())
         ->subject("Facture n°{$invoice->getId()}")
         ->text('Vous trouverez ci-joint la facture demandée.')
