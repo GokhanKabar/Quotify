@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -36,7 +38,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -44,12 +46,13 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $plaintextPassword = $form->get('plainPassword')->getData();
             $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            $userPasswordHasher->hashPassword(
+                $user,
+                $plaintextPassword
+            )
+        );
 
             $user->setCreatedAt(new \DateTimeImmutable());
             $user->setUpdatedAt(new \DateTimeImmutable());
@@ -58,6 +61,15 @@ class UserController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+
+            // Envoi de l'e-mail
+            $email = (new Email())
+            ->from(new Address('no-reply@quotify.fr', 'Quotify'))
+            ->to($user->getEmail()) // Utilisez l'adresse e-mail de l'utilisateur
+            ->subject('Vos informations de connexion')
+            ->text("Votre e-mail : {$user->getEmail()}\nVotre mot de passe : $plaintextPassword");
+
+            $mailer->send($email);
 
             return $this->redirectToRoute('back_user_index', [], Response::HTTP_SEE_OTHER);
         }

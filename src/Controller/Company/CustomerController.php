@@ -37,7 +37,6 @@ class CustomerController extends AbstractController
         $user->setCompany($security->getUser()->getCompany());
         // on génère un mot de passe aléatoire
         $user->setPassword($passwordHasher->hashPassword($user, bin2hex(random_bytes(6))));
-        $user->setIsVerified(true);
         $form = $this->createForm(CustomerType::class, $user);
         $form->handleRequest($request);
 

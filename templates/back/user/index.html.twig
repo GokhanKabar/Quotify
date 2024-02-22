@@ -12,7 +12,6 @@
                 <th>Roles</th>
                 <th>Firstname</th>
                 <th>Lastname</th>
-                <th>IsVerified</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,7 +22,6 @@
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
-                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('back_user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('back_user_edit', {'id': user.id}) }}">edit</a>
