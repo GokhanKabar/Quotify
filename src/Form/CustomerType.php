@@ -19,7 +19,6 @@ class CustomerType extends AbstractType
             //->add('password')
             ->add('firstname', TextType::class, ['label' => 'Prénom', 'attr' => ['placeholder' => 'Prénom',],])
             ->add('lastname', TextType::class, ['label' => 'Nom', 'attr' => ['placeholder' => 'Nom',],])
-            //->add('isVerified', CheckboxType::class)
             //->add('createdAt', DateTimeType::class)
             //->add('updatedAt', DateTimeType::class)
             //->add('company', EntityType::class, [

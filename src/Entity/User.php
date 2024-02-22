@@ -45,9 +45,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'userReference', targetEntity: Invoice::class, cascade: ['remove'])]
     private Collection $invoices;
 
-    #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
-
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -213,18 +210,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $invoice->setUserReference(null);
             }
         }
-
-        return $this;
-    }
-
-    public function isVerified(): bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setIsVerified(bool $isVerified): static
-    {
-        $this->isVerified = $isVerified;
 
         return $this;
     }
