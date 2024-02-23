@@ -35,15 +35,31 @@ class InvoiceRepository extends ServiceEntityRepository
 
     public function findTotalSalesByMonth($companyId)
     {
-        return $this->createQueryBuilder('i')
-            ->select("to_char(i.creationDate, 'YYYY-MM') as month, SUM(i.totalTTC) as total")
+        $result = $this->createQueryBuilder('i')
+            ->select('i.creationDate, SUM(i.totalTTC) as total')
             ->join('i.userReference', 'u')
             ->where('u.company = :companyId')
             ->setParameter('companyId', $companyId)
-            ->groupBy('month')
-            ->orderBy('month', 'ASC')
+            ->groupBy('i.creationDate')
+            ->orderBy('i.creationDate', 'ASC')
             ->getQuery()
             ->getResult();
+
+        $salesByMonth = [];
+        foreach ($result as $row) {
+            $month = $row['creationDate']->format('Y-m');
+            if (!isset($salesByMonth[$month])) {
+                $salesByMonth[$month] = 0;
+            }
+            $salesByMonth[$month] += $row['total'];
+        }
+
+        $formattedResult = [];
+        foreach ($salesByMonth as $month => $total) {
+            $formattedResult[] = ['month' => $month, 'total' => $total];
+        }
+
+        return $formattedResult;
     }
 
 //    /**
