@@ -53,7 +53,6 @@ class UserFixtures extends Fixture
             $user->setRoles($this->getRandomElements(self::USER_ROLES, rand(1, count(self::USER_ROLES))));
             $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTime()));
             $user->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTime()));
-            $user->setIsVerified(true);
             $user->setCompany($this->getReference(CompanyFixtures::COMPANY_REFERENCE . rand(1, CompanyFixtures::COMPANY_COUNT_REFERENCE)));
 
             $manager->persist($user);

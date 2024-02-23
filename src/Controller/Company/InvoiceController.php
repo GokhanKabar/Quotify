@@ -12,6 +12,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\SecurityBundle\Security;
+use Dompdf\Options;
+use Dompdf\Dompdf;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 
 #[Route('/invoice')]
 class InvoiceController extends AbstractController
@@ -87,9 +92,42 @@ class InvoiceController extends AbstractController
     }
 
     #[Route('/pdf/{id}', name: 'invoice_pdf', methods: ['GET'])]
-    public function generatePdf(Invoice $invoice, DompdfWrapperInterface $dompdfWrapper): Response
+    public function generatePdf(Invoice $invoice, DompdfWrapperInterface $dompdfWrapper, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
     {
+        // Configuration de Dompdf
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instanciation de Dompdf
+        $dompdf = new Dompdf($pdfOptions);
         $html = $this->renderView('company/invoice/pdf.html.twig', ['invoice' => $invoice,]);
+
+        // Génération du PDF
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // Chemin où le PDF sera sauvegardé
+        $pdfFilePath = $this->getParameter('invoice_directory') . "/invoice-{$invoice->getId()}.pdf";
+
+        // Stockage du PDF
+        file_put_contents($pdfFilePath, $dompdf->output());
+
+        // Envoi du PDF par e-mail
+        $email = (new Email())
+        ->from(new Address('no-reply@quotify.fr', 'Quotify'))
+        ->to($invoice->getUserReference()->getEmail())
+        ->subject("Facture n°{$invoice->getId()}")
+        ->text('Vous trouverez ci-joint la facture demandée.')
+        ->attachFromPath($pdfFilePath, "invoice-{$invoice->getId()}.pdf");
+
+        $mailer->send($email);
+
+        $invoice->setPaymentStatus('Facture envoyée');
+
+        // Enregistrez les modifications dans la base de données
+        $entityManager->persist($invoice);
+        $entityManager->flush();
 
         return $dompdfWrapper->getStreamResponse($html, "invoice-{$invoice->getId()}.pdf", ['Attachment' => true,]);
     }
