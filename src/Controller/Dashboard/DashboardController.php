@@ -14,6 +14,8 @@ class DashboardController extends AbstractController
     #[Route('/', name: 'dashboard')]
     public function index(ChartBuilderInterface $chartBuilder, InvoiceRepository $invoiceRepository, InvoiceDetailRepository $invoiceDetailRepository): Response
     {
+        $userCompanyId = $this->getUser()->getCompany()->getId();
+
         // Line Chart
         $lineChart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $lineChart->setData([
@@ -37,7 +39,7 @@ class DashboardController extends AbstractController
         ]);
 
         // Doughnut Chart for Invoices
-        $invoiceData = $invoiceRepository->getInvoiceStatusCounts();
+        $invoiceData = $invoiceRepository->getInvoiceStatusCounts($userCompanyId);
         $labels = [];
         $data = [];
         foreach ($invoiceData as $status) {
@@ -56,7 +58,7 @@ class DashboardController extends AbstractController
         ]);
 
         // Bar Chart for Product Sales
-        $salesData = $invoiceDetailRepository->getSalesData();
+        $salesData = $invoiceDetailRepository->getSalesData($userCompanyId);
         $labels = [];
         $data = [];
         foreach ($salesData as $sale) {
@@ -89,7 +91,7 @@ class DashboardController extends AbstractController
         ]);
 
         // Bar Chart for Sales
-        $salesData = $invoiceRepository->findTotalSalesByMonth();
+        $salesData = $invoiceRepository->findTotalSalesByMonth($userCompanyId);
         $labels = [];
         $data = [];
         foreach ($salesData as $monthData) {
