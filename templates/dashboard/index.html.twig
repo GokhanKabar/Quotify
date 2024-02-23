@@ -2,4 +2,34 @@
 
 {% block title %}Quotify{% endblock %}
 
-{% block body %}{% endblock %}
+{% block body %}
+    <div class="flex flex-wrap justify-around">
+        <div class="m-4 p-4 shadow-lg rounded-lg bg-white">
+            <h2 class="text-xl font-semibold mb-2">Line Chart</h2>
+            <div class="w-full">
+                {{ render_chart(lineChart, {'id': 'lineChartCanvas', 'class': 'w-full h-64'}) }}
+            </div>
+        </div>
+
+        <div class="m-4 p-4 shadow-lg rounded-lg bg-white">
+            <h2 class="text-xl font-semibold mb-2">Doughnut Chart</h2>
+            <div class="w-full">
+                {{ render_chart(doughnutChart, {'id': 'doughnutChartCanvas', 'class': 'w-full h-64'}) }}
+            </div>
+        </div>
+
+        <div class="m-4 p-4 shadow-lg rounded-lg bg-white">
+            <h2 class="text-xl font-semibold mb-2">Bar Chart - Product Sales</h2>
+            <div class="w-full">
+                {{ render_chart(barChartProduct, {'id': 'barChartProductCanvas', 'class': 'w-full h-64'}) }}
+            </div>
+        </div>
+
+        <div class="m-4 p-4 shadow-lg rounded-lg bg-white">
+            <h2 class="text-xl font-semibold mb-2">Bar Chart - Sales</h2>
+            <div class="w-full">
+                {{ render_chart(barChartSale, {'id': 'barChartSaleCanvas', 'class': 'w-full h-64'}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -21,9 +21,29 @@ class InvoiceRepository extends ServiceEntityRepository
         parent::__construct($registry, Invoice::class);
     }
 
-    public function findInvoicesByCompany($companyId): array
+    public function getInvoiceStatusCounts($companyId): array
     {
-        return $this->createQueryBuilder('i')->innerJoin('i.userReference', 'u')->innerJoin('u.company', 'c')->where('c.id = :companyId')->setParameter('companyId', $companyId)->getQuery()->getResult();
+        $qb = $this->createQueryBuilder('i')
+            ->select('i.paymentStatus AS paymentStatus, COUNT(i.id) AS statusCount')
+            ->join('i.userReference', 'u') // Assurez-vous que 'userReference' est le bon nom de la propriété dans Invoice qui référence User
+            ->where('u.company = :companyId') // 'company' doit être la propriété dans User qui référence Company
+            ->setParameter('companyId', $companyId)
+            ->groupBy('i.paymentStatus');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findTotalSalesByMonth($companyId)
+    {
+        return $this->createQueryBuilder('i')
+            ->select('SUBSTRING(i.creationDate, 1, 7) as month, SUM(i.totalTTC) as total')
+            ->join('i.userReference', 'u') // Assurez-vous que 'userReference' est le nom de la propriété dans `Invoice` qui référence `User`
+            ->where('u.company = :companyId') // Filtrez pour correspondre à l'ID de la compagnie
+            ->setParameter('companyId', $companyId)
+            ->groupBy('month')
+            ->orderBy('month', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**
