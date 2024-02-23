@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quotify
+{% endblock %}
+
+{% block body %}
+	<section class="flex flex-col justify-center items-center">
+		<div class="bg-white bg-opacity-70 w-full flex md:flex-col lg:flex-row flex-col justify-center items-center h-3/5 p-5">
+			<div class="flex flex-col gap-5 text-center">
+				<h1 class="lg:text-2xl md:text-6xl text-6xl font-semibold">À propos de nous</h1>
+			</div>
+		</div>
+	</section>
+	<div class="container mx-auto px-6 py-10">
+		<div class="flex flex-wrap items-center">
+			<div class="w-full md:w-1/2 md:pl-10">
+				<p class="text-gray-700 mb-4">
+					Bienvenue chez Quotify, votre partenaire de confiance pour simplifier la gestion des factures et devis pour les fournisseurs de bureau. Notre mission est de faciliter le processus de facturation pour que vous puissiez vous concentrer sur ce que vous faites de mieux : fournir des services exceptionnels à vos clients.
+				</p>
+				<a href="#" class="inline-block px-6 py-2 text-white bg-primary rounded hover:bg-gray-500">
+					Nous rejoindre
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="bg-primary p-6">
+		<div class="text-center">
+			<h2 class="text-white text-3xl font-semibold mb-6">Ils nous font déjà confiance</h2>
+		</div>
+		<div class="flex flex-wrap justify-center items-center space-x-4">
+			<div class="bg-white rounded-lg shadow-lg m-4">
+				<div class="p-4 flex items-center justify-center">
+					<img src="{{ asset('images/ldlc.gif') }}" alt="" class="h-12">
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow-lg m-4">
+				<div class="p-4 flex items-center justify-center">
+					<img src="{{ asset('images/hyperburo.png') }}" alt="" class="h-12">
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow-lg m-4">
+				<div class="p-4 flex items-center justify-center">
+					<img src="{{ asset('images/metro.png') }}" alt="" class="h-12">
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	{{component('cards_rows_reverse', {
+    title: "Notre engagement",
+    description: "Chez Quotify, nous comprenons les défis auxquels sont confrontés les fournisseurs de bureau dans le domaine de la facturation. C'est pourquoi nous avons créé une solution complète et conviviale qui simplifie l'ensemble du processus. Notre plateforme intuitive permet de créer, personnaliser et envoyer rapidement des factures et des devis professionnels.",
+    image: asset('images/engagement.jpg'),
+    button: "Simplifie la vie de ton comptable !",
+    link: path('front_contact'),	
+}	
+)}}
+	{{component('cards_rows', {
+    title: "Notre Équipe",
+    description: "L'équipe Quotify est composée de professionnels passionnés par la simplification des processus administratifs pour les entreprises. Nous croyons en la puissance de la technologie pour transformer la façon dont vous effectuez vos tâches quotidiennes.
+	Rejoignez-nous dans notre mission de libérer votre entreprise des tracas administratifs et de créer une expérience sans effort pour vous et vos clients.",
+    image:  asset('images/equipe.jpeg'),
+    button: "Contactez-nous !",
+    link: path('front_contact'),	
+}	
+)}}
+
+{% endblock %}
