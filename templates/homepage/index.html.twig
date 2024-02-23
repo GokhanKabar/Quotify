@@ -1,66 +1,107 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Quotify{% endblock %}
+{% block title %}Quotify
+{% endblock %}
 
 {% block body %}
-    <section class="flex flex-col justify-center items-center bg-homepage bg-cover h-screen">
-        <div class="bg-white bg-opacity-70 w-full flex md:flex-col lg:flex-row flex-col justify-center items-center h-3/5 p-5">
-            <div>
-                <img class="w-64" src="{{ asset('images/Logo.png') }}" alt="Quotify" />
-            </div>
-            <div class="flex flex-col gap-5 text-center">
-                <h1 class="lg:text-9xl md:text-6xl text-6xl">10 000</h1>
-                <p class="lg:text-4xl md:text-2xl text-2xl">entreprises utilisent Quotify pour réaliser <br> leurs devis et factures </p>
-            </div>
-        </div>
-        <div class="flex lg:flex-row md:flex-row flex-col items-center lg:gap-x-20 md:gap-x-10 gap-y-5 lg:mt-10 md:mt-5 mt-5">
-            <a class="bg-gray-50 rounded-full p-3" href="">Démarrer la démonstration</a>
-        </div>
-    </section>
-    <section class="flex justify-center flex-wrap lg:gap-32 md:gap-20 gap-20 bg-gray-300 h-2/4 p-10">
-        <div class="flex flex-1/3 flex-col items-center text-center">
-            <img src="{{ asset('images/earn_time.svg') }}" alt="earn_time" />
-            <div class="flex flex-col gap-y-5">
-                <h3 class="text-3xl">Gagnez du temps</h3>
-                <p class="text-xl">Profitez enfin d’un outil qui permet de <br> créer ses devis et factures de <br> manière simple et efficace.</p>
-            </div>
-        </div>
-        <div class="flex flex-1/3 flex-col items-center text-center">
-            <img src="{{ asset('images/simplify_manage.svg') }}" alt="earn_time" />
-            <div class="flex flex-col gap-y-5">
-                <h3 class="text-3xl">Simplifiez votre gestion</h3>
-                <p class="text-xl">Nous avons réuni au même endroit <br> vos devis et factures, vos clients et <br> vos matériaux.</p>
-            </div>
-        </div>
-        <div class="flex flex-1/3 flex-col items-center text-center">
-            <img src="{{ asset('images/pleasure_client.svg') }}" alt="pleasure_client" />
-            <div class="flex flex-col gap-y-5">
-                <h3 class="text-3xl">Améliorez votre satisfaction client</h3>
-                <p class="text-xl">Remportez plus de devis en faisant <br> rapidement des documents <br> structurés, clairs et professionnels.</p>
-            </div>
-        </div>
-    </section>
-    <section class="flex flex-col px-20 gap-y-4">
-        <div class="flex lg:flex-col md:flex-col flex-col">
-            <h3 class="text-3xl font-bold my-4">Devis en ligne instantané</h3>
-            <div class="flex lg:flex-row md:flex-col flex-col">
-                <img src="{{ asset('images/quotation_image.svg') }}" alt="quotation_image" />
-                <p class="text-2xl lg:px-10 md:px-0 px-0 lg:mt-0 md:mt-5 mt-5">Obtenez des devis rapidement et facilement en utilisant notre outil de devis en ligne. Remplissez simplement les détails requis, et recevez instantanément une estimation précise pour vos besoins.</p>
-            </div>
-        </div>
-        <div class="flex lg:even:flex-col md:even:flex-col even:flex-col">
-            <h3 class="text-3xl text-right font-bold my-4">Support client réactif</h3>
-            <div class="flex lg:flex-row-reverse md:flex-col flex-col">
-                <img src="{{ asset('images/support_image.svg') }}" alt="quotation_image" />
-                <p class="text-2xl lg:px-10 md:px-0 px-0 lg:mt-0 md:mt-5 mt-5">Profitez de notre service clientèle réactif. Notre équipe est là pour répondre à vos questions et vous aider à résoudre tout problème lié à notre plateforme.</p>
-            </div>
-        </div>
-        <div class="flex lg:flex-col md:flex-col flex-col">
-            <h3 class="text-3xl font-bold my-4">Sécurité des données</h3>
-            <div class="flex lg:flex-row md:flex-col flex-col">
-                <img src="{{ asset('images/security_image.svg') }}" alt="quotation_image" />
-                <p class="text-2xl lg:px-10 md:px-0 px-0 lg:mt-0 md:mt-5 mt-5">Nous accordons une grande importance à la sécurité de vos données. Soyez assuré que toutes vos informations sont traitées de manière sécurisée et conforme aux normes de confidentialité.</p>
-            </div>
-        </div>
-    </section>
+	<section class="flex flex-col justify-center items-center">
+		<div class="bg-white bg-opacity-70 w-full flex md:flex-col lg:flex-row flex-col justify-center items-center h-3/5 p-5">
+			<div>
+				<img class="w-20" src="{{ asset('images/Logo.png') }}" alt="Quotify"/>
+			</div>
+			<div class="flex flex-col gap-5 text-center">
+				<h1 class="lg:text-2xl md:text-6xl text-6xl font-semibold">uotify</h1>
+			</div>
+		</div>
+	</section>
+	{{component('cards_rows', {
+    title: "Créez et Gérez vos Factures en un Clic",
+    description: "Gagnez en efficacité avec Quotify ! Notre solution simplifie la création et la gestion de vos factures pour vous permettre de vous concentrer sur ce qui compte vraiment : votre entreprise. En quelques secondes, générez des devis professionnels, convertissez-les en factures et suivez vos paiements en temps réel. Dites adieu au casse-tête administratif et bonjour à la clarté et à la simplicité. Essayez dès maintenant et transformez votre gestion financière.",
+    image: asset('images/women-table.png'),
+    button: "Démarrer avec Quotify",
+    link: path('front_contact'),	
+}
+)}}
+
+	<div class="bg-gray-800 text-white text-center py-8 w-full">
+		<div class="px-4 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">500K+</div>
+				<div class="text-xl mt-2">Factures traitées</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">200K+</div>
+				<div class="text-xl mt-2">Devis créés</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">50K+</div>
+				<div class="text-xl mt-2">Utilisateurs enregistrés</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">1M+</div>
+				<div class="text-xl mt-2">Transactions</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">100+</div>
+				<div class="text-xl mt-2">Clients servis</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">30+</div>
+				<div class="text-xl mt-2">Partenaires et intégrations</div>
+			</div>
+		</div>
+	</div>
+
+	{{component('cards_rows_reverse', {
+    title: "Analyse Financière Approfondie",
+    description: "Dépassez la simple facturation avec des rapports financiers complets et personnalisables qui vous offrent une perspective précise des performances de votre entreprise. Notre application Quotify transforme vos données en insights puissants, vous permettant de prendre des décisions éclairées et d'affiner votre stratégie financière. Adaptés à vos besoins spécifiques, nos rapports sont conçus pour vous donner le contrôle et la clarté nécessaires pour une gestion comptable optimale.",
+    image: asset('images/tableau-femme.png'),
+    button: "Simplifie la vie de ton comptable !",
+    link: path('front_contact'),	
+}	
+)}}
+
+	<div class="p-6 flex flex-col md:flex-row items-center mx-auto max-w-4xl">
+		<div class="mb-4 md:mb-0 md:mr-4 w-full md:w-1/2">
+			<h2 class="text-2xl font-bold mb-2 text-gray-800">Sécurité Avancée pour vos Factures & Devis</h2>
+			<p class="text-gray-700 mb-4">Chez Quotify, la sécurité n'est pas une option, c'est une promesse. Protégez vos transactions et conservez vos données en toute sécurité avec notre système de cryptage de pointe. Nous nous engageons à assurer la confidentialité et l'intégrité de vos informations avec des sauvegardes automatiques et une surveillance continue.
+			</p>
+		</div>
+		<div class="w-full md:w-1/2 hidden md:block">
+			<img src="{{ asset('images/sheild-dynamic-color.png') }}" alt="Image description" class="w-1/2 h-auto mx-auto"/>
+		</div>
+	</div>
+
+		{{component('cards_rows', {
+    title: "Gestion et Suivi de Paiements Simplifiés",
+    description: "Restez maître de votre trésorerie grâce à notre outil de suivi des paiements intégré. Quotify vous offre une visibilité parfaite sur les flux de paiements de votre entreprise. Avec des statuts de paiement mis à jour automatiquement, vous avez l'assurance d'un suivi précis et en temps réel des paiements en attente et reçus. Plus besoin de vous perdre dans les relevés de compte, Quotify vous alerte dès qu'un paiement est effectué ou dû, vous permettant de rester proactif dans la gestion de vos finances.",
+    image: asset('images/facture-cafe.png'),
+    button: "Démarrer avec Quotify",
+    link: path('front_contact'),	
+}
+)}}
+	<div class="bg-primary p-6">
+		<div class="text-center">
+			<h2 class="text-white text-3xl font-semibold mb-6">Ils nous font déjà confiance</h2>
+		</div>
+		<div class="flex flex-wrap justify-center items-center space-x-4">
+			<div class="bg-white rounded-lg shadow-lg m-4">
+				<div class="p-4 flex items-center justify-center">
+					<img src="{{ asset('images/ldlc.gif') }}" alt="" class="h-12">
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow-lg m-4">
+				<div class="p-4 flex items-center justify-center">
+					<img src="{{ asset('images/hyperburo.png') }}" alt="" class="h-12">
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow-lg m-4">
+				<div class="p-4 flex items-center justify-center">
+					<img src="{{ asset('images/metro.png') }}" alt="" class="h-12">
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 {% endblock %}
