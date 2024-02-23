@@ -36,9 +36,9 @@ class InvoiceRepository extends ServiceEntityRepository
     public function findTotalSalesByMonth($companyId)
     {
         return $this->createQueryBuilder('i')
-            ->select('SUBSTRING(i.creationDate, 1, 7) as month, SUM(i.totalTTC) as total')
-            ->join('i.userReference', 'u') // Assurez-vous que 'userReference' est le nom de la propriété dans `Invoice` qui référence `User`
-            ->where('u.company = :companyId') // Filtrez pour correspondre à l'ID de la compagnie
+            ->select("to_char(i.creationDate, 'YYYY-MM') as month, SUM(i.totalTTC) as total")
+            ->join('i.userReference', 'u')
+            ->where('u.company = :companyId')
             ->setParameter('companyId', $companyId)
             ->groupBy('month')
             ->orderBy('month', 'ASC')
