@@ -17,13 +17,12 @@
                 } %}
             </div>
         </div>
-
         {% embed "components/_table.html.twig" with {
             'arrayLabel': [
-                '#', 'Nom du produit', 'Description', "Prix à l'unité"
+                '#', 'Vignette', 'Nom du produit', 'Description', 'Catégorie', "Prix à l'unité"
             ],
             'properties': [
-                'id', 'productName', 'description', 'unitPrice'
+                'id', 'imageName', 'productName', 'description', 'categoryName', 'unitPrice'
             ],
             'arrayList': products,
             'route_show': 'company_product_show',

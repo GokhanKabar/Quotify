@@ -11,6 +11,9 @@
 				<li class="md:px-4 md:py-2 hover:text-gray-500 {% if app.request.attributes.get('_route') == 'front_homepage' %}text-gray-500{% endif %}"><a href="{{ path('front_homepage') }}">Accueil</a></li>
 				<li class="md:px-4 md:py-2 hover:text-gray-500"><a href="{{ path('front_about') }}">À propos</a></li>
 				<li class="md:px-4 md:py-2 hover:text-gray-500 {% if app.request.attributes.get('_route') == 'front_contact' %}text-gray-500{% endif %}"><a href="{{ path('front_contact') }}">Contact</a></li>
+				{% if app.user %}
+					<li class="md:px-4 md:py-2 hover:text-gray-500"><a href="{{ path('dashboard') }}">Tableau de bord</a></li>
+				{% endif %}
 			</ul>
 		</div>
 		<div class="order-2 md:order-3">
