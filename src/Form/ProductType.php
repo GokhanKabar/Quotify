@@ -9,6 +9,11 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class ProductType extends AbstractType
 {
@@ -17,12 +22,37 @@ class ProductType extends AbstractType
         $company = $options['company_id'];
 
         $builder
-            ->add('productName')
-            ->add('description')
-            ->add('unitPrice')
+            ->add('productName', TextType::class, [
+                'label' => 'Nom du produit',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir le nom du produit',
+                    ]),
+                ],
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir une description',
+                    ]),
+                ],
+            ])
+            ->add('unitPrice', NumberType::class, [
+                'label' => 'Prix unitaire',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir un prix unitaire',
+                    ]),
+                    new Positive([
+                        'message' => 'Le prix unitaire doit être supérieur à 0',
+                    ]),
+                ],
+            ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'categoryName',
+                'label' => 'Catégorie',
             ])
         ;
     }

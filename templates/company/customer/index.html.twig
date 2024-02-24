@@ -11,13 +11,18 @@
                 <h1 class="lg:text-4xl md:text-2xl text-2xl">Liste des clients de la société {{ company.companyName }}</h1>
             </div>
             <div class="flex">
-                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_customer_new') }}">Créer un nouveau client</a>
+                {% include "components/_button.html.twig" with {
+                    'path': 'company_customer_new',
+                    'text': 'Créer un nouveau client',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
             </div>
         </div>
 
-        {% embed "_components/_table.html.twig" with {
+        {% embed "components/_table.html.twig" with {
             'arrayLabel': [
-                'Nom', 'Prénom', 'Email', 'Vérifié', 'Créé le', 'Modifié le'
+                'Nom', 'Prénom', 'Email', 'Créé le', 'Modifié le'
             ],
             'properties': [
                 'lastName', 'firstName', 'email', 'createdAt', 'updatedAt'

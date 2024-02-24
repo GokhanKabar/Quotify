@@ -9,11 +9,16 @@
                 <h1 class="lg:text-4xl md:text-2xl text-2xl">Factures</h1>
             </div>
             <div class="flex">
-                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_invoice_new') }}">Créer une nouvelle facture</a>
+                {% include "components/_button.html.twig" with {
+                    'path': 'company_invoice_new',
+                    'text': 'Créer une nouvelle facture',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
             </div>
         </div>
 
-        {% embed "_components/_table.html.twig" with {
+        {% embed "components/_table.html.twig" with {
             'arrayLabel': [
                 '#', 'Prénom', 'Nom', 'Adresse mail', 'Date de création', 'Status du paiement', 'Total HT', 'Total TTC'
             ],

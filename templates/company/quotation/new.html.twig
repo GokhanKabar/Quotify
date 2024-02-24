@@ -1,15 +1,20 @@
 {% extends 'dashboard.html.twig' %}
 
-{% block title %}New Quotation{% endblock %}
+{% block title %}Création d'un devis{% endblock %}
 
 {% block body %}
-     <div class="flex flex-col p-5 gap-5">
+    <div class="flex flex-col p-5 gap-5">
         <div class="flex items-center justify-between">
             <div class="flex">
                 <h1 class="lg:text-4xl md:text-2xl text-2xl">Créer un nouveau devis</h1>
             </div>
             <div class="flex">
-                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_quotation_index') }}">Retour à la liste</a>
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_quotation_index',
+                    'text': 'Retour à la liste',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
             </div>
         </div>
         {{ include('company/quotation/_form.html.twig') }}
