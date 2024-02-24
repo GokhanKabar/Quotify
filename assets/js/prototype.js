@@ -70,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (select && input && tva) {
                 const selectedOption = select.options[select.selectedIndex];
                 const price = parseFloat(selectedOption.getAttribute('data-price'));
-                console.log(price);
                 const quantity = parseFloat(input.value);
                 const tvaValue = parseFloat(tva.value);
         

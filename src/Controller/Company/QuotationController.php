@@ -97,9 +97,9 @@ class QuotationController extends AbstractController
     }
 
     #[Route('/convert/{id}', name: 'quotation_convert', methods: ['GET'])]
-    public function convertQuotationToInvoice(int $id, QuotationRepository $quotationRepository, EntityManagerInterface $entityManager, Security $security) {
+    public function convertQuotationToInvoice(int $id, QuotationRepository $quotationRepository, EntityManagerInterface $entityManager): Response
+    {
         $quotation = $quotationRepository->find($id);
-        $company = $security->getUser()->getCompany();
 
         $invoice = new Invoice();
         $invoice->setCreationDate($quotation->getCreationDate());
@@ -128,6 +128,5 @@ class QuotationController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
-        
     }
 }
