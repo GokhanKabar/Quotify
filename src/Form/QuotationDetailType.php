@@ -31,6 +31,14 @@ class QuotationDetailType extends AbstractType
                     ->where('p.companyReference = :company_id')
                     ->setParameter('company_id', $options['company_id']);
             },
+            'choice_attr' => function($product) {
+                return ['data-price' => $product->getUnitPrice()];
+            },
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Veuillez choisir un produit',
+                ]),
+            ],
         ])
         ->add('quantity', NumberType::class, [
             'attr' => ['id' => 'quantity', 'type' => 'number', 'min' => 1, 'step' => 1, 'placeholder' => 'Quantité'],

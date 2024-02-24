@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\SecurityBundle\Security;
+use App\Repository\QuotationRepository;
+use App\Entity\Invoice;
+use App\Entity\InvoiceDetail;
 
 #[Route('/quotation')]
 class QuotationController extends AbstractController
@@ -91,5 +94,40 @@ class QuotationController extends AbstractController
         $html = $this->renderView('company/quotation/pdf.html.twig', ['quotation' => $quotation,]);
 
         return $dompdfWrapper->getStreamResponse($html, "quotation-{$quotation->getId()}.pdf", ['Attachment' => true,]);
+    }
+
+    #[Route('/convert/{id}', name: 'quotation_convert', methods: ['GET'])]
+    public function convertQuotationToInvoice(int $id, QuotationRepository $quotationRepository, EntityManagerInterface $entityManager, Security $security) {
+        $quotation = $quotationRepository->find($id);
+        $company = $security->getUser()->getCompany();
+
+        $invoice = new Invoice();
+        $invoice->setCreationDate($quotation->getCreationDate());
+        $invoice->setPaymentStatus($quotation->getStatus());
+        $invoice->setUserReference($quotation->getUserReference());
+        $invoice->setTotalHT($quotation->getTotalHT());
+        $invoice->setTotalTTC($quotation->getTotalTTC());
+
+        // On supprime le devis
+        $entityManager->remove($quotation);
+
+        foreach ($quotation->getQuotationDetails() as $quotationDetail) {
+            $invoiceDetail = new InvoiceDetail();
+            $invoiceDetail->setProduct($quotationDetail->getProduct());
+            $invoiceDetail->setQuantity($quotationDetail->getQuantity());
+            $invoiceDetail->setTva($quotationDetail->getTva());
+    
+            $invoice->addInvoiceDetail($invoiceDetail);
+            $entityManager->persist($invoiceDetail);
+
+            // on supprime le/les détails du/des devis
+            $entityManager->remove($quotationDetail);
+        }
+
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
+        
     }
 }
