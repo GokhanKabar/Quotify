@@ -8,7 +8,7 @@
     <div class="flex flex-col p-5 gap-5">
         <div class="flex items-center justify-between">
             <div class="flex">
-                <h1 class="lg:text-4xl md:text-2xl text-2xl">Liste des clients de la société {{ company.companyName }}</h1>
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Clients de la société {{ app.user.company.companyName }}</h1>
             </div>
             <div class="flex">
                 {% include "components/_button.html.twig" with {
@@ -19,13 +19,12 @@
                 } %}
             </div>
         </div>
-
         {% embed "components/_table.html.twig" with {
             'arrayLabel': [
-                'Nom', 'Prénom', 'Email', 'Créé le', 'Modifié le'
+                'Nom', 'Prénom', 'Genre', 'Email', 'Adresse', 'Numéro de téléphone', 'Créé le', 'Modifié le'
             ],
             'properties': [
-                'lastName', 'firstName', 'email', 'createdAt', 'updatedAt'
+                'lastname', 'firstname', 'gender', 'email', 'address', 'phoneNumber' ,'createdAt', 'updatedAt'
             ],
             'arrayList': users,
             'route_show': 'company_customer_show',

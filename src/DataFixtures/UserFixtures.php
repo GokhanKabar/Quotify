@@ -20,6 +20,12 @@ class UserFixtures extends Fixture
         'ROLE_COMPANY',
         'ROLE_ACCOUNTANT',
     ];
+    const GENDER = [
+        'M',
+        'F',
+    ];
+    
+    const DEFAULT_LANGUAGE = 'fr_FR';
 
     private $faker;
 
@@ -48,8 +54,18 @@ class UserFixtures extends Fixture
                 self::USER_PLAIN_PASSWORD
             );
             $user->setPassword($hashedPassword);
-            $user->setFirstName($faker->firstName);
-            $user->setLastName($faker->lastName);
+            $user->setFirstName($faker->firstName(self::DEFAULT_LANGUAGE));
+            $user->setLastName($faker->lastName(self::DEFAULT_LANGUAGE));
+            $phoneNumber = preg_replace(
+                '/\s+/',
+                '',
+                str_replace(['+33', '(0)', ' '], ['0', '', ''], $faker->phoneNumber(self::DEFAULT_LANGUAGE))
+            );
+            $user->setPhoneNumber($phoneNumber);
+            $user->setAddress($faker->streetAddress(self::DEFAULT_LANGUAGE));
+            $user->setCity($faker->city(self::DEFAULT_LANGUAGE));
+            $user->setPostalCode($faker->postcode(self::DEFAULT_LANGUAGE));
+            $user->setGender(self::GENDER[rand(0, 1)]);
             $user->setRoles($this->getRandomElements(self::USER_ROLES, rand(1, count(self::USER_ROLES))));
             $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTime()));
             $user->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTime()));

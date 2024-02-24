@@ -73,8 +73,20 @@ class CompanyRepository extends ServiceEntityRepository
     public function getProducts($company_id): ?array
     {
         return $this->createQueryBuilder('c')
-            ->select('p.id', 'p.productName', 'p.description', 'p.unitPrice')
+            ->select('p.id', 'p.productName', 'p.description', 'p.unitPrice', 'cat.categoryName', 'p.imageName')
             ->innerJoin('c.products', 'p')
+            ->innerJoin('p.category', 'cat')
+            ->where('c.id = :company_id')
+            ->setParameter('company_id', $company_id)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getCustomers($company_id): ?array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('u.id', 'u.firstname', 'u.lastname', 'u.email', 'u.phoneNumber', 'u.address', 'u.gender', 'u.createdAt', 'u.updatedAt')
+            ->innerJoin('c.users', 'u')
             ->where('c.id = :company_id')
             ->setParameter('company_id', $company_id)
             ->getQuery()

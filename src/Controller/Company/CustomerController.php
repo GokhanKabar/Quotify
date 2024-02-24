@@ -21,13 +21,13 @@ use App\Repository\CompanyRepository;
 class CustomerController extends AbstractController
 {
     #[Route('/', name: 'customer_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository, Security $security): Response
+    public function index(CompanyRepository $companyRepository, Security $security): Response
     {
         $company = $security->getUser()->getCompany();
 
-        $users = $userRepository->findBy(['company' => $company]);
+        $users = $companyRepository->getCustomers($company->getId());
 
-        return $this->render('company/customer/index.html.twig', ['users' => $users, 'company' => $company]);
+        return $this->render('company/customer/index.html.twig', ['users' => $users]);
     }
 
     #[Route('/new', name: 'customer_new', methods: ['GET', 'POST'])]

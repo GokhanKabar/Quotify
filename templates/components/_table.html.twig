@@ -1,26 +1,29 @@
-{# components/_table.html.twig #}
-
 <table class="min-w-full text-center sm:text-left font-light">
     <thead class="border-b font-medium dark:border-neutral-500">
-    <tr>
-        {% for label in arrayLabel %}
-            <th scope="col" class="px-6 py-4">{{ label }}</th>
-        {% endfor %}
-        {% if route_show is defined or route_edit is defined %}
-            <th scope="col" class="px-6 py-4">Actions</th>
-        {% endif %}
-    </tr>
+        <tr>
+            {% for label in arrayLabel %}
+                <th scope="col" class="px-6 py-4">{{ label }}</th>
+            {% endfor %}
+            {% if route_show is defined or route_edit is defined %}
+                <th scope="col" class="px-6 py-4">Actions</th>
+            {% endif %}
+        </tr>
     </thead>
     <tbody>
     {% for data in arrayList %}
-        <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+        <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100">
             {% for property in properties %}
                 {% set value = attribute(data, property) %}
-                {% if value.timestamp is defined %}
-                    <td class="whitespace-nowrap px-6 py-4">{{ value|date('d/m/Y') }}</td>
-                {% else %}
-                    <td class="whitespace-nowrap px-6 py-4">{{ value }}</td>
-                {% endif %}
+                    {% if value.timestamp is defined %}
+                        <td class="whitespace-nowrap px-6 py-4">{{ value|date('d/m/Y') }}</td>
+                    {% elseif property == 'imageName' %}
+                        <td class="whitespace-nowrap px-6 py-4">
+                            <img src="{{ vich_uploader_asset(data, 'imageFile', 'App\\Entity\\Product') }}" alt="{{ attribute(data, 'imageName') }}" style="width: 100px; height: 100px; object-fit: cover;">
+                        </td>
+                    {% else %}
+                        <td class="whitespace-nowrap px-6 py-4">{{ value }}</td>
+                    {% endif %}
+                
             {% endfor %}
             {% if route_show is defined or route_edit is defined %}
                 <td class="whitespace-nowrap px-6 py-4">

@@ -39,6 +39,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $phoneNumber = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $address = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $city = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $postalCode = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $gender = null;
+
     #[ORM\OneToMany(mappedBy: 'userReference', targetEntity: Quotation::class, cascade: ['remove'])]
     private Collection $quotations;
 
@@ -150,6 +165,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): static
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): static
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(?string $postalCode): static
+    {
+        $this->postalCode = $postalCode;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this;
+    }
+
+    public function setGender(?string $gender): static
+    {
+        $this->gender = $gender;
 
         return $this;
     }
