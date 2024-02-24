@@ -1,21 +1,35 @@
 {{ form_start(form) }}
     <div class="flex items-center gap-5 mb-2">
         <h2 class="text-xl">Ajouter une nouvelle ligne</h2>
-        <button type="button" class="add-detail bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">+</button>
+        {% include 'components/_button.html.twig' with {
+            'class': 'add-detail',
+            'button_label': '+',
+            'bgColor': 'green',
+            'textColor': 'white',
+        } %}
     </div>
     <div class="order-3" id="quotationDetails" data-index="{{ form.quotationDetails|length }}" data-prototype="{{ form_widget(form.quotationDetails.vars.prototype)|e('html_attr') }}">
         {% for quotationDetailForm in form.quotationDetails %}
             <!-- quotationDetail edit -->
             <div class="quotationDetailItem flex items-center justify-between bg-gray-100 p-4 rounded mb-4">
                 {{ form_row(quotationDetailForm, {'attr': {'class': 'flex gap-5'}}) }}
-                <button type="button" class="remove-detail bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">x</button>
+                {% include 'components/_button.html.twig' with {
+                    'class': 'remove-detail',
+                    'button_label': 'x',
+                    'bgColor': 'red',
+                    'textColor': 'white',
+                } %}
             </div>
         {% endfor %}
         </div>
     {{ form_row(form.userReference) }}
     <div class="flex items-center justify-between">
         <div>
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{{ button_label|default('Créer') }}</button>
+            {% include 'components/_button.html.twig' with {
+                'text': 'Créer',
+                'bgColor': 'green',
+                'textColor': 'white',
+            } %}
         </div>
         <div>
             <p>Total TTC : 

@@ -14,14 +14,19 @@
     <body class="flex flex-col min-h-screen font-poppins">
         <header>
             {% block header %} 
-                {% include '_components/_navbar.html.twig' %}
+                {% include 'components/_navbar.html.twig' %}
             {% endblock %}
         </header>
         <main class="flex-1">
+            {% for message in app.flashes('success') %}
+                <div class="bg-green-100 border-t border-b border-green-500 text-white-700 px-4 py-3" role="alert">
+                    <p class="text-sm">{{ message }}</p>
+                </div>
+            {% endfor %}
             {% block body %}{% endblock %}
         </main>
         {% block footer %}
-            {% include '_components/_footer.html.twig' %} 
+            {% include 'components/_footer.html.twig' %} 
         {% endblock %}
     </body>
 </html>

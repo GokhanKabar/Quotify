@@ -13,7 +13,7 @@ class InvoiceDetail
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $quantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'invoiceDetails')]

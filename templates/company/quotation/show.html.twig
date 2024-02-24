@@ -9,13 +9,30 @@
                 <h1 class="lg:text-4xl md:text-2xl text-2xl">Détails du devis</h1>
             </div>
             <div class="flex gap-2">
-                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_quotation_index') }}">Retour à la liste</a>
-                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_quotation_edit', {'id': quotation.id}) }}">Modifier</a>
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_quotation_index',
+                    'text': 'Retour à la liste',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_quotation_edit',
+                    'id': quotation.id,
+                    'text': 'Modifier', 
+                    'bgColor': 'blue', 
+                    'textColor': 'white',
+                } %}
                 {{ include('company/quotation/_delete_form.html.twig') }}
-                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('company_quotation_pdf', {'id': quotation.id}) }}">Exporter le devis (PDF)</a>
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_quotation_pdf',
+                    'id': quotation.id,
+                    'text': 'Exporter le devis (PDF)', 
+                    'bgColor': 'blue', 
+                    'textColor': 'white',
+                } %}
             </div>
         </div>
-        {% embed "_components/_table.html.twig" with {
+        {% embed "components/_table.html.twig" with {
             'arrayLabel': [
                 '#', 'Date de création', 'Status de paiement'
             ],
@@ -44,7 +61,7 @@
             {% set arrayList = arrayList|merge([detailObject]) %}
         {% endfor %}
 
-        {% embed "_components/_table.html.twig" with {
+        {% embed "components/_table.html.twig" with {
             'arrayLabel': [
                 'Nom du produit', 'Description', 'Quantité', 'Prix', 'Catégorie'
             ],
