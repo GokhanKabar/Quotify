@@ -159,12 +159,12 @@ class InvoiceController extends AbstractController
         ->from(new Address('no-reply@quotify.fr', 'Quotify'))
         ->to($invoice->getUserReference()->getEmail())
         ->subject("Facture n°{$invoice->getId()}")
-        ->text('Vous trouverez ci-joint la facture demandée.')
+        ->text("Vous trouverez ci-joint la facture demandée.")
         ->attachFromPath($pdfFilePath, "invoice-{$invoice->getId()}.pdf");
 
         $mailer->send($email);
 
-        $invoice->setPaymentStatus('Facture envoyée');
+        $invoice->setPaymentStatus('Payée');
 
         // Enregistrez les modifications dans la base de données
         $entityManager->persist($invoice);
