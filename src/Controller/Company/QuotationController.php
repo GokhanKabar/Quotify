@@ -15,6 +15,14 @@ use Symfony\Bundle\SecurityBundle\Security;
 use App\Repository\QuotationRepository;
 use App\Entity\Invoice;
 use App\Entity\InvoiceDetail;
+use Symfony\Component\Mailer\MailerInterface;
+use Dompdf\Options;
+use Dompdf\Dompdf;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/quotation')]
 class QuotationController extends AbstractController
@@ -89,9 +97,62 @@ class QuotationController extends AbstractController
     }
 
     #[Route('/pdf/{id}', name: 'quotation_pdf', methods: ['GET'])]
-    public function generatePdf(Quotation $quotation, DompdfWrapperInterface $dompdfWrapper): Response
+    public function generatePdf(Quotation $quotation, DompdfWrapperInterface $dompdfWrapper, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
     {
+        // Configuration de Dompdf
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instanciation de Dompdf
+        $dompdf = new Dompdf($pdfOptions);
         $html = $this->renderView('company/quotation/pdf.html.twig', ['quotation' => $quotation,]);
+
+        // Génération du PDF
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $pdfFilePath = $this->getParameter('quotation_directory') . "/quotation-{$quotation->getId()}.pdf";
+
+        // Stockage du PDF
+        file_put_contents($pdfFilePath, $dompdf->output());
+
+        // Initialisez Stripe
+        Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
+
+         // Créez une session de paiement Stripe
+         $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => "Facture n°{$quotation->getId()}",
+                    ],
+                    'unit_amount' => $quotation->getTotalTTC() * 100, // Convertissez en centimes
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => $this->generateUrl('payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('payment_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        ]);
+
+        // Envoi du PDF par e-mail
+        $email = (new Email())
+        ->from(new Address('no-reply@quotify.fr', 'Quotify'))
+        ->to($quotation->getUserReference()->getEmail())
+        ->subject("Facture n°{$quotation->getId()}")
+        ->text("Vous trouverez ci-joint le devis demandé. Vous pouvez également payer en ligne en suivant ce lien : {$session->url}")
+        ->attachFromPath($pdfFilePath, "quotation-{$quotation->getId()}.pdf");
+
+        $mailer->send($email);
+
+        $quotation->setStatus('En attente de paiment');
+
+        // Enregistrez les modifications dans la base de données
+        $entityManager->persist($quotation);
+        $entityManager->flush();
 
         return $dompdfWrapper->getStreamResponse($html, "quotation-{$quotation->getId()}.pdf", ['Attachment' => true,]);
     }
