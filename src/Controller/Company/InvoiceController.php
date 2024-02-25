@@ -53,7 +53,10 @@ class InvoiceController extends AbstractController
             return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('company/invoice/new.html.twig', ['invoice' => $invoice, 'form' => $form,]);
+        return $this->render('company/invoice/new.html.twig', [
+            'invoice' => $invoice, 
+            'form' => $form
+        ]);
     }
 
     #[Route('/{id}', name: 'invoice_show', methods: ['GET'])]

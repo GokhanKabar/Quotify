@@ -66,23 +66,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const select = selects[i];
             const input = inputs[i];
             const tva = tvas[i];
-    
+        
             if (select && input && tva) {
                 const selectedOption = select.options[select.selectedIndex];
-                if (selectedOption) {
-                    const optionText = selectedOption.innerText;
-                    // on récupère le prix depuis la liste déroulante des produits
-                    const price = parseFloat(optionText.match(/[\d.]+/));
-                    const quantity = parseFloat(input.value);
-                    const tvaValue = parseFloat(tva.value);
-    
-                    if (!isNaN(price) && !isNaN(quantity) && !isNaN(tvaValue)) {
-                        const lineTotalHT = price * quantity;
-                        const lineTotalTTC = lineTotalHT + (lineTotalHT * tvaValue / 100);
-    
-                        totalHT += lineTotalHT;
-                        totalTTC += lineTotalTTC;
-                    }
+                const price = parseFloat(selectedOption.getAttribute('data-price'));
+                const quantity = parseFloat(input.value);
+                const tvaValue = parseFloat(tva.value);
+        
+                if (!isNaN(price) && !isNaN(quantity) && !isNaN(tvaValue)) {
+                    const lineTotalHT = price * quantity;
+                    const lineTotalTTC = lineTotalHT * (1 + tvaValue / 100);
+        
+                    totalHT += lineTotalHT;
+                    totalTTC += lineTotalTTC;
                 }
             }
         }
