@@ -14,16 +14,18 @@
         <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100">
             {% for property in properties %}
                 {% set value = attribute(data, property) %}
-                    {% if value.timestamp is defined %}
-                        <td class="whitespace-nowrap px-6 py-4">{{ value|date('d/m/Y') }}</td>
-                    {% elseif property == 'imageName' %}
-                        <td class="whitespace-nowrap px-6 py-4">
-                            <img src="{{ vich_uploader_asset(data, 'imageFile', 'App\\Entity\\Product') }}" alt="{{ attribute(data, 'imageName') }}" style="width: 100px; height: 100px; object-fit: cover;">
-                        </td>
-                    {% else %}
-                        <td class="whitespace-nowrap px-6 py-4">{{ value }}</td>
-                    {% endif %}
-                
+
+                {% if value.timestamp is defined %}
+                    <td class="whitespace-nowrap px-6 py-4">{{ value|date('d/m/Y') }}</td>
+                {% elseif property == 'imageName' %}
+                    <td class="whitespace-nowrap px-6 py-4">
+                        <img src="{{ vich_uploader_asset(data, 'imageFile', 'App\\Entity\\Product') }}" alt="{{ attribute(data, 'imageName') }}" style="width: 100px; height: 100px; object-fit: cover;">
+                    </td>
+                {% elseif property == 'roles' %}
+                    <td class="whitespace-nowrap px-6 py-4">[{{ value|join(', ') }}]</td>
+                {% else %}
+                    <td class="whitespace-nowrap px-6 py-4">{{ value }}</td>
+                {% endif %}
             {% endfor %}
             {% if route_show is defined or route_edit is defined %}
                 <td class="whitespace-nowrap px-6 py-4">

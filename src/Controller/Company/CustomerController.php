@@ -23,6 +23,10 @@ class CustomerController extends AbstractController
     #[Route('/', name: 'customer_index', methods: ['GET'])]
     public function index(CompanyRepository $companyRepository, Security $security): Response
     {
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $company = $security->getUser()->getCompany();
 
         $users = $companyRepository->getCustomers($company->getId());

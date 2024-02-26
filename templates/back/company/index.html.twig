@@ -1,39 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Company index{% endblock %}
+{% block title %}Liste des sociétés{% endblock %}
 
 {% block body %}
-    <h1>Company index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>CompanyName</th>
-                <th>Address</th>
-                <th>Email</th>
-                <th>SiretNumber</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for company in companies %}
-            <tr>
-                <td>{{ company.companyName }}</td>
-                <td>{{ company.address }}</td>
-                <td>{{ company.email }}</td>
-                <td>{{ company.siretNumber }}</td>
-                <td>
-                    <a href="{{ path('back_company_show', {'id': company.id}) }}">show</a>
-                    <a href="{{ path('back_company_edit', {'id': company.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('back_company_new') }}">Create new</a>
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Liste des sociétés</h1>
+            </div>
+            <div class="flex gap-2">
+                {% include 'components/_button.html.twig' with {
+                    'path': 'back_company_new',
+                    'text': 'Ajouter une société',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+            </div>
+        </div>
+        {% embed 'components/_table.html.twig' with {
+            'arrayLabel': [
+                '#', 'Nom de la société', 'Adresse', 'Email', 'Numéro de Siret'
+            ],
+            'properties': [
+                'id', 'companyName', 'address', 'email', 'siretNumber'
+            ],
+            'arrayList': companies,
+            'route_show': 'back_company_show',
+            'route_edit': 'back_company_edit',
+        } %}
+        {% endembed %}
+    </div>
 {% endblock %}

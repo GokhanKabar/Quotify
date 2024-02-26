@@ -31,6 +31,11 @@ class ProductController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $product = new Product();
+ 
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $company = $security->getUser()->getCompany();
 
         $form = $this->createForm(ProductType::class, $product, [
