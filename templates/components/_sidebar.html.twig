@@ -7,56 +7,78 @@
 				<img class="w-10 h-15 rounded-full" src="{{ asset('images/Logo.png') }}" alt="Image Description" />
 			</a>
 		</div>
-		<div class="hs-tooltip inline-block [--placement:right]">
-			<a href="{{ path('dashboard') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-				<svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-				<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
-					Home
-				</span>
-			</a>
-		</div>
-		<div class="hs-tooltip inline-block [--placement:right]">
-			<a href="{{ path('company_customer_index') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-				<svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-				<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
-					Clients
-				</span>
-			</a>
-		</div>
-		<div class="hs-tooltip inline-block [--placement:right]">
-			<a href="{{ path('company_product_index') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M8 10V7M16 10V7M8 7H7C5.89543 7 5 7.89543 5 9V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V9C19 7.89543 18.1046 7 17 7H16M8 7V6C8 4.34315 9.34315 3 11 3H13C14.6569 3 16 4.34315 16 6V7M8 7H16" stroke="currentColor" stroke-width="1"  />
-				</svg>
-				<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
-					Produits
-				</span>
-			</a>
-		</div>
-		<div class="hs-tooltip inline-block [--placement:right]">
-			<a href="{{ path('company_quotation_index') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M16 20H8C5.79086 20 4 18.2091 4 16V4L7 6L10 4L13 6L16 4V12M16 20V12M16 20V20C18.2091 20 20 18.2091 20 16V12H16M10 9H13M10 13H13M10 17H13M7 9H7.00898M7 13H7.00898M7 17H7.00898" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
-				<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
-					Devis
-				</span>
-			</a>
-		</div>
-		<div class="hs-tooltip inline-block [--placement:right]">
-			<a href="{{ path('company_invoice_index') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M13 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V9M13 3V7C13 8.10457 13.8954 9 15 9H19M13 3H13.1716C13.702 3 14.2107 3.21071 14.5858 3.58579L18.4142 7.41421C18.7893 7.78929 19 8.29799 19 8.82843V9M12 17V15M12 15V13M12 15H14M12 15H10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
-				<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
-					Factures
-				</span>
-			</a>
-		</div>
-		<div class="hs-tooltip inline-block [--placement:right]">
-			<button type="button" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M10 7.5C10 8.60457 9.10457 9.5 8 9.5M10 7.5C10 6.39543 9.10457 5.5 8 5.5C6.89543 5.5 6 6.39543 6 7.5C6 8.60457 6.89543 9.5 8 9.5M10 7.5L16 6M8 9.5L6 15M16 6C16 7.10457 16.8954 8 18 8M16 6C16 4.89543 16.8954 4 18 4C19.1046 4 20 4.89543 20 6C20 7.10457 19.1046 8 18 8M6 15C4.89543 15 4 15.8954 4 17C4 18.1046 4.89543 19 6 19C7.10457 19 8 18.1046 8 17M6 15C7.10457 15 8 15.8954 8 17M8 17L15 19M15 19C15 20.1046 15.8954 21 17 21C18.1046 21 19 20.1046 19 19C19 17.8954 18.1046 17 17 17M15 19C15 17.8954 15.8954 17 17 17M17 17L18 8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/> </svg>
-				<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
-					Rapports
-				</span>
-			</button>
-		</div>
+		{% if is_granted('ROLE_ACCOUNTANT') or is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPANY') %}
+			<div class="hs-tooltip inline-block [--placement:right]">
+				<a href="{{ path('dashboard') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+					<svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+					<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
+						Home
+					</span>
+				</a>
+			</div>
+		{% endif %}
+		{% if is_granted('ROLE_COMPANY') %}
+			<div class="hs-tooltip inline-block [--placement:right]">
+				<a href="{{ path('company_customer_index') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+					<svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+					<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
+						Clients
+					</span>
+				</a>
+			</div>
+		{% endif %}
+		{% if is_granted('ROLE_COMPANY') %}
+			<div class="hs-tooltip inline-block [--placement:right]">
+				<a href="{{ path('company_product_index') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M8 10V7M16 10V7M8 7H7C5.89543 7 5 7.89543 5 9V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V9C19 7.89543 18.1046 7 17 7H16M8 7V6C8 4.34315 9.34315 3 11 3H13C14.6569 3 16 4.34315 16 6V7M8 7H16" stroke="currentColor" stroke-width="1"  />
+					</svg>
+					<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
+						Produits
+					</span>
+				</a>
+			</div>
+		{% endif %}
+		{% if is_granted('ROLE_COMPANY') %}
+			<div class="hs-tooltip inline-block [--placement:right]">
+				<a href="{{ path('company_quotation_index') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M16 20H8C5.79086 20 4 18.2091 4 16V4L7 6L10 4L13 6L16 4V12M16 20V12M16 20V20C18.2091 20 20 18.2091 20 16V12H16M10 9H13M10 13H13M10 17H13M7 9H7.00898M7 13H7.00898M7 17H7.00898" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
+						Devis
+					</span>
+				</a>
+			</div>
+		{% endif %}
+		{% if is_granted('ROLE_COMPANY') %}
+			<div class="hs-tooltip inline-block [--placement:right]">
+				<a href="{{ path('company_invoice_index') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M13 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V9M13 3V7C13 8.10457 13.8954 9 15 9H19M13 3H13.1716C13.702 3 14.2107 3.21071 14.5858 3.58579L18.4142 7.41421C18.7893 7.78929 19 8.29799 19 8.82843V9M12 17V15M12 15V13M12 15H14M12 15H10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
+						Factures
+					</span>
+				</a>
+			</div>
+		{% endif %}
+		{% if is_granted('ROLE_ACCOUNTANT') %}
+			<div class="hs-tooltip inline-block [--placement:right]">
+				<button type="button" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M10 7.5C10 8.60457 9.10457 9.5 8 9.5M10 7.5C10 6.39543 9.10457 5.5 8 5.5C6.89543 5.5 6 6.39543 6 7.5C6 8.60457 6.89543 9.5 8 9.5M10 7.5L16 6M8 9.5L6 15M16 6C16 7.10457 16.8954 8 18 8M16 6C16 4.89543 16.8954 4 18 4C19.1046 4 20 4.89543 20 6C20 7.10457 19.1046 8 18 8M6 15C4.89543 15 4 15.8954 4 17C4 18.1046 4.89543 19 6 19C7.10457 19 8 18.1046 8 17M6 15C7.10457 15 8 15.8954 8 17M8 17L15 19M15 19C15 20.1046 15.8954 21 17 21C18.1046 21 19 20.1046 19 19C19 17.8954 18.1046 17 17 17M15 19C15 17.8954 15.8954 17 17 17M17 17L18 8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/> </svg>
+					<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
+						Rapports
+					</span>
+				</button>
+			</div>
+			<div class="hs-tooltip inline-block [--placement:right]">
+				<a href="{{ path('company_data_index') }}" type="button" class="w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+						<path d="M11.5039 2.08496L4.50389 6.08496C3.8319 6.46886 3.8319 7.45106 4.50389 7.83496C5.37889 8.33496 10.6289 11.335 11.5039 11.835C11.8109 12.0107 12.1959 12.0107 12.5039 11.835L19.5039 7.83496C20.1759 7.45106 20.1759 6.46886 19.5039 6.08496L12.5039 2.08496C12.1969 1.90926 11.8119 1.90926 11.5039 2.08496ZM12.0039 4.11616L16.9729 6.95996L12.0039 9.80376C10.9719 9.21396 8.71789 7.92176 7.03489 6.95996L12.0039 4.11616ZM4.75389 10.9912C4.50689 11.0586 4.26589 11.2202 4.12889 11.46C3.8549 11.9395 4.02489 12.561 4.50389 12.835L11.5039 16.835C11.8109 17.0107 12.1959 17.0107 12.5039 16.835L19.5039 12.835C19.9839 12.561 20.1529 11.9395 19.8789 11.46C19.6049 10.9805 18.9839 10.811 18.5039 11.085L12.0039 14.8038L5.50389 11.085C5.26389 10.948 5.00089 10.9239 4.75389 10.9912ZM4.75389 15.9912C4.50689 16.0586 4.26589 16.2202 4.12889 16.46C3.8549 16.9395 4.02489 17.561 4.50389 17.835L11.5039 21.835C11.8109 22.0107 12.1959 22.0107 12.5039 21.835L19.5039 17.835C19.9839 17.561 20.1529 16.9395 19.8789 16.46C19.6049 15.9805 18.9839 15.811 18.5039 16.085L12.0039 19.8038L5.50389 16.085C5.26389 15.948 5.00089 15.9239 4.75389 15.9912Z" fill="#2A343D"/>
+					</svg>
+					<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
+						Données financières
+					</span>
+				</button>
+			</div>
+		{% endif %}
 	</div>
 	<div class="flex flex-col justify-center items-center gap-y-2 py-4">
 		<a href="{{ path('app_logout') }}" class="hs-tooltip-toggle w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
@@ -64,7 +86,7 @@
 				<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
 			</svg>			  
 			<span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700" role="tooltip">
-				Rapports
+				Déconnexion
 			</span>
 		</a>
 	</div>

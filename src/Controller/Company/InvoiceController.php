@@ -36,6 +36,11 @@ class InvoiceController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $invoice = new Invoice();
+
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $company = $security->getUser()->getCompany();
 
         $invoice->setCreationDate(new \DateTime());
@@ -86,6 +91,10 @@ class InvoiceController extends AbstractController
     #[Route('/{id}/edit', name: 'invoice_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Invoice $invoice, EntityManagerInterface $entityManager, Security $security): Response
     {
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $company = $security->getUser()->getCompany();
 
         $form = $this->createForm(InvoiceType::class, $invoice, ['company_id' => $company->getId(),]);

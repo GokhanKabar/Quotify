@@ -42,6 +42,11 @@ class QuotationController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $quotation = new Quotation();
+ 
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $company = $security->getUser()->getCompany();
 
         $quotation->setCreationDate(new \DateTime());
@@ -92,6 +97,10 @@ class QuotationController extends AbstractController
     #[Route('/{id}/edit', name: 'quotation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Quotation $quotation, EntityManagerInterface $entityManager, Security $security): Response
     {
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $company = $security->getUser()->getCompany();
 
         $form = $this->createForm(QuotationType::class, $quotation, ['company_id' => $company->getId(),]);
