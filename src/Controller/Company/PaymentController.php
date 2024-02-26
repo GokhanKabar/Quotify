@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Back;
+namespace App\Controller\Company;
 
 use App\Repository\InvoiceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +28,20 @@ class PaymentController extends AbstractController
         $companyId = $user->getCompany()->getId();
         $invoices = $invoiceRepository->findInvoicesByCompany($companyId);
 
-        return $this->render('back/payment/index.html.twig', ['companyName' => $companyName, 'invoices' => $invoices,]);
+        return $this->render('company/payment/index.html.twig', ['companyName' => $companyName, 'invoices' => $invoices,]);
     }
+
+    #[Route('/accountant', name: 'payment_accountant')]
+    public function accountant(InvoiceRepository $invoiceRepository): Response
+    {
+        $user = $this->security->getUser();
+
+        $companyName = $user->getCompany()->getCompanyName();
+
+        $companyId = $user->getCompany()->getId();
+        $invoices = $invoiceRepository->findInvoicesByCompanyAccountant($companyId);
+
+        return $this->render('company/payment/accountant.html.twig', ['companyName' => $companyName, 'invoices' => $invoices,]);
+    }
+
 }
