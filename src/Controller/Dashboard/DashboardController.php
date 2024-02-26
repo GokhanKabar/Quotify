@@ -16,28 +16,6 @@ class DashboardController extends AbstractController
     {
         $userCompanyId = $this->getUser()->getCompany()->getId();
 
-        // Line Chart
-        $lineChart = $chartBuilder->createChart(Chart::TYPE_LINE);
-        $lineChart->setData([
-            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            'datasets' => [
-                [
-                    'label' => 'My First dataset',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [0, 10, 5, 2, 20, 30, 45],
-                ],
-            ],
-        ]);
-        $lineChart->setOptions([
-            'scales' => [
-                'y' => [
-                    'suggestedMin' => 0,
-                    'suggestedMax' => 100,
-                ],
-            ],
-        ]);
-
         // Doughnut Chart for Invoices
         $invoiceData = $invoiceRepository->getInvoiceStatusCounts($userCompanyId);
         $labels = [];
@@ -119,7 +97,6 @@ class DashboardController extends AbstractController
 
         // Pass all charts to the Twig template
         return $this->render('dashboard/index.html.twig', [
-            'lineChart' => $lineChart,
             'doughnutChart' => $doughnutChart,
             'barChartProduct' => $barChartProduct,
             'barChartSale' => $barChartSale,
