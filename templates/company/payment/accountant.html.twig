@@ -1,6 +1,4 @@
-{# templates/back/payment/index.html.twig #}
-
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Suivi des Paiements de la Société{% endblock %}
 
@@ -13,7 +11,9 @@
             <th class="px-4 py-2 border border-gray-400 text-left">Nom Client</th>
             <th class="px-4 py-2 border border-gray-400 text-left">Prénom Client</th>
             <th class="px-4 py-2 border border-gray-400 text-left">Date de Création</th>
-            <th class="px-4 py-2 border border-gray-400 text-left">Statut de Paiement</th>
+            {% if is_granted('ROLE_ACCOUNTANT') %}
+                <th class="px-4 py-2 border border-gray-400 text-left">Statut de Paiement</th>
+            {% endif %}
             <th class="px-4 py-2 border border-gray-400 text-left">Total</th>
         </tr>
         </thead>
@@ -24,8 +24,10 @@
                 <td class="px-4 py-2 border border-gray-400">{{ invoice.userReference.lastName }}</td>
                 <td class="px-4 py-2 border border-gray-400">{{ invoice.userReference.firstName }}</td>
                 <td class="px-4 py-2 border border-gray-400">{{ invoice.creationDate|date('Y-m-d') }}</td>
-                <td class="px-4 py-2 border border-gray-400">{{ invoice.paymentStatus }}</td>
-                <td class="px-4 py-2 border border-gray-400">{{ invoice.totalPrice }}</td>
+                {% if is_granted('ROLE_ACCOUNTANT') %}
+                    <td class="px-4 py-2 border border-gray-400">{{ invoice.paymentStatus }}</td>
+                {% endif %}
+                <td class="px-4 py-2 border border-gray-400">{{ invoice.totalTTC }}</td>
             </tr>
             {% else %}
                 <tr>
