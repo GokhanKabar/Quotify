@@ -14,7 +14,6 @@ class DashboardController extends AbstractController
     #[Route('/', name: 'dashboard')]
     public function index(): Response
     {
-        // Pass all charts to the Twig template
         return $this->render('dashboard/index.html.twig', []);
     }
 }
