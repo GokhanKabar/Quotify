@@ -1,12 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}Réinitialiser votre mot de passe{% endblock %}
 
 {% block body %}
-    <h1>Reset your password</h1>
+    <section class="relative flex flex-wrap lg:h-screen lg:items-center">
+        <div class="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
+            <div class="mx-auto max-w-lg text-center">
+                <h1 class="text-2xl font-bold sm:text-3xl">Réinitialiser votre mot de passe</h1>
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
+                {{ form_start(resetForm, {'attr': {'class': 'mx-auto mb-0 mt-8 max-w-md space-y-4'}}) }}
+                    {{ form_row(resetForm.plainPassword, {'attr': {'class': 'w-full rounded-lg border-primary p-4 pe-12 text-sm shadow-sm focus:outline-none focus:ring focus:border-primary mb-4', 'placeholder': 'Nouveau mot de passe'}}) }}
+                    <button class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Réinitialiser le mot de passe</button>
+                {{ form_end(resetForm) }}
+            </div>
+        </div>
+
+        <div class="relative h-64 w-full sm:h-96 lg:h-full lg:w-1/2">
+            <img src="{{ asset('images/password.jpg') }}" class="absolute inset-0 h-full w-full object-cover"/>
+        </div>
+    </section>
 {% endblock %}
