@@ -23,6 +23,8 @@ use Symfony\Component\Mime\Address;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Form\ProductType;
+use App\Entity\Product;
 
 #[Route('/quotation')]
 class QuotationController extends AbstractController
@@ -40,6 +42,11 @@ class QuotationController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $quotation = new Quotation();
+ 
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $company = $security->getUser()->getCompany();
 
         $quotation->setCreationDate(new \DateTime());
@@ -51,6 +58,15 @@ class QuotationController extends AbstractController
       
         $form->handleRequest($request);
 
+        $product = new Product();
+        $formProduct = $this->createForm(ProductType::class, $product, [
+            'company_id' => $company->getId(),
+        ]);
+
+        $formProduct->handleRequest($request);
+
+        $product->setCompanyReference($company);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($quotation);
             $entityManager->flush();
@@ -58,7 +74,18 @@ class QuotationController extends AbstractController
             return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('company/quotation/new.html.twig', ['quotation' => $quotation, 'form' => $form,]);
+        if ($formProduct->isSubmitted() && $formProduct->isValid()) {
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('company_quotation_new', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('company/quotation/new.html.twig', [
+            'quotation' => $quotation, 
+            'form' => $form,
+            'formProduct' => $formProduct,
+        ]);
     }
 
     #[Route('/{id}', name: 'quotation_show', methods: ['GET'])]
@@ -70,10 +97,23 @@ class QuotationController extends AbstractController
     #[Route('/{id}/edit', name: 'quotation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Quotation $quotation, EntityManagerInterface $entityManager, Security $security): Response
     {
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $company = $security->getUser()->getCompany();
 
         $form = $this->createForm(QuotationType::class, $quotation, ['company_id' => $company->getId(),]);
         $form->handleRequest($request);
+
+        $product = new Product();
+        $formProduct = $this->createForm(ProductType::class, $product, [
+            'company_id' => $company->getId(),
+        ]);
+
+        $formProduct->handleRequest($request);
+
+        $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($quotation);
@@ -82,7 +122,18 @@ class QuotationController extends AbstractController
             return $this->redirectToRoute('company_quotation_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('company/quotation/edit.html.twig', ['quotation' => $quotation, 'form' => $form,]);
+        if ($formProduct->isSubmitted() && $formProduct->isValid()) {
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('company_quotation_edit', ['id' => $quotation->getId()]);
+        }
+
+        return $this->render('company/quotation/edit.html.twig', [
+            'quotation' => $quotation, 
+            'form' => $form,
+            'formProduct' => $formProduct,
+        ]);
     }
 
     #[Route('/{id}', name: 'quotation_delete', methods: ['POST'])]

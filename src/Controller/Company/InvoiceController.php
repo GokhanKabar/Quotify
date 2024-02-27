@@ -17,6 +17,8 @@ use Dompdf\Dompdf;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
+use App\Entity\Product;
+use App\Form\ProductType;
 
 #[Route('/invoice')]
 class InvoiceController extends AbstractController
@@ -34,6 +36,11 @@ class InvoiceController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $invoice = new Invoice();
+
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $company = $security->getUser()->getCompany();
 
         $invoice->setCreationDate(new \DateTime());
@@ -42,9 +49,17 @@ class InvoiceController extends AbstractController
         $form = $this->createForm(InvoiceType::class, $invoice, [
             'company_id' => $company->getId(),
         ]);
-      
+    
         $form->handleRequest($request);
 
+        $product = new Product();
+        $formProduct = $this->createForm(ProductType::class, $product, [
+            'company_id' => $company->getId(),
+        ]);
+
+        $formProduct->handleRequest($request);
+
+        $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($invoice);
@@ -53,9 +68,17 @@ class InvoiceController extends AbstractController
             return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        if ($formProduct->isSubmitted() && $formProduct->isValid()) {
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('company_invoice_new', [], Response::HTTP_SEE_OTHER);
+        }
+
         return $this->render('company/invoice/new.html.twig', [
             'invoice' => $invoice, 
-            'form' => $form
+            'form' => $form->createView(),
+            'formProduct' => $formProduct->createView(),
         ]);
     }
 
@@ -68,10 +91,23 @@ class InvoiceController extends AbstractController
     #[Route('/{id}/edit', name: 'invoice_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Invoice $invoice, EntityManagerInterface $entityManager, Security $security): Response
     {
+        if (!$security->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $company = $security->getUser()->getCompany();
 
         $form = $this->createForm(InvoiceType::class, $invoice, ['company_id' => $company->getId(),]);
         $form->handleRequest($request);
+
+        $product = new Product();
+        $formProduct = $this->createForm(ProductType::class, $product, [
+            'company_id' => $company->getId(),
+        ]);
+
+        $formProduct->handleRequest($request);
+
+        $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($invoice);
@@ -80,7 +116,18 @@ class InvoiceController extends AbstractController
             return $this->redirectToRoute('company_invoice_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('company/invoice/edit.html.twig', ['invoice' => $invoice, 'form' => $form,]);
+        if ($formProduct->isSubmitted() && $formProduct->isValid()) {
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('company_invoice_edit', ['id' => $invoice->getId()]);
+        }
+
+        return $this->render('company/invoice/edit.html.twig', [
+            'invoice' => $invoice, 
+            'form' => $form,
+            'formProduct' => $formProduct->createView(),
+        ]);
     }
 
     #[Route('/{id}', name: 'invoice_delete', methods: ['POST'])]

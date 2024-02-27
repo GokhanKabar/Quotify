@@ -47,10 +47,13 @@ class AuthLoginAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-    
-        // Ajoutez votre redirection ici s'il n'y a pas de chemin cible dans la session
-        // Exemple : rediriger vers la page d'accueil
-        return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        //si l'utilisateur c'est le role admin alors back_office sinon front_office
+        if ($token->getUser()->getRoles()[0] === 'ROLE_ADMIN') {
+            return new RedirectResponse($this->urlGenerator->generate('back_user_index'));
+        }
+        if ($token->getUser()->getRoles()[0] === 'ROLE_ACCOUNTANT' || $token->getUser()->getRoles()[0] === 'ROLE_COMPANY') {
+            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        }
     }
     
 

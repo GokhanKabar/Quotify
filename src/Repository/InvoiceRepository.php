@@ -62,6 +62,30 @@ class InvoiceRepository extends ServiceEntityRepository
         return $formattedResult;
     }
 
+    public function findInvoicesByCompany($companyId): array
+    {
+        return $this->createQueryBuilder('i')
+                    ->innerJoin('i.userReference', 'u')
+                    ->innerJoin('u.company', 'c')
+                    ->where('c.id = :companyId')
+                    ->andWhere('i.paymentStatus = :paymentStatus')
+                    ->setParameter('companyId', $companyId)
+                    ->setParameter('paymentStatus', 'payé')
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function findInvoicesByCompanyAccountant($companyId): array
+    {
+        return $this->createQueryBuilder('i')
+                    ->innerJoin('i.userReference', 'u')
+                    ->innerJoin('u.company', 'c')
+                    ->where('c.id = :companyId')
+                    ->setParameter('companyId', $companyId)
+                    ->getQuery()
+                    ->getResult();
+    }
+
 //    /**
 //     * @return Invoice[] Returns an array of Invoice objects
 //     */

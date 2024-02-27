@@ -1,14 +1,20 @@
-{{ form_start(form) }}
-    <div class="flex items-center gap-5 mb-2">
-        <h2 class="text-xl">Ajouter une nouvelle ligne</h2>
+{% set productFormContent %}
+    {{ form_start(formProduct) }}
+        {{ form_row(formProduct.productName) }}
+        {{ form_row(formProduct.description) }}
+        {{ form_row(formProduct.unitPrice) }}
+        {{ form_row(formProduct.category) }}
+        {{ form_row(formProduct.imageFile) }}
         {% include 'components/_button.html.twig' with {
-            'class': 'add-detail',
-            'button_label': '+',
+            'text': 'Ajouter',
             'bgColor': 'green',
             'textColor': 'white',
         } %}
-    </div>
-    <div class="order-3" id="quotationDetails" data-index="{{ form.quotationDetails|length }}" data-prototype="{{ form_widget(form.quotationDetails.vars.prototype)|e('html_attr') }}">
+    {{ form_end(formProduct) }}
+{% endset %}
+
+{{ form_start(form, {'attr': {'class': 'flex flex-col'}}) }}
+    <div class="order-2" id="quotationDetails" data-index="{{ form.quotationDetails|length }}" data-prototype="{{ form_widget(form.quotationDetails.vars.prototype)|e('html_attr') }}">
         {% for quotationDetailForm in form.quotationDetails %}
             <!-- quotationDetail edit -->
             <div class="quotationDetailItem flex items-center justify-between bg-gray-100 p-4 rounded mb-4">
@@ -23,7 +29,7 @@
         {% endfor %}
         </div>
     {{ form_row(form.userReference) }}
-    <div class="flex items-center justify-between">
+    <div class="order-3 flex items-center justify-between">
         <div>
             {% include 'components/_button.html.twig' with {
                 'text': 'Créer',
@@ -41,6 +47,24 @@
         </div>
     </div>
 {{ form_end(form) }}
+
+<div class="flex items-center gap-5 mb-2">
+    <h2 class="text-xl">Ajouter une nouvelle ligne</h2>
+    {% include 'components/_button.html.twig' with {
+        'class': 'add-detail',
+        'button_label': '+',
+        'bgColor': 'green',
+        'textColor': 'white',
+    } %}
+    {% embed 'components/_modal.html.twig' with {
+        'buttonTitle': 'Ajouter un nouveau produit', 
+        'title': 'Nouveau produit',
+    } %}
+        {% block content %}
+            {{ productFormContent }}
+        {% endblock %}
+    {% endembed %}
+</div>
 
 {% block javascripts %}
     {{ encore_entry_script_tags('prototype') }}

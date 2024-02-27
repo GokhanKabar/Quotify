@@ -30,6 +30,8 @@
                 {{ form_row(form.email, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
                 {{ form_row(form.subject, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
                 {{ form_row(form.message, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
+                {{ form_row(form.captcha, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
+                {{ form_errors(form.captcha) }}
                 <div class="text-center">
                     {% include 'components/_button.html.twig' with {
                         'text': 'Envoyer',

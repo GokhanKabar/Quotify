@@ -1,39 +1,33 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}Liste des utilisateurs{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.firstname }}</td>
-                <td>{{ user.lastname }}</td>
-                <td>
-                    <a href="{{ path('back_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('back_user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('back_user_new') }}">Create new</a>
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Liste des utilisateurs</h1>
+            </div>
+            <div class="flex gap-2">
+                {% include 'components/_button.html.twig' with {
+                    'path': 'back_user_new',
+                    'text': 'Ajouter un utilisateur',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+            </div>
+        </div>
+        {% embed 'components/_table.html.twig' with {
+            'arrayLabel': [
+                '#', 'Adresse email', 'Rôles', 'Prénom', 'Nom'
+            ],
+            'properties': [
+                'id', 'email', 'roles', 'firstname', 'lastname'
+            ],
+            'arrayList': users,
+            'route_show': 'back_user_show',
+            'route_edit': 'back_user_edit',
+        } %}
+        {% endembed %}
+    </div>
 {% endblock %}

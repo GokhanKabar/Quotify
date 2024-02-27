@@ -9,27 +9,4 @@
             Profitez d'une expérience sur mesure, <span class="text-indigo-500 font-medium">{{ app.user.firstname}} {{ app.user.lastname }}</span>, avec toutes les informations clés à portée de main pour faciliter votre gestion.
         </p>
     </div>
-
-    <div class="flex flex-wrap justify-around">
-        <div class="m-4 p-4 shadow-lg rounded-lg bg-white">
-            <h2 class="text-xl font-semibold mb-2">Factures ouvertes</h2>
-            <div class="w-full">
-                {{ render_chart(doughnutChart, {'id': 'doughnutChartCanvas', 'class': 'w-full h-64'}) }}
-            </div>
-        </div>
-
-        <div class="m-4 p-4 shadow-lg rounded-lg bg-white">
-            <h2 class="text-xl font-semibold mb-2">Produits principaux</h2>
-            <div class="w-full">
-                {{ render_chart(barChartProduct, {'id': 'barChartProductCanvas', 'class': 'w-full h-64'}) }}
-            </div>
-        </div>
-
-        <div class="m-4 p-4 shadow-lg rounded-lg bg-white">
-            <h2 class="text-xl font-semibold mb-2">Ventes</h2>
-            <div class="w-full">
-                {{ render_chart(barChartSale, {'id': 'barChartSaleCanvas', 'class': 'w-full h-64'}) }}
-            </div>
-        </div>
-    </div>
 {% endblock %}
