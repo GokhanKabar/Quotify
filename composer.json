@@ -56,7 +56,8 @@
         "symfonycasts/verify-email-bundle": "^1.15",
         "twig/extra-bundle": "3.*",
         "twig/twig": "3.*",
-        "vich/uploader-bundle": "*"
+        "vich/uploader-bundle": "*",
+        "victor-prdh/recaptcha-bundle": "^1.8"
     },
     "config": {
         "allow-plugins": {
