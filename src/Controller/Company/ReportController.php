@@ -13,9 +13,13 @@ use Symfony\UX\Chartjs\Model\Chart;
 #[Route('/report')]
 class ReportController extends AbstractController
 {
-    #[Route('/', name: 'report_index')]
+    #[Route('/', name: 'report_index', methods: ['GET'])]
     public function index(ChartBuilderInterface $chartBuilder, InvoiceRepository $invoiceRepository, InvoiceDetailRepository $invoiceDetailRepository): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $userCompanyId = $this->getUser()->getCompany()->getId();
 
         // Doughnut Chart for Invoices
@@ -105,7 +109,7 @@ class ReportController extends AbstractController
         ]);
     }
 
-    #[Route('/export-sales-data-pdf', name: 'export_sales_data_pdf')]
+    #[Route('/export-sales-data-pdf', name: 'export_sales_data_pdf', methods: ['GET'])]
     public function exportSalesDataPDF(DompdfWrapperInterface $dompdfWrapper, InvoiceDetailRepository $invoiceDetailRepository): Response
     {
         $userCompanyId = $this->getUser()->getCompany()->getId();
@@ -118,7 +122,7 @@ class ReportController extends AbstractController
         return $dompdfWrapper->getStreamResponse($html, "sales_data.pdf");
     }
 
-    #[Route('/export-invoice-status-pdf', name: 'export_invoice_status_pdf')]
+    #[Route('/export-invoice-status-pdf', name: 'export_invoice_status_pdf', methods: ['GET'])]
     public function exportInvoiceStatusPDF(DompdfWrapperInterface $dompdfWrapper, InvoiceRepository $invoiceRepository): Response
     {
         $userCompanyId = $this->getUser()->getCompany()->getId();
@@ -131,7 +135,7 @@ class ReportController extends AbstractController
         return $dompdfWrapper->getStreamResponse($html, "invoice_status.pdf");
     }
 
-    #[Route('/export-sales-by-month-pdf', name: 'export_sales_by_month_pdf')]
+    #[Route('/export-sales-by-month-pdf', name: 'export_sales_by_month_pdf', methods: ['GET'])]
     public function exportSalesByMonthPDF(DompdfWrapperInterface $dompdfWrapper, InvoiceRepository $invoiceRepository): Response
     {
         $userCompanyId = $this->getUser()->getCompany()->getId();
