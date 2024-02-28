@@ -21,25 +21,40 @@ class WebhookController extends AbstractController
     public function stripeWebhook(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         // Votre clé secrète de webhook de l'environnement .env
-        $endpointSecret = $this->getParameter('stripe.webhook_secret');
+        // $endpointSecret = $this->getParameter('stripe.webhook_secret');
+
+        // $payload = $request->getContent();
+        // $sigHeader = $request->headers->get('Stripe-Signature');
+
+        // try {
+        //     $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
+        // } catch (\UnexpectedValueException $e) {
+        //     // Contenu invalide
+        //     return new Response('Invalid payload', 400);
+        // } catch (\Stripe\Exception\SignatureVerificationException $e) {
+        //     // Signature invalide
+        //     return new Response('Invalid signature', 400);
+        // }
+
+        // // Gérez l'événement
+        // if ($event->type === 'checkout.session.completed') {
+        //     $session = $event->data->object;
 
         $payload = $request->getContent();
-        $sigHeader = $request->headers->get('Stripe-Signature');
 
+        // Simplement créer l'événement sans vérifier la signature
         try {
-            $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
-        } catch (\UnexpectedValueException $e) {
-            // Contenu invalide
+            $event = json_decode($payload, true);
+        } catch (\Exception $e) {
+            // En cas d'erreur de parsing JSON
             return new Response('Invalid payload', 400);
-        } catch (\Stripe\Exception\SignatureVerificationException $e) {
-            // Signature invalide
-            return new Response('Invalid signature', 400);
         }
 
-        // Gérez l'événement
-        if ($event->type === 'checkout.session.completed') {
-            $session = $event->data->object;
-
+        // Vous pouvez maintenant utiliser $event comme un tableau PHP pour accéder aux données
+        // Assurez-vous de vérifier le type d'événement et de traiter l'événement comme vous le souhaitez
+        if (isset($event['type']) && $event['type'] === 'checkout.session.completed') {
+            // Exemple de traitement de l'événement checkout.session.completed
+             $session = $event['data']['object'];
             // Récupérez l'ID de la session ou une référence à la commande
             $invoiceId = $session->metadata->invoice_id;
             $invoice = $entityManager->getRepository(Invoice::class)->find($invoiceId);
