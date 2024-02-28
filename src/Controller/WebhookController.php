@@ -17,7 +17,7 @@ use Symfony\Component\Mime\Address;
 
 class WebhookController extends AbstractController
 {
-    #[Route('/webhook/stripe', name: 'stripe_webhook')]
+    #[Route('/webhook/stripe', name: 'stripe_webhook')] 
     public function stripeWebhook(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         // Votre clé secrète de webhook de l'environnement .env
