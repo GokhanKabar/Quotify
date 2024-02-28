@@ -6,6 +6,7 @@
 parameters:
   invoice_directory: "%kernel.project_dir%/public/documents/invoices"
   quotation_directory: "%kernel.project_dir%/public/documents/quotations"
+  stripe.webhook_secret: '%env(STRIPE_WEBHOOK_SECRET)%'
 
 services:
   # default configuration for services in *this* file
