@@ -45,9 +45,11 @@ class WebhookController extends AbstractController
         // Simplement créer l'événement sans vérifier la signature
         try {
             $event = json_decode($payload, true);
+            if (null === $event) {
+                throw new \Exception('Failed to decode JSON');
+            }
         } catch (\Exception $e) {
-            // En cas d'erreur de parsing JSON
-            return new Response('Invalid payload', 400);
+            return new Response('Invalid payload: ' . $e->getMessage(), 400);
         }
 
         // Vous pouvez maintenant utiliser $event comme un tableau PHP pour accéder aux données
@@ -59,7 +61,9 @@ class WebhookController extends AbstractController
             $invoiceId = $session->metadata->invoice_id;
             $invoice = $entityManager->getRepository(Invoice::class)->find($invoiceId);
 
-            if ($invoice) {
+            if (!$invoice) {
+                return new Response(sprintf('Invoice ID %s not found', $invoiceId), 404);
+            }
                 // Mettez à jour le statut de la commande
                 $invoice->setPaymentStatus('Payé');
                 $entityManager->flush();
@@ -74,7 +78,6 @@ class WebhookController extends AbstractController
                     ->text("Le paiement pour la commande n°$invoiceId a été effectué avec succès.");
 
                 $mailer->send($email);
-            }
         }
 
         return new Response('Webhook handled', 200);
