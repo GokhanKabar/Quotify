@@ -19,6 +19,9 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
 use App\Entity\Product;
 use App\Form\ProductType;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/invoice')]
 class InvoiceController extends AbstractController
@@ -163,17 +166,38 @@ class InvoiceController extends AbstractController
         // Stockage du PDF
         file_put_contents($pdfFilePath, $dompdf->output());
 
-        // Envoi du PDF par e-mail
-        $email = (new Email())
-        ->from(new Address('no-reply@quotify.fr', 'Quotify'))
-        ->to($invoice->getUserReference()->getEmail())
-        ->subject("Facture n°{$invoice->getId()}")
-        ->text("Vous trouverez ci-joint la facture demandée.")
-        ->attachFromPath($pdfFilePath, "invoice-{$invoice->getId()}.pdf");
+        // Initialisez Stripe
+        Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
 
-        $mailer->send($email);
+         // Créez une session de paiement Stripe
+         $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => "Facture n°{$invoice->getId()}",
+                    ],
+                    'unit_amount' => $invoice->getTotalTTC() * 100, // Convertissez en centimes
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => $this->generateUrl('payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('payment_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        ]);
 
-        $invoice->setPaymentStatus('Payée');
+         // Envoi du PDF par e-mail
+         $email = (new Email())
+         ->from(new Address('no-reply@quotify.fr', 'Quotify'))
+         ->to($invoice->getUserReference()->getEmail())
+         ->subject("Facture n°{$invoice->getId()}")
+         ->text("Vous trouverez ci-joint la facture demandé. Vous pouvez également payer en ligne en suivant ce lien : {$session->url}")
+         ->attachFromPath($pdfFilePath, "invoice-{$invoice->getId()}.pdf");
+ 
+         $mailer->send($email);
+ 
+         $invoice->setPaymentStatus('En attente de paiment');
 
         // Enregistrez les modifications dans la base de données
         $entityManager->persist($invoice);
