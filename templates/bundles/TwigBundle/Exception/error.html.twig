@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur{% endblock %}
+
+{% block body %}
+    <section class="relative flex flex-wrap lg:h-screen lg:items-center">
+        <div class="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
+            <div class="mx-auto max-w-lg text-center">
+                <h1 class="text-2xl font-bold sm:text-3xl">Oups, une erreur est survenue !</h1>
+                <p class="mt-4 text-lg">Nous sommes désolés, mais quelque chose s'est mal passé.</p>
+                
+                <a href="{{ path('front_homepage') }}" class="inline-block w-full bg-primary text-white p-2 rounded hover:bg-gray-500 mt-8">Retourner à l'accueil</a>
+            </div>
+        </div>
+
+        <div class="relative h-64 w-full sm:h-96 lg:h-full lg:w-1/2">
+            <img src="{{ asset('images/error.jpg') }}" class="absolute inset-0 h-full w-full object-cover" alt="Erreur"/>
+        </div>
+    </section>
+{% endblock %}
