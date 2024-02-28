@@ -20,9 +20,6 @@ use Dompdf\Options;
 use Dompdf\Dompdf;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
-use Stripe\Stripe;
-use Stripe\Checkout\Session;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Form\ProductType;
 use App\Entity\Product;
 
@@ -168,38 +165,17 @@ class QuotationController extends AbstractController
         // Stockage du PDF
         file_put_contents($pdfFilePath, $dompdf->output());
 
-        // Initialisez Stripe
-        Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
-
-         // Créez une session de paiement Stripe
-         $session = Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'eur',
-                    'product_data' => [
-                        'name' => "Facture n°{$quotation->getId()}",
-                    ],
-                    'unit_amount' => $quotation->getTotalTTC() * 100, // Convertissez en centimes
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => $this->generateUrl('payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $this->generateUrl('payment_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
-        ]);
-
         // Envoi du PDF par e-mail
         $email = (new Email())
         ->from(new Address('no-reply@quotify.fr', 'Quotify'))
         ->to($quotation->getUserReference()->getEmail())
         ->subject("Facture n°{$quotation->getId()}")
-        ->text("Vous trouverez ci-joint le devis demandé. Vous pouvez également payer en ligne en suivant ce lien : {$session->url}")
+        ->text("Vous trouverez ci-joint le devis demandé.")
         ->attachFromPath($pdfFilePath, "quotation-{$quotation->getId()}.pdf");
 
         $mailer->send($email);
 
-        $quotation->setStatus('En attente de paiment');
+        $quotation->setStatus('Devis envoyé par mail');
 
         // Enregistrez les modifications dans la base de données
         $entityManager->persist($quotation);
