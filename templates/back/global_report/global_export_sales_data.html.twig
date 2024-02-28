@@ -1,9 +1,9 @@
-{# templates/report/export_invoice_status.html.twig #}
+{# templates/report/export_sales_data.html.twig #}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Statut des Factures</title>
+    <title>Données des ventes</title>
     <style>
         table {
             width: 100%;
@@ -17,19 +17,19 @@
     </style>
 </head>
 <body>
-<h2>Statut des Factures</h2>
+<h2>Données des ventes par produit</h2>
 <table>
     <thead>
     <tr>
-        <th>Statut de Paiement</th>
-        <th>Nombre de Factures</th>
+        <th>Produit</th>
+        <th>Total des ventes</th>
     </tr>
     </thead>
     <tbody>
-    {% for status in invoiceStatusData %}
+    {% for sale in salesData %}
         <tr>
-            <td>{{ status.paymentStatus }}</td>
-            <td>{{ status.statusCount }}</td>
+            <td>{{ sale.productName }}</td>
+            <td>{{ sale.totalSales }}</td>
         </tr>
     {% endfor %}
     </tbody>

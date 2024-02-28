@@ -25,7 +25,7 @@ class InvoiceDetailRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('id')
             ->select('prod.productName, SUM(id.quantity) as totalSales')
-            ->join('id.product', 'prod') // Corrigez ici en utilisant 'prod' comme alias pour 'Product'
+            ->join('id.product', 'prod')
             ->join('id.invoice', 'i')
             ->join('i.userReference', 'u')
             ->where('u.company = :companyId')
@@ -35,6 +35,15 @@ class InvoiceDetailRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getSalesDataGlobal()
+    {
+        return $this->createQueryBuilder('id')
+            ->select('prod.productName, SUM(id.quantity) as totalSales')
+            ->join('id.product', 'prod')
+            ->groupBy('prod.id')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return InvoiceDetail[] Returns an array of InvoiceDetail objects

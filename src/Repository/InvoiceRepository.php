@@ -25,9 +25,18 @@ class InvoiceRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('i')
             ->select('i.paymentStatus AS paymentStatus, COUNT(i.id) AS statusCount')
-            ->join('i.userReference', 'u') // Assurez-vous que 'userReference' est le bon nom de la propriété dans Invoice qui référence User
-            ->where('u.company = :companyId') // 'company' doit être la propriété dans User qui référence Company
+            ->join('i.userReference', 'u')
+            ->where('u.company = :companyId')
             ->setParameter('companyId', $companyId)
+            ->groupBy('i.paymentStatus');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getInvoiceStatusCountsGlobal(): array
+    {
+        $qb = $this->createQueryBuilder('i')
+            ->select('i.paymentStatus AS paymentStatus, COUNT(i.id) AS statusCount')
             ->groupBy('i.paymentStatus');
 
         return $qb->getQuery()->getResult();
@@ -40,6 +49,32 @@ class InvoiceRepository extends ServiceEntityRepository
             ->join('i.userReference', 'u')
             ->where('u.company = :companyId')
             ->setParameter('companyId', $companyId)
+            ->groupBy('i.creationDate')
+            ->orderBy('i.creationDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $salesByMonth = [];
+        foreach ($result as $row) {
+            $month = $row['creationDate']->format('Y-m');
+            if (!isset($salesByMonth[$month])) {
+                $salesByMonth[$month] = 0;
+            }
+            $salesByMonth[$month] += $row['total'];
+        }
+
+        $formattedResult = [];
+        foreach ($salesByMonth as $month => $total) {
+            $formattedResult[] = ['month' => $month, 'total' => $total];
+        }
+
+        return $formattedResult;
+    }
+
+    public function findTotalSalesByMonthGlobal()
+    {
+        $result = $this->createQueryBuilder('i')
+            ->select('i.creationDate, SUM(i.totalTTC) as total')
             ->groupBy('i.creationDate')
             ->orderBy('i.creationDate', 'ASC')
             ->getQuery()

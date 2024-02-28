@@ -1,5 +1,6 @@
 <?php
-namespace App\Controller\Company;
+
+namespace App\Controller\Back;
 
 use App\Repository\InvoiceDetailRepository;
 use App\Repository\InvoiceRepository;
@@ -10,20 +11,18 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
-#[Route('/report')]
-class ReportController extends AbstractController
+#[Route('/global/report')]
+class GlobalReportController extends AbstractController
 {
-    #[Route('/', name: 'report_index', methods: ['GET'])]
+    #[Route('/', name: 'global_report_index', methods: ['GET'])]
     public function index(ChartBuilderInterface $chartBuilder, InvoiceRepository $invoiceRepository, InvoiceDetailRepository $invoiceDetailRepository): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $userCompanyId = $this->getUser()->getCompany()->getId();
-
         // Doughnut Chart for Invoices
-        $invoiceData = $invoiceRepository->getInvoiceStatusCounts($userCompanyId);
+        $invoiceData = $invoiceRepository->getInvoiceStatusCountsGlobal();
         $labels = [];
         $data = [];
         foreach ($invoiceData as $status) {
@@ -42,7 +41,7 @@ class ReportController extends AbstractController
         ]);
 
         // Bar Chart for Product Sales
-        $salesData = $invoiceDetailRepository->getSalesData($userCompanyId);
+        $salesData = $invoiceDetailRepository->getSalesDataGlobal();
         $labels = [];
         $data = [];
         foreach ($salesData as $sale) {
@@ -75,7 +74,7 @@ class ReportController extends AbstractController
         ]);
 
         // Bar Chart for Sales
-        $salesData = $invoiceRepository->findTotalSalesByMonth($userCompanyId);
+        $salesData = $invoiceRepository->findTotalSalesByMonthGlobal();
         $labels = [];
         $data = [];
         foreach ($salesData as $monthData) {
@@ -101,50 +100,48 @@ class ReportController extends AbstractController
             ],
         ]);
 
-        // Pass all charts to the Twig template
-        return $this->render('company/report/index.html.twig', [
+
+        return $this->render('back/global_report/index.html.twig', [
+            'controller_name' => 'GlobalReportController',
             'doughnutChart' => $doughnutChart,
             'barChartProduct' => $barChartProduct,
             'barChartSale' => $barChartSale,
         ]);
     }
 
-    #[Route('/export-sales-data-pdf', name: 'export_sales_data_pdf', methods: ['GET'])]
+    #[Route('/export-global-sales-data-pdf', name: 'export_global_sales_data_pdf', methods: ['GET'])]
     public function exportSalesDataPDF(DompdfWrapperInterface $dompdfWrapper, InvoiceDetailRepository $invoiceDetailRepository): Response
     {
-        $userCompanyId = $this->getUser()->getCompany()->getId();
-        $salesData = $invoiceDetailRepository->getSalesData($userCompanyId);
+        $salesData = $invoiceDetailRepository->getSalesDataGlobal();
 
-        $html = $this->renderView('company/report/export_sales_data.html.twig', [
+        $html = $this->renderView('back/global_report/global_export_sales_data.html.twig', [
             'salesData' => $salesData,
         ]);
 
-        return $dompdfWrapper->getStreamResponse($html, "sales_data.pdf");
+        return $dompdfWrapper->getStreamResponse($html, "global_sales_data.pdf");
     }
 
-    #[Route('/export-invoice-status-pdf', name: 'export_invoice_status_pdf', methods: ['GET'])]
+    #[Route('/export-global-invoice-status-pdf', name: 'export_global_invoice_status_pdf', methods: ['GET'])]
     public function exportInvoiceStatusPDF(DompdfWrapperInterface $dompdfWrapper, InvoiceRepository $invoiceRepository): Response
     {
-        $userCompanyId = $this->getUser()->getCompany()->getId();
-        $invoiceStatusData = $invoiceRepository->getInvoiceStatusCounts($userCompanyId);
+        $invoiceStatusData = $invoiceRepository->getInvoiceStatusCountsGlobal();
 
-        $html = $this->renderView('company/report/export_invoice_status.html.twig', [
+        $html = $this->renderView('back/global_report/global_export_invoice_status.html.twig', [
             'invoiceStatusData' => $invoiceStatusData,
         ]);
 
-        return $dompdfWrapper->getStreamResponse($html, "invoice_status.pdf");
+        return $dompdfWrapper->getStreamResponse($html, "global_invoice_status.pdf");
     }
 
-    #[Route('/export-sales-by-month-pdf', name: 'export_sales_by_month_pdf', methods: ['GET'])]
+    #[Route('/export-global-sales-by-month-pdf', name: 'export_global_sales_by_month_pdf', methods: ['GET'])]
     public function exportSalesByMonthPDF(DompdfWrapperInterface $dompdfWrapper, InvoiceRepository $invoiceRepository): Response
     {
-        $userCompanyId = $this->getUser()->getCompany()->getId();
-        $salesByMonthData = $invoiceRepository->findTotalSalesByMonth($userCompanyId);
+        $salesByMonthData = $invoiceRepository->findTotalSalesByMonthGlobal();
 
-        $html = $this->renderView('company/report/export_sales_by_month.html.twig', [
+        $html = $this->renderView('back/global_report/global_export_sales_by_month.html.twig', [
             'salesByMonth' => $salesByMonthData,
         ]);
 
-        return $dompdfWrapper->getStreamResponse($html, "sales_by_month.pdf");
+        return $dompdfWrapper->getStreamResponse($html, "global_sales_by_month.pdf");
     }
 }
