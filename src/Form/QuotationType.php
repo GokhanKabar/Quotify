@@ -32,12 +32,6 @@ class QuotationType extends AbstractType
                         ->setParameter('company_id', $options['company_id']);
                 },
             ])
-            ->add('totalHT', HiddenType::class, [
-                'label' => 'Total HT',
-            ])
-            ->add('totalTTC', HiddenType::class, [
-                'label' => 'Total TTC',
-            ])
             ->add('quotationDetails', CollectionType::class, [
                 'entry_type' => QuotationDetailType::class,
                 'entry_options' => [

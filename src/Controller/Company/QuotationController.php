@@ -65,6 +65,25 @@ class QuotationController extends AbstractController
         $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $totalHT = 0;
+            $totalTTC = 0;    
+
+            $details = $form->getData()->getQuotationDetails();
+            
+            foreach ($details as $detail) {
+                $unitPrice = $detail->getProduct()->getUnitPrice();
+                $quantity = $detail->getQuantity();
+    
+                $amountHT = $unitPrice * $quantity;
+                $totalHT += $amountHT;
+    
+                $amountTTC = $amountHT * (1 + ($detail->getTva() / 100));
+                $totalTTC += $amountTTC;
+            }
+    
+            $quotation->setTotalHT($totalHT);
+            $quotation->setTotalTTC($totalTTC);
+
             $entityManager->persist($quotation);
             $entityManager->flush();
 
@@ -117,6 +136,25 @@ class QuotationController extends AbstractController
         $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $totalHT = 0;
+            $totalTTC = 0;    
+            
+            $details = $form->getData()->getQuotationDetails();
+
+            foreach ($details as $detail) {
+                $unitPrice = $detail->getProduct()->getUnitPrice();
+                $quantity = $detail->getQuantity();
+    
+                $amountHT = $unitPrice * $quantity;
+                $totalHT += $amountHT;
+    
+                $amountTTC = $amountHT * (1 + ($detail->getTva() / 100));
+                $totalTTC += $amountTTC;
+            }
+    
+            $quotation->setTotalHT($totalHT);
+            $quotation->setTotalTTC($totalTTC);
+
             $entityManager->persist($quotation);
             $entityManager->flush();
 
