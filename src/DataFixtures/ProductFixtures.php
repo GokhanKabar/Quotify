@@ -34,8 +34,6 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
         "Organisateurs de bureau" => ["SimpleHouseware Mesh Desk Organizer", "Greenco Mesh Office Supplies Desk Organizer"],
     ];
 
-    const PRODUCT_DESCRIPTION = [];
-
     public function load(ObjectManager $manager): void
     {
         $productCount = 0;
