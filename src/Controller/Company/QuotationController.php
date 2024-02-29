@@ -88,12 +88,16 @@ class QuotationController extends AbstractController
     #[Route('/{id}', name: 'quotation_show', methods: ['GET'])]
     public function show(Quotation $quotation): Response
     {
-        return $this->render('company/quotation/show.html.twig', ['quotation' => $quotation,]);
+        $this->denyAccessUnlessGranted('QUOTATION_VIEW', $quotation);
+
+        return $this->render('company/quotation/show.html.twig', ['quotation' => $quotation]);
     }
 
     #[Route('/{id}/edit', name: 'quotation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Quotation $quotation, EntityManagerInterface $entityManager, Security $security): Response
     {
+        $this->denyAccessUnlessGranted('QUOTATION_EDIT', $quotation);
+
         if (!$security->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -136,6 +140,8 @@ class QuotationController extends AbstractController
     #[Route('/{id}', name: 'quotation_delete', methods: ['POST'])]
     public function delete(Request $request, Quotation $quotation, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('QUOTATION_DELETE', $quotation);
+
         if ($this->isCsrfTokenValid('delete' . $quotation->getId(), $request->request->get('_token'))) {
             $entityManager->remove($quotation);
             $entityManager->flush();
@@ -147,6 +153,8 @@ class QuotationController extends AbstractController
     #[Route('/pdf/{id}', name: 'quotation_pdf', methods: ['GET'])]
     public function generatePdf(Quotation $quotation, DompdfWrapperInterface $dompdfWrapper, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('QUOTATION_VIEW', $quotation);
+
         // Configuration de Dompdf
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -187,6 +195,8 @@ class QuotationController extends AbstractController
     #[Route('/convert/{id}', name: 'quotation_convert', methods: ['GET'])]
     public function convertQuotationToInvoice(int $id, QuotationRepository $quotationRepository, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('INVOICE_VIEW', $quotation);
+
         $quotation = $quotationRepository->find($id);
 
         $invoice = new Invoice();

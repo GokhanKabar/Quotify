@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use App\Repository\CompanyRepository;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route('/product')]
 class ProductController extends AbstractController
@@ -62,6 +63,8 @@ class ProductController extends AbstractController
     #[Route('/{id}', name: 'product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
+        $this->denyAccessUnlessGranted('PRODUCT_VIEW', $product);
+
         return $this->render('company/product/show.html.twig', [
             'product' => $product,
         ]);
@@ -70,6 +73,8 @@ class ProductController extends AbstractController
     #[Route('/{id}/edit', name: 'product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('PRODUCT_EDIT', $product);
+
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
@@ -88,6 +93,8 @@ class ProductController extends AbstractController
     #[Route('/{id}', name: 'product_delete', methods: ['POST'])]
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('PRODUCT_DELETE', $product);
+
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $entityManager->remove($product);
             $entityManager->flush();
