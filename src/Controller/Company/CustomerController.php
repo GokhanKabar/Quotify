@@ -58,12 +58,17 @@ class CustomerController extends AbstractController
     #[Route('/{id}', name: 'customer_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-        return $this->render('company/customer/show.html.twig', ['user' => $user,]);
+        // Vérifiez si l'utilisateur peut voir le client
+        $this->denyAccessUnlessGranted('CUSTOMER_VIEW', $user);
+
+        return $this->render('company/customer/show.html.twig', ['user' => $user]);
     }
 
     #[Route('/{id}/edit', name: 'customer_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('CUSTOMER_EDIT', $user);
+
         $form = $this->createForm(CustomerType::class, $user);
         $form->handleRequest($request);
 
@@ -79,6 +84,8 @@ class CustomerController extends AbstractController
     #[Route('/{id}', name: 'customer_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
+        $this->denyAccessUnlessGranted('CUSTOMER_DELETE', $user);
+
         $token = new CsrfToken('delete' . $user->getId(), $request->request->get('_token'));
         if ($csrfTokenManager->isTokenValid($token)) {
             $entityManager->remove($user);

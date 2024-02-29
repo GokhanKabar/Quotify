@@ -88,12 +88,16 @@ class InvoiceController extends AbstractController
     #[Route('/{id}', name: 'invoice_show', methods: ['GET'])]
     public function show(Invoice $invoice): Response
     {
+        $this->denyAccessUnlessGranted('INVOICE_VIEW', $invoice);
+
         return $this->render('company/invoice/show.html.twig', ['invoice' => $invoice,]);
     }
 
     #[Route('/{id}/edit', name: 'invoice_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Invoice $invoice, EntityManagerInterface $entityManager, Security $security): Response
     {
+        $this->denyAccessUnlessGranted('INVOICE_EDIT', $invoice);
+
         if (!$security->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -136,6 +140,8 @@ class InvoiceController extends AbstractController
     #[Route('/{id}', name: 'invoice_delete', methods: ['POST'])]
     public function delete(Request $request, Invoice $invoice, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('INVOICE_DELETE', $invoice);
+
         if ($this->isCsrfTokenValid('delete' . $invoice->getId(), $request->request->get('_token'))) {
             $entityManager->remove($invoice);
             $entityManager->flush();
@@ -147,6 +153,8 @@ class InvoiceController extends AbstractController
     #[Route('/pdf/{id}', name: 'invoice_pdf', methods: ['GET'])]
     public function generatePdf(Invoice $invoice, DompdfWrapperInterface $dompdfWrapper, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('INVOICE_VIEW', $invoice);
+        
         // Configuration de Dompdf
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
