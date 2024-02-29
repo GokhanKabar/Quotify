@@ -35,3 +35,7 @@ controller_dashboard:
 controller_stripe:
     resource: ../src/Controller/StripeController.php
     type: attribute
+
+controller_stripe_webhook:
+    resource: ../src/Controller/StripeWebhookController.php
+    type: attribute
