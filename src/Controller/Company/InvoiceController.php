@@ -190,7 +190,6 @@ class InvoiceController extends AbstractController
                 ],
                 'quantity' => 1,
             ]],
-            'metadata' => ['invoice_id' => $invoice->getId()],
             'mode' => 'payment',
             'success_url' => $this->generateUrl('payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'cancel_url' => $this->generateUrl('payment_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
