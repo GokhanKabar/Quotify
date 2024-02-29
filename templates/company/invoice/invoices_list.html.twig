@@ -20,10 +20,10 @@
 
         {% embed "components/_table.html.twig" with {
             'arrayLabel': [
-                '#', 'Prénom', 'Nom', 'Adresse mail', 'Date de création', 'Status du paiement', 'Total HT', 'Total TTC'
+                '#', 'Prénom', 'Nom', 'Adresse mail', 'Date de création', 'Total HT', 'Total TTC'
             ],
             'properties': [
-                'id', 'firstname', 'lastname', 'email', 'creationDate', 'paymentStatus', 'totalHT', 'totalTTC'
+                'id', 'firstname', 'lastname', 'email', 'creationDate', 'totalHT', 'totalTTC'
             ],
             'arrayList': invoices,
             'route_show': 'company_invoice_show',

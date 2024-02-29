@@ -54,6 +54,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->innerJoin('u.invoices', 'i')
             ->where('c.id = :company_id')
             ->setParameter('company_id', $company_id)
+            ->orderBy('i.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -66,6 +67,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->innerJoin('u.quotations', 'q')
             ->where('c.id = :company_id')
             ->setParameter('company_id', $company_id)
+            ->orderBy('q.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -89,6 +91,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->innerJoin('c.users', 'u')
             ->where('c.id = :company_id')
             ->setParameter('company_id', $company_id)
+            ->orderBy('u.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
