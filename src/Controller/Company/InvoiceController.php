@@ -205,7 +205,9 @@ class InvoiceController extends AbstractController
  
          $mailer->send($email);
  
-         $invoice->setPaymentStatus('En attente de paiment');
+        $dateSent = new \DateTime(); // Obtient la date actuelle
+        $formattedDate = $dateSent->format('d/m/Y H:i:s'); // Formate la date
+        $invoice->setPaymentStatus("Facture envoyée par mail le " . $formattedDate . " - En attente de paiement");
 
         // Enregistrez les modifications dans la base de données
         $entityManager->persist($invoice);

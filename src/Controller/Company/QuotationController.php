@@ -183,7 +183,10 @@ class QuotationController extends AbstractController
 
         $mailer->send($email);
 
-        $quotation->setStatus('Devis envoyé par mail');
+        // Mise à jour du statut du devis avec la date d'envoi
+        $dateSent = new \DateTime(); // Obtient la date actuelle
+        $formattedDate = $dateSent->format('d/m/Y H:i:s'); // Formate la date
+        $quotation->setStatus("Devis envoyé par mail le " . $formattedDate);
 
         // Enregistrez les modifications dans la base de données
         $entityManager->persist($quotation);

@@ -35,16 +35,15 @@
         </div>
         {% embed "components/_table.html.twig" with {
             'arrayLabel': [
-                '#', 'Date de création', 'Status de paiement'
+                '#', 'Date de création'
             ],
             'properties': [
-                'id', 'creationDate', 'status'
+                'id', 'creationDate'
             ],
             'arrayList': [
                 {
                     'id': invoice.id, 
                     'creationDate': invoice.creationDate, 
-                    'status': invoice.paymentStatus
                 }
             ],
         } %}

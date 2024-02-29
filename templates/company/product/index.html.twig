@@ -19,10 +19,10 @@
         </div>
         {% embed "components/_table.html.twig" with {
             'arrayLabel': [
-                '#', 'Vignette', 'Nom du produit', 'Description', 'Catégorie', "Prix à l'unité"
+                'Vignette', 'Nom du produit', 'Description', 'Catégorie', "Prix à l'unité"
             ],
             'properties': [
-                'id', 'imageName', 'productName', 'description', 'categoryName', 'unitPrice'
+                'imageName', 'productName', 'description', 'categoryName', 'unitPrice'
             ],
             'arrayList': products,
             'route_show': 'company_product_show',
