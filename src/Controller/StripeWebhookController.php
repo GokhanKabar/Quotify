@@ -9,6 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Stripe\Stripe;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Stripe\Exception\SignatureVerificationException;
+use Stripe\Event;
 
 class StripeWebhookController extends AbstractController
 {
