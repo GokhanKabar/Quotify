@@ -236,9 +236,8 @@ class QuotationController extends AbstractController
     #[Route('/convert/{id}', name: 'quotation_convert', methods: ['GET'])]
     public function convertQuotationToInvoice(int $id, QuotationRepository $quotationRepository, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('INVOICE_VIEW', $quotation);
-
         $quotation = $quotationRepository->find($id);
+        $this->denyAccessUnlessGranted('QUOTATION_VIEW', $quotation);
 
         $invoice = new Invoice();
         $invoice->setCreationDate($quotation->getCreationDate());
