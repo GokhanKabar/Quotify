@@ -85,7 +85,5 @@ document.addEventListener('DOMContentLoaded', function() {
     
         document.querySelector('.totalTTC').innerText = isNaN(totalTTC) ? '0.00 €' : totalTTC.toFixed(2) + ' €';
         document.querySelector('.totalHT').innerText = isNaN(totalHT) ? '0.00 €' : totalHT.toFixed(2) + ' €';
-        document.querySelector('[id$="_totalHT"]').value = isNaN(totalTTC) ? '0.00' : totalTTC.toFixed(2);
-        document.querySelector('[id$="_totalTTC"]').value = isNaN(totalHT) ? '0.00' : totalHT.toFixed(2);
     }
 });

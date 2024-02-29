@@ -32,12 +32,6 @@ class InvoiceType extends AbstractType
                         ->setParameter('company_id', $options['company_id']);
                 },
             ])
-            ->add('totalHT', HiddenType::class, [
-                'label' => 'Total HT',
-            ])
-            ->add('totalTTC', HiddenType::class, [
-                'label' => 'Total TTC',
-            ])
             ->add('invoiceDetails', CollectionType::class, [
                 'entry_type' => InvoiceDetailType::class,
                 'entry_options' => [
