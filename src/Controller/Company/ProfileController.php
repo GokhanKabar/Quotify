@@ -19,22 +19,34 @@ class ProfileController extends AbstractController
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $company = $user->getCompany();
 
-                // Ajout d'un message flash de succès
-                $this->addFlash('success', 'Votre profil a été mis à jour avec succès.');
+            if (!$company) {
+                $this->addFlash('error', 'Aucune entreprise associée à votre profil. Veuillez contacter l\'administration.');
+                return $this->redirectToRoute('profile_edit');
+            }
 
-                return $this->redirectToRoute('company_profile_edit');
-            } else {
-                // Optionnel: Ajout d'un message flash d'échec
+            $companyName = $form->get('companyName')->getData();
+            $companyAddress = $form->get('companyAddress')->getData();
+            $companyEmail = $form->get('companyEmail')->getData();
+            $companySiretNumber = $form->get('companySiretNumber')->getData();
+
+            $company->setCompanyName($companyName);
+            $company->setAddress($companyAddress);
+            $company->setEmail($companyEmail);
+            $company->setSiretNumber($companySiretNumber);
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre profil et les informations de l\'entreprise ont été mis à jour avec succès.');
+            return $this->redirectToRoute('company_profile_edit');
+        } else {
+            if ($form->isSubmitted()) {
                 $this->addFlash('error', 'Des erreurs ont été détectées dans le formulaire.');
             }
         }
 
-        return $this->render('company/profile/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('company/profile/edit.html.twig', ['form' => $form->createView(),]);
     }
 }

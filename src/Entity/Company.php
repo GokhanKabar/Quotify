@@ -28,10 +28,10 @@ class Company
     private ?string $siretNumber = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $createdAt;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $updatedAt;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]
     private Collection $users;
@@ -133,7 +133,7 @@ class Company
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -145,11 +145,25 @@ class Company
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        if (!$this->createdAt) {
+            $this->createdAt = new \DateTimeImmutable();
+        }
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     /**

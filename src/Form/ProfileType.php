@@ -2,10 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Company;
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -14,9 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProfileType extends AbstractType
 {
@@ -40,7 +38,7 @@ class ProfileType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
                 'options' => ['attr' => ['class' => 'password-field border border-gray-400 rounded-md p-2 w-full']],
-                'required' => false,
+                'required' => true,
                 'mapped' => false,
                 'first_options'  => [
                     'label' => 'Nouveau mot de passe',
@@ -120,12 +118,40 @@ class ProfileType extends AbstractType
                 'required' => false,
                 'placeholder' => 'Sélectionnez votre genre',
             ])
-            ->add('company', EntityType::class, [
-                'class' => Company::class,
-                'choice_label' => 'company_name',
-                'label' => 'Entreprise',
+            ->add('companyName', TextType::class, [
+                'mapped' => false,
+                'data' => $options['data']->getCompany() ? $options['data']->getCompany()->getCompanyName() : '',
+                'label' => 'Nom de l\'entreprise',
                 'attr' => ['class' => 'input border border-gray-400 rounded-md p-2 w-full'],
-                'placeholder' => 'Sélectionnez une entreprise',
+                'required' => false,
+            ])
+            ->add('companyAddress', TextType::class, [
+                'mapped' => false,
+                'data' => $options['data']->getCompany() ? $options['data']->getCompany()->getAddress() : '',
+                'label' => 'Adresse de l\'entreprise',
+                'attr' => ['class' => 'input border border-gray-400 rounded-md p-2 w-full'],
+                'required' => false,
+            ])
+            ->add('companyEmail', EmailType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer un e-mail pour l\'entreprise',
+                    ]),
+                    new Email([
+                        'message' => 'L\'adresse email "{{ value }}" n\'est pas valide.',
+                        ]),
+                ],
+                'mapped' => false,
+                'data' => $options['data']->getCompany() ? $options['data']->getCompany()->getEmail() : '',
+                'label' => 'E-mail de l\'entreprise',
+                'attr' => ['class' => 'input border border-gray-400 rounded-md p-2 w-full'],
+                'required' => false,
+            ])
+            ->add('companySiretNumber', TextType::class, [
+                'mapped' => false,
+                'data' => $options['data']->getCompany() ? $options['data']->getCompany()->getSiretNumber() : '',
+                'label' => 'Numéro de SIRET de l\'entreprise',
+                'attr' => ['class' => 'input border border-gray-400 rounded-md p-2 w-full'],
                 'required' => false,
             ])
             ->add('submit', SubmitType::class, [
