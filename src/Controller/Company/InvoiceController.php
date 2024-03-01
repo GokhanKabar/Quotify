@@ -65,6 +65,25 @@ class InvoiceController extends AbstractController
         $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $totalHT = 0;
+            $totalTTC = 0; 
+            
+            $details = $form->getData()->getInvoiceDetails();   
+            
+            foreach ($details as $detail) {
+                $unitPrice = $detail->getProduct()->getUnitPrice();
+                $quantity = $detail->getQuantity();
+    
+                $amountHT = $unitPrice * $quantity;
+                $totalHT += $amountHT;
+    
+                $amountTTC = $amountHT * (1 + ($detail->getTva() / 100));
+                $totalTTC += $amountTTC;
+            }
+    
+            $invoice->setTotalHT($totalHT);
+            $invoice->setTotalTTC($totalTTC);
+
             $entityManager->persist($invoice);
             $entityManager->flush();
 
@@ -117,6 +136,25 @@ class InvoiceController extends AbstractController
         $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $totalHT = 0;
+            $totalTTC = 0;   
+
+            $details = $form->getData()->getInvoiceDetails(); 
+            
+            foreach ($details as $detail) {
+                $unitPrice = $detail->getProduct()->getUnitPrice();
+                $quantity = $detail->getQuantity();
+    
+                $amountHT = $unitPrice * $quantity;
+                $totalHT += $amountHT;
+    
+                $amountTTC = $amountHT * (1 + ($detail->getTva() / 100));
+                $totalTTC += $amountTTC;
+            }
+    
+            $invoice->setTotalHT($totalHT);
+            $invoice->setTotalTTC($totalTTC);
+
             $entityManager->persist($invoice);
             $entityManager->flush();
 
