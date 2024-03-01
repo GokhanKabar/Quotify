@@ -36,23 +36,15 @@ class UserType extends AbstractType
         ])
         ->add('plainPassword', RepeatedType::class, [
             'type' => PasswordType::class,
+            'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
             'options' => [
                 'attr' => [
                     'autocomplete' => 'new-password',
                 ],
             ],
+            'required' => false,
+            'mapped' => false,
             'first_options' => [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Mettre un mot de passe svp',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Ton mot de passe devrait avoir au moins {{ limit }} caractères',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
                 'label' => 'Nouveau mot de passe',
                 'attr' => [
                     'placeholder' => 'Mot de passe',
@@ -63,11 +55,19 @@ class UserType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Répéter votre mot de passe'
                 ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Mettre un mot de passe svp',
+                        'groups' => ['password_change'],
+                    ]),
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Ton mot de passe devrait avoir au moins {{ limit }} caractères',
+                        'max' => 4096,
+                        'groups' => ['password_change'],
+                    ]),
+                ],
             ],
-            'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
-            // Instead of being set onto the object directly,
-            // this is read and encoded in the controller
-            'mapped' => false,
         ])
         ->add('company', EntityType::class, [
             'class' => Company::class,
@@ -124,6 +124,12 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => function ($form) {
+                if ($form->getData()->getPlainPassword() !== null) {
+                    return ['Default', 'password_change'];
+                }
+                return ['Default'];
+            },
         ]);
     }
 }
