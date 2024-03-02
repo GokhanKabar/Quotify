@@ -22,6 +22,8 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
 use App\Form\ProductType;
 use App\Entity\Product;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+
 
 #[Route('/quotation')]
 class QuotationController extends AbstractController
@@ -212,14 +214,17 @@ class QuotationController extends AbstractController
         file_put_contents($pdfFilePath, $dompdf->output());
 
         // Envoi du PDF par e-mail
-        $email = (new Email())
+        $email = (new TemplatedEmail())
         ->from(new Address('no-reply@quotify.fr', 'Quotify'))
         ->to($quotation->getUserReference()->getEmail())
-        ->subject("Facture n°{$quotation->getId()}")
-        ->text("Vous trouverez ci-joint le devis demandé.")
+        ->subject("Devis n°{$quotation->getId()}")
+        ->htmlTemplate('company/quotation/email.html.twig')
+        ->context([
+            'quotation' => $quotation,
+        ])
         ->attachFromPath($pdfFilePath, "quotation-{$quotation->getId()}.pdf");
 
-        $mailer->send($email);
+    $mailer->send($email);
 
         // Mise à jour du statut du devis avec la date d'envoi
         $dateSent = new \DateTime(); // Obtient la date actuelle
