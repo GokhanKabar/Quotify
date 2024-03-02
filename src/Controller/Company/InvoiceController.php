@@ -22,6 +22,7 @@ use App\Form\ProductType;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Repository\InvoiceRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 #[Route('/invoice')]
@@ -247,16 +248,29 @@ class InvoiceController extends AbstractController
         ->attachFromPath($pdfFilePath, "invoice-{$invoice->getId()}.pdf");
     
  
-         $mailer->send($email);
+        $mailer->send($email);
  
-        $dateSent = new \DateTime(); // Obtient la date actuelle
-        $formattedDate = $dateSent->format('d/m/Y H:i:s'); // Formate la date
-        $invoice->setPaymentStatus("Facture envoyée par mail le " . $formattedDate . " - En attente de paiement");
+        $invoice->setPaymentStatus("En attente");
 
         // Enregistrez les modifications dans la base de données
         $entityManager->persist($invoice);
         $entityManager->flush();
 
         return $dompdfWrapper->getStreamResponse($html, "invoice-{$invoice->getId()}.pdf", ['Attachment' => true,]);
+    }
+
+    #[Route('/{id}/paid', name: 'payment_success', methods: ['GET'])]
+    public function setPaymentStatus(int $id, EntityManagerInterface $entityManager, InvoiceRepository $invoiceRepository): Response
+    {
+        $invoice = $invoiceRepository->find($id);
+        $this->denyAccessUnlessGranted('INVOICE_VIEW', $invoice);
+
+        $invoice->setPaymentStatus("Payé");
+
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('company_invoice_show', ['id' => $invoice->getId()]);
+
     }
 }

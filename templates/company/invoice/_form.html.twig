@@ -38,8 +38,20 @@
             } %}
         </div>
         <div>
-            <p>Total TTC : <span class="totalTTC">0.00 €</span></p>
-            <p>Total HT : <span class="totalHT">0.00 €</span></p>
+            <p>Total TTC : <span class="totalTTC">
+                {% if invoice is defined %}
+                    {{ invoice.totalTTC }} €
+                {% else %}
+                    0.00 €
+                {% endif %}
+            </span></p>
+            <p>Total HT : <span class="totalHT">
+                {% if invoice is defined %}
+                    {{ invoice.totalHT }} €
+                {% else %}
+                    0.00 €
+                {% endif %}
+            </span></p>
         </div>
     </div>
 {{ form_end(form) }}

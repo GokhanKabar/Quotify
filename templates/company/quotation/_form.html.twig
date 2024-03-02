@@ -39,10 +39,22 @@
         </div>
         <div>
             <p>Total TTC : 
-                <span class="totalTTC">0.00 €</span>
+                <span class="totalTTC">
+                    {% if quotation is defined %}
+                        {{ quotation.totalTTC }} €
+                    {% else %}
+                        0.00 €
+                    {% endif %}
+                </span>
             </p>
             <p>Total HT : 
-                <span class="totalHT">0.00 €</span>
+                <span class="totalHT">
+                    {% if quotation is defined %}
+                        {{ quotation.totalHT }} €
+                    {% else %}
+                        0.00 €
+                    {% endif %}
+                </span>
             </p>
         </div>
     </div>

@@ -100,25 +100,27 @@ class InvoiceRepository extends ServiceEntityRepository
     public function findInvoicesByCompany($companyId): array
     {
         return $this->createQueryBuilder('i')
-                    ->innerJoin('i.userReference', 'u')
-                    ->innerJoin('u.company', 'c')
-                    ->where('c.id = :companyId')
-                    ->andWhere('i.paymentStatus = :paymentStatus')
-                    ->setParameter('companyId', $companyId)
-                    ->setParameter('paymentStatus', 'payé')
-                    ->getQuery()
-                    ->getResult();
+            ->select('i.id', 'i.creationDate', 'i.paymentStatus', 'i.totalHT', 'i.totalTTC', 'u.firstname', 'u.lastname', 'u.email')
+            ->innerJoin('i.userReference', 'u')
+            ->innerJoin('u.company', 'c')
+            ->where('c.id = :companyId')
+            ->andWhere('i.paymentStatus = :paymentStatus')
+            ->setParameter('companyId', $companyId)
+            ->setParameter('paymentStatus', 'Payé')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findInvoicesByCompanyAccountant($companyId): array
     {
         return $this->createQueryBuilder('i')
-                    ->innerJoin('i.userReference', 'u')
-                    ->innerJoin('u.company', 'c')
-                    ->where('c.id = :companyId')
-                    ->setParameter('companyId', $companyId)
-                    ->getQuery()
-                    ->getResult();
+            ->select('i.id', 'i.creationDate', 'i.paymentStatus', 'i.totalHT', 'i.totalTTC', 'u.firstname', 'u.lastname', 'u.email')
+            ->innerJoin('i.userReference', 'u')
+            ->innerJoin('u.company', 'c')
+            ->where('c.id = :companyId')
+            ->setParameter('companyId', $companyId)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

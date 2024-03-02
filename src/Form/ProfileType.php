@@ -154,10 +154,6 @@ class ProfileType extends AbstractType
                 'attr' => ['class' => 'input border border-gray-400 rounded-md p-2 w-full'],
                 'required' => false,
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Enregistrer',
-                'attr' => ['class' => 'px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-700 cursor-pointer'],
-            ]);
         ;
     }
 

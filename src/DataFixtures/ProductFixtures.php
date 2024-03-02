@@ -34,30 +34,58 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
         "Organisateurs de bureau" => ["SimpleHouseware Mesh Desk Organizer", "Greenco Mesh Office Supplies Desk Organizer"],
     ];
 
+    const PRODUCT_IMAGES = [
+        "Ordinateurs_portables",
+        "Ordinateurs_de_bureau",
+        "Tablettes_tactiles",
+        "Smartphones",
+        "Imprimantes",
+        "Disques_durs_externes",
+        "Clés_USB",
+        "Écrans_d'ordinateur",
+        "Cartes_graphiques",
+        "Mémoires_RAM",
+        "Processeurs",
+        "Souris_et_claviers_sans_fil",
+        "Webcams",
+        "Casques_et_écouteurs",
+        "Chaises_de_bureau",
+        "Claviers_mécaniques",
+        "Tapis_de_souris",
+        "Lampes_de_bureau",
+        "Supports_pour_moniteurs",
+        "Organisateurs_de_bureau",
+    ];
+
     public function load(ObjectManager $manager): void
-    {
-        $productCount = 0;
+{
+    $productCount = 0;
 
-        foreach (self::PRODUCT_ARRAY as $categoryName => $products) {
-            $categoryIndex = array_search($categoryName, CategoryFixtures::CATEGORY_ARRAY);
-            $categoryReference = $this->getReference(CategoryFixtures::CATEGORY_REFERENCE . ($categoryIndex + 1));
+    foreach (self::PRODUCT_ARRAY as $categoryName => $products) {
+        $categoryIndex = array_search($categoryName, CategoryFixtures::CATEGORY_ARRAY);
+        $categoryReference = $this->getReference(CategoryFixtures::CATEGORY_REFERENCE . ($categoryIndex + 1));
 
-            foreach ($products as $index => $productName) {
-                $product = new Product();
-                $product->setProductName($productName);
-                $product->setDescription($this->getProductDescription($categoryName));
-                $product->setUnitPrice(rand(10, 1000));
-                $product->setCategory($categoryReference);
-                $product->setCompanyReference($this->getReference(CompanyFixtures::COMPANY_REFERENCE . rand(1, CompanyFixtures::COMPANY_COUNT_REFERENCE)));
+        foreach ($products as $index => $productName) {
+            $product = new Product();
+            $product->setProductName($productName);
+            $product->setDescription($this->getProductDescription($categoryName));
+            $product->setUnitPrice(rand(10, 1000));
+            $product->setCategory($categoryReference);
 
-                $manager->persist($product);
+            $imageName = self::PRODUCT_IMAGES[$categoryIndex] . ".jpg";
+            $product->setImageName($imageName);
 
-                $this->addReference(self::PRODUCT_REFERENCE . (++$productCount), $product);
-            }
+            $product->setCompanyReference($this->getReference(CompanyFixtures::COMPANY_REFERENCE . rand(1, CompanyFixtures::COMPANY_COUNT_REFERENCE)));
+
+            $manager->persist($product);
+
+            $this->addReference(self::PRODUCT_REFERENCE . (++$productCount), $product);
         }
-
-        $manager->flush();
     }
+
+    $manager->flush();
+}
+
 
     private function getProductDescription(string $categoryName): string
     {
