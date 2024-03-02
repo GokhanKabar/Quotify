@@ -28,7 +28,10 @@ class PaymentController extends AbstractController
         $companyId = $user->getCompany()->getId();
         $invoices = $invoiceRepository->findInvoicesByCompany($companyId);
 
-        return $this->render('company/payment/index.html.twig', ['companyName' => $companyName, 'invoices' => $invoices,]);
+        return $this->render('company/payment/index.html.twig', [
+            'companyName' => $companyName, 
+            'invoices' => $invoices
+        ]);
     }
 
     #[Route('/accountant', name: 'payment_accountant')]
@@ -41,7 +44,10 @@ class PaymentController extends AbstractController
         $companyId = $user->getCompany()->getId();
         $invoices = $invoiceRepository->findInvoicesByCompanyAccountant($companyId);
 
-        return $this->render('company/payment/accountant.html.twig', ['companyName' => $companyName, 'invoices' => $invoices,]);
+        return $this->render('company/payment/index.html.twig', [
+            'companyName' => $companyName, 
+            'invoices' => $invoices
+        ]);
     }
 
 }

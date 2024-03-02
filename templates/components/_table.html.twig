@@ -1,11 +1,14 @@
-<table class="min-w-full text-center sm:text-left font-light">
+<table class="table-fixed min-w-full text-center sm:text-left font-light">
     <thead class="border-b font-medium dark:border-neutral-500">
         <tr>
             {% for label in arrayLabel %}
-                <th scope="col" class="px-6 py-4">{{ label }}</th>
+                <th scope="col" class="break-all lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0 lg:text-base md:text-sm sm:text-xs">{{ label }}</th>
             {% endfor %}
+            {% if buttonPaymentStatus is defined and buttonPaymentStatus == true %}
+                <th scope="col" class="break-all lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0 lg:text-base md:text-sm sm:text-xs">Statut de paiement</th>
+            {% endif %}
             {% if route_show is defined or route_edit is defined %}
-                <th scope="col" class="px-6 py-4">Actions</th>
+                <th scope="col" class="break-all lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0 lg:text-base md:text-sm sm:text-xs">Actions</th>
             {% endif %}
         </tr>
     </thead>
@@ -16,27 +19,53 @@
                 {% set value = attribute(data, property) %}
 
                 {% if value.timestamp is defined %}
-                    <td class="whitespace-nowrap px-6 py-4">{{ value|date('d/m/Y') }}</td>
+                    <td class="break-all whitespace-wrap lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0 lg:text-base md:text-sm sm:text-xs">{{ value|date('d/m/Y') }}</td>
                 {% elseif property == 'imageName' %}
-                    <td class="whitespace-nowrap px-6 py-4">
-                        <img src="{{ vich_uploader_asset(data, 'imageFile', 'App\\Entity\\Product') }}" alt="{{ attribute(data, 'imageName') }}" style="width: 100px; height: 100px; object-fit: cover;">
+                    <td class="break-all whitespace-wrap lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0 lg:text-base md:text-sm sm:text-xs">
+                        <img src="{{ vich_uploader_asset(data, 'imageFile', 'App\\Entity\\Product') }}" alt="{{ attribute(data, 'imageName') }}" class="lg:w-20 md:w-10 sm:w-5 lg:h-20 md:h-10 sm:h-5 object-cover">
                     </td>
                 {% elseif property == 'roles' %}
-                    <td class="whitespace-nowrap px-6 py-4">[{{ value|join(', ') }}]</td>
+                    <td class="break-all whitespace-wrap lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0 lg:text-base md:text-sm sm:text-xs">[{{ value|join(', ') }}]</td>
                 {% else %}
-                    <td class="whitespace-nowrap px-6 py-4">{{ value }}</td>
+                    <td class="break-all whitespace-wrap lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0 lg:text-base md:text-sm sm:text-xs">{{ value }}</td>
                 {% endif %}
             {% endfor %}
+            {% if buttonPaymentStatus is defined and buttonPaymentStatus == true %}
+                <td class="break-all whitespace-wrap lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0 lg:text-base md:text-sm sm:text-xs">
+                    {% include 'components/_button.html.twig' with {
+                        'type': 'button',
+                        'button_label': 'Facture payée',
+                        'bgColor': 'green',
+                        'textColor': 'white',
+                        'path': 'company_payment_success',
+                        'id': data.id,
+                    } %}
+                </td>
+            {% endif %}
             {% if route_show is defined or route_edit is defined %}
-                <td class="whitespace-nowrap px-6 py-4">
-                    <a class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" href="{{ path(route_show, {'id': data.id }) }}">Voir</a>
-                    <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path(route_edit, {'id': data.id }) }}">Modifier</a>
+                <td class="break-all whitespace-wrap lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0">
+                    {% include 'components/_button.html.twig' with {
+                        'type': 'button',
+                        'button_label': 'Voir',
+                        'bgColor': 'green',
+                        'textColor': 'white',
+                        'id': data.id,
+                        'path': route_show,
+                    } %}
+                    {% include 'components/_button.html.twig' with {
+                        'type': 'button',
+                        'button_label': 'Modifier',
+                        'bgColor': 'blue',
+                        'textColor': 'white',
+                        'id': data.id,
+                        'path': route_edit,
+                    } %}
                 </td>
             {% endif %}
         </tr>
     {% else %}
         <tr>
-            <td class="px-4 py-2 border border-gray-400" colspan="6">Aucune données</td>
+            <td class="break-all whitespace-wrap lg:px-6 md:px-3 sm:px-0 lg:py-4 md:py-2 sm:py-0" colspan="6">Aucune données</td>
         </tr>
     {% endfor %}
     </tbody>

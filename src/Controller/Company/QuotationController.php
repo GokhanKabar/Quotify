@@ -49,7 +49,7 @@ class QuotationController extends AbstractController
         $company = $security->getUser()->getCompany();
 
         $quotation->setCreationDate(new \DateTime());
-        $quotation->setStatus('En attente');
+        $quotation->setStatus("Créer le " . $quotation->getCreationDate()->format('d/m/Y H:i:s'));
 
         $form = $this->createForm(QuotationType::class, $quotation, [
             'company_id' => $company->getId(),
