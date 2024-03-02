@@ -1,0 +1,17 @@
+{% block subject %}Facture n°{{ invoice.getId() }}{% endblock %}
+
+{% block body %}
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Facture n°{{ invoice.getId() }}</h2>
+
+        <p>Bonjour,</p>
+
+        <p>Vous trouverez ci-joint la facture demandée. Vous pouvez également payer en ligne en suivant ce lien :</p>
+
+        <p style="margin: 15px 0;"><a href="{{ session.url }}" style="text-decoration: none; background-color: #007BFF; color: #fff; padding: 10px 15px; border-radius: 5px; display: inline-block;">Payer en ligne</a></p>
+
+        <p>Merci de votre confiance.</p>
+
+        <p style="margin-top: 30px;">Cordialement,<br/>L'équipe Quotify</p>
+    </div>
+{% endblock %}

@@ -22,6 +22,7 @@ use App\Form\ProductType;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 #[Route('/invoice')]
 class InvoiceController extends AbstractController
@@ -233,13 +234,18 @@ class InvoiceController extends AbstractController
             'cancel_url' => $this->generateUrl('payment_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
 
-         // Envoi du PDF par e-mail
-         $email = (new Email())
-         ->from(new Address('no-reply@quotify.fr', 'Quotify'))
-         ->to($invoice->getUserReference()->getEmail())
-         ->subject("Facture n°{$invoice->getId()}")
-         ->text("Vous trouverez ci-joint la facture demandé. Vous pouvez également payer en ligne en suivant ce lien : {$session->url}")
-         ->attachFromPath($pdfFilePath, "invoice-{$invoice->getId()}.pdf");
+
+        $email = (new TemplatedEmail())
+        ->from(new Address('no-reply@quotify.fr', 'Quotify'))
+        ->to($invoice->getUserReference()->getEmail())
+        ->subject("Facture n°{$invoice->getId()}")
+        ->htmlTemplate('company/invoice/email.html.twig')
+        ->context([
+            'invoice' => $invoice,
+            'session' => $session,
+        ])
+        ->attachFromPath($pdfFilePath, "invoice-{$invoice->getId()}.pdf");
+    
  
          $mailer->send($email);
  
