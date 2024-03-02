@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Company;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -94,5 +95,20 @@ class CompanyRepository extends ServiceEntityRepository
             ->orderBy('u.id', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findCompaniesByPage($page = 1, $limit = 10)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery();
+
+        $paginator = new Paginator($query);
+
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1)) // Offset
+            ->setMaxResults($limit); // Limit
+
+        return $paginator;
     }
 }

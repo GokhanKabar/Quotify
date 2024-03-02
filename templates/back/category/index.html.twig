@@ -30,4 +30,15 @@
         } %}
         {% endembed %}
     </div>
+    <div class="flex justify-center items-center space-x-1 mt-4">
+        {% if currentPage > 1 %}
+            <a href="{{ path('back_category_index', {'page': currentPage - 1}) }}" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-blue-500 hover:text-white rounded-md">Précédent</a>
+        {% endif %}
+        {% for i in 1..totalPages %}
+            <a href="{{ path('back_category_index', {'page': i}) }}" class="px-4 py-2 {{ i == currentPage ? 'text-white bg-blue-500' : 'text-gray-700 bg-gray-200' }} hover:bg-blue-500 hover:text-white rounded-md">{{ i }}</a>
+        {% endfor %}
+        {% if currentPage < totalPages %}
+            <a href="{{ path('back_category_index', {'page': currentPage + 1}) }}" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-blue-500 hover:text-white rounded-md">Suivant</a>
+        {% endif %}
+    </div>
 {% endblock %}

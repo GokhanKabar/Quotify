@@ -15,10 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     #[Route('/', name: 'category_index', methods: ['GET'])]
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(CategoryRepository $categoryRepository, Request $request): Response
     {
+        $page = $request->query->getInt('page', 1);
+        $limit = 10; // Ou une autre limite selon vos préférences
+
+        $categories = $categoryRepository->findCategoriesByPage($page, $limit);
+
         return $this->render('back/category/index.html.twig', [
-            'categories' => $categoryRepository->findAll(),
+            'categories' => $categories,
+            'currentPage' => $page,
+            'totalPages' => ceil(count($categories) / $limit),
         ]);
     }
 

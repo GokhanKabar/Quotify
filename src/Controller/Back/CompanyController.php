@@ -15,10 +15,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompanyController extends AbstractController
 {
     #[Route('/', name: 'company_index', methods: ['GET'])]
-    public function index(CompanyRepository $companyRepository): Response
+    public function index(CompanyRepository $companyRepository, Request $request): Response
     {
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = 10;
+
+        $companies = $companyRepository->findCompaniesByPage($page, $limit);
+        $totalCompanies = count($companies);
+        $totalPages = ceil($totalCompanies / $limit);
+
         return $this->render('back/company/index.html.twig', [
-            'companies' => $companyRepository->findAll(),
+            'companies' => $companies,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
         ]);
     }
 
