@@ -81,15 +81,20 @@ personnalisée.
 - Intégration de la page d'accueil, modification de `base.html.twig` et ajout de 2 composants
 - Modification de la BDD, datafixtures et des routes de la liste des utilisateurs
 - Ajout du CRUD pour les factures et les devis (sans détails ajoutés)
+- Ajout du CRUD pour les détails factures et devis
 - Correction de divers bugs
+- Intégration d'une première version de la page d'accueil puis refonte de cette page par Gokhan Kabar
 - Correction de toutes les routes d'entreprise et de la route du tableau de bord
-- Ajout de détails pour les factures et les devis (sans intégration frontale avancée)
+- Ajout de détails pour les factures et les devis (sans intégration front avancée)
 - Intégration de la sidebar, initialisation du front pour les factures et les devis
 - Ajout d'un composant de bouton, intégration de la page de contact, personnalisation des formulaires
 - Ajout d'un composant modal pour les devis et les factures
+- Ajout d'un composant table pour la liste des clients, factures, devis et d'autres
 - Modification du front de l'admin, adaptation de la sidebar selon les rôles
 - Correction de la conversion de devis en facture et fixation du prototype de sélection de produits
 - Correction de la page d'erreur et de la conversion de devis en facture
+- Ajout d'un bouton pour changer le status de paiement lorsqu'une facture a été payée
+- Intégration de la page d'accueil du tableau de bord
 
 ### @Nirdeo (Victor DE DOMENICO)
 
