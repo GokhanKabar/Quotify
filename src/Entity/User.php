@@ -233,7 +233,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getGender(): ?string
     {
-        return $this;
+        return $this->gender;
     }
 
     public function setGender(?string $gender): static
