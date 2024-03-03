@@ -75,20 +75,16 @@ personnalisée.
 
 ### @Thivalaine (Théo DAVIGNY)
 
-- Ajout d'entités, de datafixtures et d'Adminer au docker-compose
-- Modification d'entités
-- Intégration de la page d'accueil, modification de `base.html.twig` et ajout de 2 composants
-- Modification de la BDD, datafixtures et des routes de la liste des utilisateurs
-- Ajout du CRUD pour les factures et les devis (sans détails ajoutés)
-- Correction de divers bugs
-- Correction de toutes les routes d'entreprise et de la route du tableau de bord
-- Ajout de détails pour les factures et les devis (sans intégration frontale avancée)
-- Intégration de la sidebar, initialisation du front pour les factures et les devis
-- Ajout d'un composant de bouton, intégration de la page de contact, personnalisation des formulaires
-- Ajout d'un composant modal pour les devis et les factures
-- Modification du front de l'admin, adaptation de la sidebar selon les rôles
-- Correction de la conversion de devis en facture et fixation du prototype de sélection de produits
-- Correction de la page d'erreur et de la conversion de devis en facture
+- Création des entités
+- Création des jeux d'essais (Datafixtures)
+- Création crud devis et factures avec ajout dynamique de lignes de devis/factures
+- Implémentation composants (table, bouton, modal et footer)
+- Conversion de devis en facture
+- Status de paiement lorsqu'une facture a été payée
+- Responsive de la sidebar et du composant table
+- Création du front du back (listage des clients, des entreprises, ...) et page d'accueil du tableau de bord
+- Création d'un template de formulaire pour la partie back
+- Implémentation des images pour les produits
 
 ### @Nirdeo (Victor DE DOMENICO)
 
