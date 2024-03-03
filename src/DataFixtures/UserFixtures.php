@@ -130,9 +130,12 @@ class UserFixtures extends Fixture
             $user->setCreatedAt(new DateTimeImmutable());
             $user->setUpdatedAt(new DateTimeImmutable());
     
-            $user->setCompany($this->getReference(CompanyFixtures::COMPANY_REFERENCE . rand(1, CompanyFixtures::COMPANY_COUNT_REFERENCE)));
+            if ($user->getRoles() === ['ROLE_COMPANY'] || $user->getRoles() === ['ROLE_ACCOUNTANT']) {
+                $user->setCompany($this->getReference(CompanyFixtures::COMPANY_REFERENCE . rand(1, CompanyFixtures::COMPANY_COUNT_REFERENCE)));
+            }
     
             $manager->persist($user);
+            $manager->persist($superAdmin);
     
             $this->addReference(sprintf('%s%d', self::USER_REFERENCE, $i + 1), $user);
         }
