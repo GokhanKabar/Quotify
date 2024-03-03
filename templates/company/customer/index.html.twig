@@ -31,14 +31,15 @@
                 } %}
             </div>
         </div>
+        {% set filteredUsers = users|filter(user => user.id != app.user.id) %}
         {% embed "components/_table.html.twig" with {
             'arrayLabel': [
-                'Nom', 'Prénom', 'Email', 'Adresse', 'Numéro de téléphone', 'Créé le', 'Modifié le'
+                '#', 'Nom', 'Prénom', 'Genre', 'Email', 'Adresse', 'Numéro de téléphone', 'Créé le', 'Modifié le'
             ],
             'properties': [
-                'lastname', 'firstname', 'email', 'address', 'phoneNumber' ,'createdAt', 'updatedAt'
+                'id', 'lastname', 'firstname', 'gender', 'email', 'address', 'phoneNumber' ,'createdAt', 'updatedAt'
             ],
-            'arrayList': users,
+            'arrayList': filteredUsers,
             'route_show': 'company_customer_show',
             'route_edit': 'company_customer_edit',
             'visibilityConfig': visibilityConfig,
