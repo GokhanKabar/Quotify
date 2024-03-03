@@ -51,14 +51,12 @@ class ProfileType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un mot de passe',
-                        'groups' => ['password_change'],
                     ]),
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Votre mot de passe doit comporter au moins {{ limit }} caractères',
                         'max' => 4096,
                         'maxMessage' => 'Votre mot de passe doit comporter au maximum {{ limit }} caractères',
-                        'groups' => ['password_change'],
                     ]),
                 ],
             ])
@@ -155,18 +153,5 @@ class ProfileType extends AbstractType
                 'required' => false,
             ])
         ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-            'validation_groups' => function ($form) {
-                if ($form->getData()->getPlainPassword() !== null) {
-                    return ['Default', 'password_change'];
-                }
-                return ['Default'];
-            },
-        ]);
     }
 }

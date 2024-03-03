@@ -55,18 +55,17 @@ class UserType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Répéter votre mot de passe'
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Mettre un mot de passe svp',
-                        'groups' => ['password_change'],
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Ton mot de passe devrait avoir au moins {{ limit }} caractères',
-                        'max' => 4096,
-                        'groups' => ['password_change'],
-                    ]),
-                ],
+            ],
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Mettre un mot de passe svp',
+                ]),
+                new Length([
+                    'min' => 6,
+                    'minMessage' => 'Ton mot de passe devrait avoir au moins {{ limit }} caractères',
+                    'max' => 4096,
+                    'maxMessage' => 'Votre mot de passe doit comporter au maximum {{ limit }} caractères',
+                ]),
             ],
         ])
         ->add('company', EntityType::class, [
@@ -116,19 +115,6 @@ class UserType extends AbstractType
             ],
             'multiple' => true,
             'expanded' => true,
-        ]);
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-            'validation_groups' => function ($form) {
-                if ($form->getData()->getPlainPassword() !== null) {
-                    return ['Default', 'password_change'];
-                }
-                return ['Default'];
-            },
         ]);
     }
 }
