@@ -70,7 +70,6 @@ personnalisée.
 
 - GitHub : [Lien du repository] (https://github.com/GokhanKabar/Quotify/)
 - Démo en Ligne : [Lien de la production] (http://89.116.110.72/)
-- Documentation UX/UI : [Lien vers la documentation des personas] ()
 
 ## Changements Récents & Contributions
 
@@ -93,47 +92,34 @@ personnalisée.
 
 ### @Nirdeo (Victor DE DOMENICO)
 
-- Ajout de la fonctionnalité de mail avec Symfony Mailer et Mailtrap
-- Ajout des rôles
-- Ajout de la liste des utilisateurs selon l'entreprise et gestion des utilisateurs avec entreprise
-- Correction des routes de redirection
-- Suivi des paiements
-- Refactorisation de fichiers
-- Mise à jour des formulaires clients
-- Génération de PDF
-- Correction du contrôleur CustomerController et de l'affichage des tables
-- Automatisation des mails PDF
-- Datavisualisation du tableau de bord
-- Correction de requêtes PostgreSQL et pour Chart.js
-- Ajout de rapports financiers globaux
-- Mise à jour de l'édition de profil et du contrôleur de profil de l'entreprise
-- Ajout du `readme.md`
+- Creation de la fonctionnalité de mail
+- Creation de la fonctionnalité de role
+- Creation crud customer
+- Creation chart report
+- Creation chart global report
+- Creation suivi et statut de paiement
+- Creation edit profil
+- Creation pagination
 
 ### @MohaGons (Mohammad GONS SAIB)
 
-- Fonctionnalité d'authentification et d'inscription
-- Suppression du fichier `.env` et ajout à `.gitignore`
-- Réinitialisation du mot de passe
-- Modification des routes `routes.yaml` et création de dossiers back/front/company
-- Modification de la BDD et de Docker compose
-- Panneau d'administration
-- Implémentation de Stripe
-- Correction des routes de sécurité
-- Ajout de Captcha
-- Modification du lien de paiement envoyé avec les factures
-- Ajout de templates d'erreur et de contrôleurs webhook
-- Gestion de `.gitignore` et de diverses corrections
-- Suppression de webhook
-- Correction de la sécurité CRUD, ajout de dates pour les factures/devis, mise à jour de statuts
+- Création CRUD company
+- Reset password
+- Envoi d'E-mails Automatiques
+- Sécurité des crud en fonction des entreprises
+- Implémentation stripe
+- Captcha
+- Template error
 
 ### @GokhanKabar (Gokhan KABAR)
 
-- CRUD Utilisateur
-- Ajout de l'intégration de la page d'accueil, modification de `base.html.twig` et ajout de 2 composants
-- Fonctionnalité produit
-- Correction du mode lumière de la sidebar
-- Création de la page d'accueil et des cartes de composants
-- Intégration du front de la page de connexion et du formulaire de contact
-- Front du panneau d'administration, redirection après connexion réussie, correction du footer
-- Mise à jour des icônes, du footer, et du tableau de bord
-- Front de l'édition de profil
+- Implémentation du login et de son front
+- Création du crud user
+- Création du crud product
+- Création du front de la page Accueil, À propos, Contact
+- Implémentation du component navbar, sidebar, sidebar admin, cards rows et cards rows reverse
+- Modification du footer pour le rendre responsive
+- Création front stripe success et cancel
+- Création du front reset password, paramètre du compte
+- Création des templates pour les envoies de mail
+- Déploiement du site en production sur un vps avec une stack LEMP
