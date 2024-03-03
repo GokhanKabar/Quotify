@@ -5,6 +5,20 @@
 {% block title %}Liste des clients{% endblock %}
 
 {% block body %}
+    {% set visibilityConfig = {
+        'createdAt': 'hidden md:hidden sm:hidden lg:table-cell',
+        'updatedAt': 'hidden md:hidden sm:hidden lg:table-cell',
+        'phoneNumber': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+        'address': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+    } %}
+
+    {% set visibilityConfigLabel = {
+        'Créé le': 'hidden md:hidden sm:hidden lg:table-cell',
+        'Modifié le': 'hidden md:hidden sm:hidden lg:table-cell',
+        'Numéro de téléphone': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+        'Adresse': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+    } %}
+
     <div class="flex flex-col p-5 gap-5">
         <div class="flex items-center justify-between">
             <div class="flex">
@@ -29,6 +43,8 @@
             'arrayList': users,
             'route_show': 'company_customer_show',
             'route_edit': 'company_customer_edit',
+            'visibilityConfig': visibilityConfig,
+            'visibilityConfigLabel': visibilityConfigLabel,
         } %}
         {% endembed %}
     </div>
