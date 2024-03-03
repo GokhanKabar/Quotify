@@ -33,7 +33,7 @@ class Company
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class, cascade: ['remove'])]
     private Collection $users;
 
     #[ORM\OneToMany(mappedBy: 'companyReference', targetEntity: Product::class, cascade: ['remove'])]

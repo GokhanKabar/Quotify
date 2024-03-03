@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Devis {{ quotation.id }}</title>
+    <title>Devis n°{{ quotation.id }}</title>
     <style>
         body {
             font-family: 'Helvetica', 'Arial', sans-serif;
@@ -34,33 +34,50 @@
 </head>
 <body>
 <div class="header">
-    <h1>Devis N°{{ quotation.id }}</h1>
+    <h1>Devis n°{{ quotation.id }}</h1>
     <p>Date: {{ quotation.creationDate|date('d/m/Y') }}</p>
     <p>Statut: {{ quotation.status }}</p>
 </div>
 
-<table>
-    <thead>
-    <tr>
-        <th>Produit</th>
-        <th>Description</th>
-        <th>Quantité</th>
-        <th>Prix Unitaire</th>
-        <th>Total</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for detail in quotation.quotationDetails %}
+<div>
+    <div>
+        <h3>Informations Client</h3>
+        <p>Facture adressée à : {{ quotation.userReference.gender }}. {{ quotation.userReference.firstname }} {{ quotation.userReference.lastname }}</p>
+        <p>Adresse mail : {{ quotation.userReference.email }}</p>
+        <p>Numéro de téléphone : {{ quotation.userReference.phoneNumber }}</p>
+        <p>Adresse : {{ quotation.userReference.address }}, {{ quotation.userReference.postalCode }} {{ quotation.userReference.city }}</p>
+    </div>
+    <div>
+        <h3>Informations Entreprise</h3>
+        <p>Entreprise: {{ quotation.userReference.company.companyName }}</p>
+        <p>Numéro de siret : {{ quotation.userReference.company.siretNumber }}</p>
+    </div>
+</div>
+<div>
+    <h3>Détails du devis</h3>
+    <table>
+        <thead>
         <tr>
-            <td>{{ detail.product.productName }}</td>
-            <td>{{ detail.product.description }}</td>
-            <td>{{ detail.quantity }}</td>
-            <td>{{ detail.product.unitPrice|number_format(2, ',', ' ') }} €</td>
-            <td>{{ (detail.quantity * detail.product.unitPrice)|number_format(2, ',', ' ') }} €</td>
+            <th>Produit</th>
+            <th>Description</th>
+            <th>Quantité</th>
+            <th>Prix Unitaire</th>
+            <th>Total</th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        {% for detail in quotation.quotationDetails %}
+            <tr>
+                <td>{{ detail.product.productName }}</td>
+                <td>{{ detail.product.description }}</td>
+                <td>{{ detail.quantity }}</td>
+                <td>{{ detail.product.unitPrice|number_format(2, ',', ' ') }} €</td>
+                <td>{{ (detail.quantity * detail.product.unitPrice)|number_format(2, ',', ' ') }} €</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 <div class="footer">
     <p>Total HT : {{ quotation.totalHT|number_format(2, ',', ' ') }} €</p>
