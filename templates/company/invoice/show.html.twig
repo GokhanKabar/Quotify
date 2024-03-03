@@ -43,9 +43,10 @@
             'arrayList': [
                 {
                     'id': invoice.id, 
-                    'creationDate': invoice.creationDate, 
+                    'creationDate': invoice.creationDate,
                 }
             ],
+            'buttonPaymentStatus': invoice.paymentStatus == 'En attente' ? true : false,
         } %}
         {% endembed %}
 
@@ -71,5 +72,21 @@
             'arrayList': arrayList,
         } %}
         {% endembed %}
+        <div class="flex flex-col items-end">
+            <p>Total TTC : <span class="totalTTC">
+                {% if invoice is defined %}
+                    {{ invoice.totalTTC }} €
+                {% else %}
+                    0.00 €
+                {% endif %}
+            </span></p>
+            <p>Total HT : <span class="totalHT">
+                {% if invoice is defined %}
+                    {{ invoice.totalHT }} €
+                {% else %}
+                    0.00 €
+                {% endif %}
+            </span></p>
+        </div>
     </div>
 {% endblock %}
