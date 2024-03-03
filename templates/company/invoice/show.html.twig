@@ -38,13 +38,12 @@
                 '#', 'Date de création'
             ],
             'properties': [
-                'id', 'creationDate',
+                'id', 'creationDate'
             ],
             'arrayList': [
                 {
                     'id': invoice.id, 
-                    'creationDate': invoice.creationDate, 
-                    'paymentStatus': invoice.paymentStatus
+                    'creationDate': invoice.creationDate,
                 }
             ],
             'buttonPaymentStatus': invoice.paymentStatus == 'En attente' ? true : false,

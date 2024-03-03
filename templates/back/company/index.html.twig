@@ -3,6 +3,16 @@
 {% block title %}Liste des sociétés{% endblock %}
 
 {% block body %}
+    {% set visibilityConfig = {
+        'address': 'hidden md:hidden sm:hidden lg:table-cell',
+        'email': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+    } %}
+
+    {% set visibilityConfigLabel = {
+        'Adresse': 'hidden md:hidden sm:hidden lg:table-cell',
+        'Email': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+    } %}
+
     <div class="flex flex-col p-5 gap-5">
         <div class="flex items-center justify-between">
             <div class="flex">
@@ -27,6 +37,8 @@
             'arrayList': companies,
             'route_show': 'back_company_show',
             'route_edit': 'back_company_edit',
+            'visibilityConfig': visibilityConfig,
+            'visibilityConfigLabel': visibilityConfigLabel,
         } %}
         {% endembed %}
     </div>

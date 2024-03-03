@@ -3,6 +3,14 @@
 {% block title %}Suivi des paiements{% endblock %}
 
 {% block body %}
+    {% set visibilityConfig = {
+        'creationDate': 'lg:block md:hidden sm:hidden hidden',
+    } %}
+
+    {% set visibilityConfigLabel = {
+        'Date de création': 'lg:block md:hidden sm:hidden hidden',
+    } %}
+
     <div class="flex flex-col p-5 gap-5">
         <div class="flex items-center justify-between">
             <div class="flex">
@@ -32,6 +40,8 @@
             'arrayLabel': arrayLabel,
             'properties': properties,
             'arrayList': invoices,
+            'visibilityConfig': visibilityConfig,
+            'visibilityConfigLabel': visibilityConfigLabel,
         } %}
         {% endembed %}
     </div>

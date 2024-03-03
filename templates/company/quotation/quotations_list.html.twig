@@ -3,6 +3,18 @@
 {% block title %}Liste des devis{% endblock %}
 
 {% block body %}
+    {% set visibilityConfig = {
+        'creationDate': 'hidden md:hidden sm:hidden lg:table-cell',
+        'firstname': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+        'lastname': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+    } %}
+
+    {% set visibilityConfigLabel = {
+        'Date de création': 'hidden md:hidden sm:hidden lg:table-cell',
+        'Prénom': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+        'Nom': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+    } %}
+
     <div class="flex flex-col p-5 gap-5">
         <div class="flex items-center justify-between">
             <div class="flex">
@@ -27,6 +39,8 @@
             'arrayList': quotations,
             'route_show': 'company_quotation_show',
             'route_edit': 'company_quotation_edit',
+            'visibilityConfig': visibilityConfig,
+            'visibilityConfigLabel': visibilityConfigLabel,
         } %}
         {% endembed %}
     </div>
