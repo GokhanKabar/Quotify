@@ -222,23 +222,30 @@ class QuotationController extends AbstractController
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        $pdfFilePath = $this->getParameter('quotation_directory') . "/quotation-{$quotation->getId()}.pdf";
+        // Génération d'un nom de fichier sécurisé
+        $pdfFileName = 'quotation_' . md5(uniqid()) . '.pdf';
+        $pdfFilePath = $this->getParameter('quotation_directory') . '/' . $pdfFileName;
 
         // Stockage du PDF
         file_put_contents($pdfFilePath, $dompdf->output());
 
         // Envoi du PDF par e-mail
         $email = (new TemplatedEmail())
-        ->from(new Address('no-reply@quotify.fr', 'Quotify'))
-        ->to($quotation->getUserReference()->getEmail())
-        ->subject("Devis n°{$quotation->getId()}")
-        ->htmlTemplate('company/quotation/email.html.twig')
-        ->context([
-            'quotation' => $quotation,
-        ])
-        ->attachFromPath($pdfFilePath, "quotation-{$quotation->getId()}.pdf");
+            ->from(new Address('no-reply@quotify.fr', 'Quotify'))
+            ->to($quotation->getUserReference()->getEmail())
+            ->subject("Devis n°{$quotation->getId()}")
+            ->htmlTemplate('company/quotation/email.html.twig')
+            ->context([
+                'quotation' => $quotation,
+            ])
+            ->attachFromPath($pdfFilePath, $pdfFileName);
 
-    $mailer->send($email);
+        $mailer->send($email);
+
+        // Suppression du PDF après envoi
+        if (file_exists($pdfFilePath)) {
+            unlink($pdfFilePath);
+        }
 
         // Mise à jour du statut du devis avec la date d'envoi
         $dateSent = new \DateTime(); // Obtient la date actuelle
@@ -249,7 +256,7 @@ class QuotationController extends AbstractController
         $entityManager->persist($quotation);
         $entityManager->flush();
 
-        return $dompdfWrapper->getStreamResponse($html, "quotation-{$quotation->getId()}.pdf", ['Attachment' => true,]);
+        return $dompdfWrapper->getStreamResponse($html, $pdfFileName, ['Attachment' => true,]);
     }
 
     #[Route('/convert/{id}', name: 'quotation_convert', methods: ['GET'])]
