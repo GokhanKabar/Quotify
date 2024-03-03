@@ -109,6 +109,24 @@ class UserFixtures extends Fixture
             'ROLE_ACCOUNTANT' => 0,
             'ROLE_COMPANY' => 0,
         ];
+
+        $superAdmin = new User();
+        $superAdmin->setEmail('admin@quotify.fr');
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $superAdmin,
+            self::USER_PLAIN_PASSWORD
+        );
+        $superAdmin->setPassword($hashedPassword);
+        $superAdmin->setFirstName('admin');
+        $superAdmin->setLastName('admin');
+        $superAdmin->setPhoneNumber('01 23 45 67 89');
+        $superAdmin->setAddress('10 Rue de la Paix');
+        $superAdmin->setCity('Paris');
+        $superAdmin->setPostalCode('75000');
+        $superAdmin->setGender('M');
+        $superAdmin->setRoles(['ROLE_ADMIN']);
+        $superAdmin->setCreatedAt(new DateTimeImmutable());
+        $superAdmin->setUpdatedAt(new DateTimeImmutable());
     
         for ($i = 0; $i < self::USER_COUNT_REFERENCE; ++$i) {
             $user = new User();
@@ -145,9 +163,12 @@ class UserFixtures extends Fixture
             $user->setCreatedAt(new DateTimeImmutable());
             $user->setUpdatedAt(new DateTimeImmutable());
     
-            $user->setCompany($this->getReference(CompanyFixtures::COMPANY_REFERENCE . rand(1, CompanyFixtures::COMPANY_COUNT_REFERENCE)));
+            if ($user->getRoles() === ['ROLE_COMPANY'] || $user->getRoles() === ['ROLE_ACCOUNTANT']) {
+                $user->setCompany($this->getReference(CompanyFixtures::COMPANY_REFERENCE . rand(1, CompanyFixtures::COMPANY_COUNT_REFERENCE)));
+            }
     
             $manager->persist($user);
+            $manager->persist($superAdmin);
     
             $this->addReference(sprintf('%s%d', self::USER_REFERENCE, $i + 1), $user);
         }

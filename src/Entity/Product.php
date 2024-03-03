@@ -37,7 +37,7 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: QuotationDetail::class, cascade: ['persist', 'remove'])]
     private Collection $quotationDetails;
 
-    #[ORM\ManyToOne(inversedBy: 'products', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Company $companyReference = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
