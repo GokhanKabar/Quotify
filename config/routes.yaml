@@ -36,10 +36,6 @@ controller_stripe:
     resource: ../src/Controller/StripeController.php
     type: attribute
 
-controller_webhook:
-    resource: ../src/Controller/WebhookController.php
-    type: attribute
-
 invoice_download:
     path: /documents/invoices/{filename}
     controller: App\Controller\InvoiceController::downloadInvoice
