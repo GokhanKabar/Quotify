@@ -28,6 +28,20 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 #[Route('/quotation')]
 class QuotationController extends AbstractController
 {
+    #[Route('/documents/quotations/{filename}', name: 'quotation_download')]
+    public function downloadQuotation(string $filename): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/quotations/' . $filename;
+
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('Le fichier n\'existe pas.');
+        }
+
+        return new BinaryFileResponse($filePath);
+    }
+
     #[Route('/', name: 'quotation_index')]
     public function index(CompanyRepository $companyRepository, Security $security): Response
     {
