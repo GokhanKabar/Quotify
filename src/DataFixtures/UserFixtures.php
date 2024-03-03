@@ -7,17 +7,13 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use DateTimeImmutable;
+use App\Entity\Company;
 
 class UserFixtures extends Fixture
 {
     const USER_REFERENCE = 'user';
-    const USER_COUNT_REFERENCE = 10;
+    const USER_COUNT_REFERENCE = 4;
     const USER_PLAIN_PASSWORD = 'password123';
-    const USER_ROLES = [
-        'ROLE_ADMIN',
-        'ROLE_COMPANY',
-        'ROLE_ACCOUNTANT',
-    ];
     const GENDER = [
         'M',
         'F',
@@ -29,11 +25,6 @@ class UserFixtures extends Fixture
         "Toulouse",
         "Bordeaux",
         "Nancy",
-        "Paris",
-        "Marseille",
-        "Lyon",
-        "Toulouse",
-        "Nice"
     ];
     
     const USER_FIRSTNAME = [
@@ -42,11 +33,6 @@ class UserFixtures extends Fixture
         "Paul",
         "Jacques",
         "Marie",
-        "Claire",
-        "Sophie",
-        "Julie",
-        "Nicolas",
-        "Alexandre"
     ];
     
     const USER_LASTNAME = [
@@ -55,11 +41,6 @@ class UserFixtures extends Fixture
         "Martin",
         "Bernard",
         "Dubois",
-        "Thomas",
-        "Robert",
-        "Richard",
-        "Petit",
-        "Moreau"
     ];
     
     const USER_EMAIL = [
@@ -68,11 +49,6 @@ class UserFixtures extends Fixture
         "paul.martin@example.com",
         "jacques.bernard@example.com",
         "marie.dubois@example.com",
-        "claire.thomas@example.com",
-        "sophie.robert@example.com",
-        "julie.richard@example.com",
-        "nicolas.petit@example.com",
-        "alexandre.moreau@example.com"
     ];
     
     const USER_ADDRESS = [
@@ -81,11 +57,6 @@ class UserFixtures extends Fixture
         "32 Boulevard de Strasbourg, 31000 Toulouse",
         "15 Rue Sainte-Catherine, 33000 Bordeaux",
         "7 Place Stanislas, 54000 Nancy",
-        "2 Rue des Pyramides, 75001 Paris",
-        "45 La Canebière, 13001 Marseille",
-        "8 Rue Victor Hugo, 69002 Lyon",
-        "3 Place du Capitole, 31000 Toulouse",
-        "22 Avenue Jean Médecin, 06000 Nice",
     ];
 
     public function __construct(
@@ -100,15 +71,37 @@ class UserFixtures extends Fixture
             "Bordeaux" => "33000",
             "Nancy" => "54000",
             "Marseille" => "13001",
-            "Lyon" => "69002",
-            "Nice" => "06000",
         ];
-    
-        $roleCount = [
-            'ROLE_ADMIN' => 0,
-            'ROLE_ACCOUNTANT' => 0,
-            'ROLE_COMPANY' => 0,
-        ];
+
+        $superAdmin = new User();
+        $superAdmin->setEmail('admin@quotify.fr');
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $superAdmin,
+            self::USER_PLAIN_PASSWORD
+        );
+        $superAdmin->setPassword($hashedPassword);
+        $superAdmin->setFirstName('admin');
+        $superAdmin->setLastName('admin');
+        $superAdmin->setPhoneNumber('01 23 45 67 89');
+        $superAdmin->setAddress('10 Rue de la Paix');
+        $superAdmin->setCity('Paris');
+        $superAdmin->setPostalCode('75000');
+        $superAdmin->setGender('M');
+        $superAdmin->setRoles(['ROLE_ADMIN']);
+        $superAdmin->setCreatedAt(new DateTimeImmutable());
+        $superAdmin->setUpdatedAt(new DateTimeImmutable());
+
+        $quotify = new Company();
+        $quotify->setCompanyName('Quotify');
+        $quotify->setAddress('10 Rue de la Paix, 75002 Paris');
+        $quotify->setEmail('quotify@quotify.fr');
+        $quotify->setSiretNumber(rand(10000000000000, 99999999999999));
+
+        $manager->persist($quotify);
+
+        $superAdmin->setCompany($quotify);
+
+        $manager->persist($superAdmin);
     
         for ($i = 0; $i < self::USER_COUNT_REFERENCE; ++$i) {
             $user = new User();
@@ -125,22 +118,14 @@ class UserFixtures extends Fixture
             $user->setCity(self::USER_CITY[$i]);
             $user->setPostalCode($postalCodes[self::USER_CITY[$i]]);
             $user->setGender(self::GENDER[rand(0, 1)]);
-    
-            // ici on assigne les rôles (3 admins, 3 comptables et 4 entreprises)
-            if ($i < 3) {
-                $role = 'ROLE_ADMIN';
-            } elseif ($i < 6) {
+
+            if ($i < 2) {
                 $role = 'ROLE_ACCOUNTANT';
             } else {
                 $role = 'ROLE_COMPANY';
             }
 
-            if ($roleCount[$role] < 3) {
-                $user->setRoles([$role]);
-                $roleCount[$role]++;
-            } else {
-                $user->setRoles(['ROLE_COMPANY']);
-            }
+            $user->setRoles([$role]);
     
             $user->setCreatedAt(new DateTimeImmutable());
             $user->setUpdatedAt(new DateTimeImmutable());
