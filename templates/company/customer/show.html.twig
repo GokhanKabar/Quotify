@@ -27,10 +27,10 @@
         </div>
         {% embed "components/_table.html.twig" with {
             'arrayLabel': [
-                'Nom', 'Prénom', 'Email', 'Créé le', 'Modifié le'
+                'Nom', 'Prénom', 'Email', 'Adresse', 'Numéro de téléphone', 'Créé le', 'Modifié le'
             ],
             'properties': [
-                'lastName', 'firstName', 'email', 'createdAt', 'updatedAt'
+                'lastName', 'firstName', 'email', 'address', 'phoneNumber', 'createdAt', 'updatedAt'
             ],
             'arrayList': [user],
         } %}
