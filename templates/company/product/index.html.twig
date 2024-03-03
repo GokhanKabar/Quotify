@@ -3,6 +3,16 @@
 {% block title %}Liste des produits{% endblock %}
 
 {% block body %}
+    {% set visibilityConfig = {
+        'description': 'hidden md:hidden sm:hidden lg:table-cell',
+        'categoryName': 'hidden md:hidden sm:hidden lg:table-cell',
+    } %}
+
+    {% set visibilityConfigLabel = {
+        'Description': 'hidden md:hidden sm:hidden lg:table-cell',
+        'Catégorie': 'hidden md:hidden sm:hidden lg:table-cell',
+    } %}
+
     <div class="flex flex-col p-5 gap-5">
         <div class="flex items-center justify-between">
             <div class="flex">
@@ -19,14 +29,16 @@
         </div>
         {% embed "components/_table.html.twig" with {
             'arrayLabel': [
-                '#', 'Vignette', 'Nom du produit', 'Description', 'Catégorie', "Prix à l'unité"
+                'Vignette', 'Nom du produit', 'Description', 'Catégorie', "Prix à l'unité"
             ],
             'properties': [
-                'id', 'imageName', 'productName', 'description', 'categoryName', 'unitPrice'
+                'imageName', 'productName', 'description', 'categoryName', 'unitPrice'
             ],
             'arrayList': products,
             'route_show': 'company_product_show',
-            'route_edit': 'company_product_edit'
+            'route_edit': 'company_product_edit',
+            'visibilityConfig': visibilityConfig,
+            'visibilityConfigLabel': visibilityConfigLabel,
         } %}
         {% endembed %}
     </div>

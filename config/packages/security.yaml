@@ -16,6 +16,7 @@ security:
     main:
       lazy: true
       provider: app_user_provider
+      access_denied_handler: App\Security\CustomAccessDeniedHandler
       custom_authenticator: App\Security\AuthLoginAuthenticator
       logout:
         path: app_logout
@@ -54,7 +55,7 @@ security:
   role_hierarchy:
     ROLE_ADMIN: [ ROLE_ADMIN ]
     ROLE_COMPANY: [ ROLE_COMPANY ]
-    ROLE_ACCOUNTANT: [ ROLE_USER ]
+    ROLE_ACCOUNTANT: [ ROLE_ACCOUNTANT ]
 
 when@test:
   security:

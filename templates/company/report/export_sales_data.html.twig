@@ -1,0 +1,38 @@
+{# templates/report/export_sales_data.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Données des ventes</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h2>Données des ventes par produit</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Produit</th>
+        <th>Total des ventes</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for sale in salesData %}
+        <tr>
+            <td>{{ sale.productName }}</td>
+            <td>{{ sale.totalSales }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

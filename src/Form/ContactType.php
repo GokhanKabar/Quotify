@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
 
 class ContactType extends AbstractType
 {
@@ -64,6 +65,9 @@ class ContactType extends AbstractType
                         'message' => 'Veuillez saisir votre message',
                     ]),
                 ],
+            ])
+            ->add('captcha', ReCaptchaType::class, [
+                'label' => 'Captcha',
             ])
         ;
     }

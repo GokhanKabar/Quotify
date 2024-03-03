@@ -1,0 +1,38 @@
+{# templates/report/export_sales_by_month.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Total des Ventes par Mois</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h2>Total des Ventes par Mois</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Mois</th>
+        <th>Total des Ventes</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for sale in salesByMonth %}
+        <tr>
+            <td>{{ sale.month }}</td>
+            <td>{{ sale.total }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{# templates/report/export_invoice_status.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Statut des Factures</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h2>Statut des Factures</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Statut de Paiement</th>
+        <th>Nombre de Factures</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for status in invoiceStatusData %}
+        <tr>
+            <td>{{ status.paymentStatus }}</td>
+            <td>{{ status.statusCount }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

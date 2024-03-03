@@ -19,6 +19,11 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
 use App\Entity\Product;
 use App\Form\ProductType;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Repository\InvoiceRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 #[Route('/invoice')]
 class InvoiceController extends AbstractController
@@ -76,6 +81,25 @@ class InvoiceController extends AbstractController
         $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $totalHT = 0;
+            $totalTTC = 0; 
+            
+            $details = $form->getData()->getInvoiceDetails();   
+            
+            foreach ($details as $detail) {
+                $unitPrice = $detail->getProduct()->getUnitPrice();
+                $quantity = $detail->getQuantity();
+    
+                $amountHT = $unitPrice * $quantity;
+                $totalHT += $amountHT;
+    
+                $amountTTC = $amountHT * (1 + ($detail->getTva() / 100));
+                $totalTTC += $amountTTC;
+            }
+    
+            $invoice->setTotalHT($totalHT);
+            $invoice->setTotalTTC($totalTTC);
+
             $entityManager->persist($invoice);
             $entityManager->flush();
 
@@ -99,12 +123,16 @@ class InvoiceController extends AbstractController
     #[Route('/{id}', name: 'invoice_show', methods: ['GET'])]
     public function show(Invoice $invoice): Response
     {
+        $this->denyAccessUnlessGranted('INVOICE_VIEW', $invoice);
+
         return $this->render('company/invoice/show.html.twig', ['invoice' => $invoice,]);
     }
 
     #[Route('/{id}/edit', name: 'invoice_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Invoice $invoice, EntityManagerInterface $entityManager, Security $security): Response
     {
+        $this->denyAccessUnlessGranted('INVOICE_EDIT', $invoice);
+
         if (!$security->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -124,6 +152,25 @@ class InvoiceController extends AbstractController
         $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $totalHT = 0;
+            $totalTTC = 0;   
+
+            $details = $form->getData()->getInvoiceDetails(); 
+            
+            foreach ($details as $detail) {
+                $unitPrice = $detail->getProduct()->getUnitPrice();
+                $quantity = $detail->getQuantity();
+    
+                $amountHT = $unitPrice * $quantity;
+                $totalHT += $amountHT;
+    
+                $amountTTC = $amountHT * (1 + ($detail->getTva() / 100));
+                $totalTTC += $amountTTC;
+            }
+    
+            $invoice->setTotalHT($totalHT);
+            $invoice->setTotalTTC($totalTTC);
+
             $entityManager->persist($invoice);
             $entityManager->flush();
 
@@ -147,6 +194,8 @@ class InvoiceController extends AbstractController
     #[Route('/{id}', name: 'invoice_delete', methods: ['POST'])]
     public function delete(Request $request, Invoice $invoice, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('INVOICE_DELETE', $invoice);
+
         if ($this->isCsrfTokenValid('delete' . $invoice->getId(), $request->request->get('_token'))) {
             $entityManager->remove($invoice);
             $entityManager->flush();
@@ -158,6 +207,8 @@ class InvoiceController extends AbstractController
     #[Route('/pdf/{id}', name: 'invoice_pdf', methods: ['GET'])]
     public function generatePdf(Invoice $invoice, DompdfWrapperInterface $dompdfWrapper, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('INVOICE_VIEW', $invoice);
+        
         // Configuration de Dompdf
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -177,22 +228,63 @@ class InvoiceController extends AbstractController
         // Stockage du PDF
         file_put_contents($pdfFilePath, $dompdf->output());
 
-        // Envoi du PDF par e-mail
-        $email = (new Email())
+        // Initialisez Stripe
+        Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
+
+         // Créez une session de paiement Stripe
+         $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => "Facture n°{$invoice->getId()}",
+                    ],
+                    'unit_amount' => $invoice->getTotalTTC() * 100, // Convertissez en centimes
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => $this->generateUrl('payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('payment_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        ]);
+
+
+        $email = (new TemplatedEmail())
         ->from(new Address('no-reply@quotify.fr', 'Quotify'))
         ->to($invoice->getUserReference()->getEmail())
         ->subject("Facture n°{$invoice->getId()}")
-        ->text("Vous trouverez ci-joint la facture demandée.")
+        ->htmlTemplate('company/invoice/email.html.twig')
+        ->context([
+            'invoice' => $invoice,
+            'session' => $session,
+        ])
         ->attachFromPath($pdfFilePath, "invoice-{$invoice->getId()}.pdf");
-
+    
+ 
         $mailer->send($email);
-
-        $invoice->setPaymentStatus('Payée');
+ 
+        $invoice->setPaymentStatus("En attente");
 
         // Enregistrez les modifications dans la base de données
         $entityManager->persist($invoice);
         $entityManager->flush();
 
         return $dompdfWrapper->getStreamResponse($html, "invoice-{$invoice->getId()}.pdf", ['Attachment' => true,]);
+    }
+
+    #[Route('/{id}/paid', name: 'payment_success', methods: ['GET'])]
+    public function setPaymentStatus(int $id, EntityManagerInterface $entityManager, InvoiceRepository $invoiceRepository): Response
+    {
+        $invoice = $invoiceRepository->find($id);
+        $this->denyAccessUnlessGranted('INVOICE_VIEW', $invoice);
+
+        $invoice->setPaymentStatus("Payé");
+
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('company_invoice_show', ['id' => $invoice->getId()]);
+
     }
 }

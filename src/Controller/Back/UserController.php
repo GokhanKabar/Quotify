@@ -30,10 +30,17 @@ class UserController extends AbstractController
     }
 
     #[Route('/', name: 'user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, Request $request): Response
     {
+        $page = $request->query->getInt('page', 1);
+        $limit = 10; // Ou toute autre limite que vous souhaitez
+
+        $users = $userRepository->findByPage($page, $limit);
+
         return $this->render('back/user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users,
+            'currentPage' => $page,
+            'totalPages' => ceil(count($users) / $limit),
         ]);
     }
 
@@ -63,21 +70,25 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // Envoi de l'e-mail
-            $email = (new Email())
+            $email = (new TemplatedEmail())
             ->from(new Address('no-reply@quotify.fr', 'Quotify'))
-            ->to($user->getEmail()) // Utilisez l'adresse e-mail de l'utilisateur
+            ->to($user->getEmail())
             ->subject('Vos informations de connexion')
-            ->text("Votre e-mail : {$user->getEmail()}\nVotre mot de passe : $plaintextPassword");
+            ->htmlTemplate('back/user/email.html.twig')
+            ->context([
+                'user' => $user,
+                'plaintextPassword' => $plaintextPassword,
+            ]);
 
-            $mailer->send($email);
+        $mailer->send($email);
 
-            return $this->redirectToRoute('back_user_index', [], Response::HTTP_SEE_OTHER);
-        }
+        return $this->redirectToRoute('back_user_index', [], Response::HTTP_SEE_OTHER);
+    }
 
-        return $this->render('back/user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+    return $this->render('back/user/new.html.twig', [
+        'user' => $user,
+        'form' => $form,
+    ]);
     }
 
     #[Route('/{id}', name: 'user_show', methods: ['GET'])]

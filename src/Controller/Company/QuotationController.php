@@ -20,11 +20,10 @@ use Dompdf\Options;
 use Dompdf\Dompdf;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
-use Stripe\Stripe;
-use Stripe\Checkout\Session;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Form\ProductType;
 use App\Entity\Product;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+
 
 #[Route('/quotation')]
 class QuotationController extends AbstractController
@@ -64,7 +63,7 @@ class QuotationController extends AbstractController
         $company = $security->getUser()->getCompany();
 
         $quotation->setCreationDate(new \DateTime());
-        $quotation->setStatus('En attente');
+        $quotation->setStatus("Créer le " . $quotation->getCreationDate()->format('d/m/Y H:i:s'));
 
         $form = $this->createForm(QuotationType::class, $quotation, [
             'company_id' => $company->getId(),
@@ -82,6 +81,25 @@ class QuotationController extends AbstractController
         $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $totalHT = 0;
+            $totalTTC = 0;    
+
+            $details = $form->getData()->getQuotationDetails();
+            
+            foreach ($details as $detail) {
+                $unitPrice = $detail->getProduct()->getUnitPrice();
+                $quantity = $detail->getQuantity();
+    
+                $amountHT = $unitPrice * $quantity;
+                $totalHT += $amountHT;
+    
+                $amountTTC = $amountHT * (1 + ($detail->getTva() / 100));
+                $totalTTC += $amountTTC;
+            }
+    
+            $quotation->setTotalHT($totalHT);
+            $quotation->setTotalTTC($totalTTC);
+
             $entityManager->persist($quotation);
             $entityManager->flush();
 
@@ -105,12 +123,16 @@ class QuotationController extends AbstractController
     #[Route('/{id}', name: 'quotation_show', methods: ['GET'])]
     public function show(Quotation $quotation): Response
     {
-        return $this->render('company/quotation/show.html.twig', ['quotation' => $quotation,]);
+        $this->denyAccessUnlessGranted('QUOTATION_VIEW', $quotation);
+
+        return $this->render('company/quotation/show.html.twig', ['quotation' => $quotation]);
     }
 
     #[Route('/{id}/edit', name: 'quotation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Quotation $quotation, EntityManagerInterface $entityManager, Security $security): Response
     {
+        $this->denyAccessUnlessGranted('QUOTATION_EDIT', $quotation);
+
         if (!$security->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -130,6 +152,25 @@ class QuotationController extends AbstractController
         $product->setCompanyReference($company);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $totalHT = 0;
+            $totalTTC = 0;    
+            
+            $details = $form->getData()->getQuotationDetails();
+
+            foreach ($details as $detail) {
+                $unitPrice = $detail->getProduct()->getUnitPrice();
+                $quantity = $detail->getQuantity();
+    
+                $amountHT = $unitPrice * $quantity;
+                $totalHT += $amountHT;
+    
+                $amountTTC = $amountHT * (1 + ($detail->getTva() / 100));
+                $totalTTC += $amountTTC;
+            }
+    
+            $quotation->setTotalHT($totalHT);
+            $quotation->setTotalTTC($totalTTC);
+
             $entityManager->persist($quotation);
             $entityManager->flush();
 
@@ -153,6 +194,8 @@ class QuotationController extends AbstractController
     #[Route('/{id}', name: 'quotation_delete', methods: ['POST'])]
     public function delete(Request $request, Quotation $quotation, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('QUOTATION_DELETE', $quotation);
+
         if ($this->isCsrfTokenValid('delete' . $quotation->getId(), $request->request->get('_token'))) {
             $entityManager->remove($quotation);
             $entityManager->flush();
@@ -164,6 +207,8 @@ class QuotationController extends AbstractController
     #[Route('/pdf/{id}', name: 'quotation_pdf', methods: ['GET'])]
     public function generatePdf(Quotation $quotation, DompdfWrapperInterface $dompdfWrapper, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('QUOTATION_VIEW', $quotation);
+
         // Configuration de Dompdf
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -182,38 +227,23 @@ class QuotationController extends AbstractController
         // Stockage du PDF
         file_put_contents($pdfFilePath, $dompdf->output());
 
-        // Initialisez Stripe
-        Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
-
-         // Créez une session de paiement Stripe
-         $session = Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'eur',
-                    'product_data' => [
-                        'name' => "Facture n°{$quotation->getId()}",
-                    ],
-                    'unit_amount' => $quotation->getTotalTTC() * 100, // Convertissez en centimes
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => $this->generateUrl('payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $this->generateUrl('payment_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
-        ]);
-
         // Envoi du PDF par e-mail
-        $email = (new Email())
+        $email = (new TemplatedEmail())
         ->from(new Address('no-reply@quotify.fr', 'Quotify'))
         ->to($quotation->getUserReference()->getEmail())
-        ->subject("Facture n°{$quotation->getId()}")
-        ->text("Vous trouverez ci-joint le devis demandé. Vous pouvez également payer en ligne en suivant ce lien : {$session->url}")
+        ->subject("Devis n°{$quotation->getId()}")
+        ->htmlTemplate('company/quotation/email.html.twig')
+        ->context([
+            'quotation' => $quotation,
+        ])
         ->attachFromPath($pdfFilePath, "quotation-{$quotation->getId()}.pdf");
 
-        $mailer->send($email);
+    $mailer->send($email);
 
-        $quotation->setStatus('En attente de paiment');
+        // Mise à jour du statut du devis avec la date d'envoi
+        $dateSent = new \DateTime(); // Obtient la date actuelle
+        $formattedDate = $dateSent->format('d/m/Y H:i:s'); // Formate la date
+        $quotation->setStatus("Devis envoyé par mail le " . $formattedDate);
 
         // Enregistrez les modifications dans la base de données
         $entityManager->persist($quotation);
@@ -226,6 +256,7 @@ class QuotationController extends AbstractController
     public function convertQuotationToInvoice(int $id, QuotationRepository $quotationRepository, EntityManagerInterface $entityManager): Response
     {
         $quotation = $quotationRepository->find($id);
+        $this->denyAccessUnlessGranted('QUOTATION_VIEW', $quotation);
 
         $invoice = new Invoice();
         $invoice->setCreationDate($quotation->getCreationDate());
