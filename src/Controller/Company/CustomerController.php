@@ -45,6 +45,9 @@ class CustomerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->setRoles(['ROLE_CUSTOMER']);
+
             $entityManager->persist($user);
             $entityManager->flush();
 
