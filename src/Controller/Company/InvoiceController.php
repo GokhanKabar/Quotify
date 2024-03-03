@@ -208,7 +208,7 @@ class InvoiceController extends AbstractController
     public function generatePdf(Invoice $invoice, DompdfWrapperInterface $dompdfWrapper, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('INVOICE_VIEW', $invoice);
-        
+
         // Configuration de Dompdf
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -222,8 +222,9 @@ class InvoiceController extends AbstractController
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        // Chemin où le PDF sera sauvegardé
-        $pdfFilePath = $this->getParameter('invoice_directory') . "/invoice-{$invoice->getId()}.pdf";
+        // Génération d'un nom de fichier sécurisé
+        $pdfFileName = 'invoice_' . md5(uniqid()) . '.pdf';
+        $pdfFilePath = $this->getParameter('invoice_directory') . '/' . $pdfFileName;
 
         // Stockage du PDF
         file_put_contents($pdfFilePath, $dompdf->output());
@@ -231,8 +232,8 @@ class InvoiceController extends AbstractController
         // Initialisez Stripe
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
 
-         // Créez une session de paiement Stripe
-         $session = Session::create([
+        // Créez une session de paiement Stripe
+        $session = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
@@ -249,28 +250,32 @@ class InvoiceController extends AbstractController
             'cancel_url' => $this->generateUrl('payment_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
 
-
+        // Envoi du PDF par e-mail
         $email = (new TemplatedEmail())
-        ->from(new Address('no-reply@quotify.fr', 'Quotify'))
-        ->to($invoice->getUserReference()->getEmail())
-        ->subject("Facture n°{$invoice->getId()}")
-        ->htmlTemplate('company/invoice/email.html.twig')
-        ->context([
-            'invoice' => $invoice,
-            'session' => $session,
-        ])
-        ->attachFromPath($pdfFilePath, "invoice-{$invoice->getId()}.pdf");
-    
- 
+            ->from(new Address('no-reply@quotify.fr', 'Quotify'))
+            ->to($invoice->getUserReference()->getEmail())
+            ->subject("Facture n°{$invoice->getId()}")
+            ->htmlTemplate('company/invoice/email.html.twig')
+            ->context([
+                'invoice' => $invoice,
+                'session' => $session,
+            ])
+            ->attachFromPath($pdfFilePath, $pdfFileName);
+
         $mailer->send($email);
- 
+
+        // Suppression du PDF après envoi
+        if (file_exists($pdfFilePath)) {
+            unlink($pdfFilePath);
+        }
+
         $invoice->setPaymentStatus("En attente");
 
         // Enregistrez les modifications dans la base de données
         $entityManager->persist($invoice);
         $entityManager->flush();
 
-        return $dompdfWrapper->getStreamResponse($html, "invoice-{$invoice->getId()}.pdf", ['Attachment' => true,]);
+        return $dompdfWrapper->getStreamResponse($html, $pdfFileName, ['Attachment' => true,]);
     }
 
     #[Route('/{id}/paid', name: 'payment_success', methods: ['GET'])]
