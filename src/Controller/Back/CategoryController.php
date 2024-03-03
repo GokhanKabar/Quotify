@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 #[Route('/category')]
 class CategoryController extends AbstractController
@@ -79,10 +80,19 @@ class CategoryController extends AbstractController
     public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($category);
-            $entityManager->flush();
+            try {
+                $entityManager->remove($category);
+                $entityManager->flush();
+                $this->addFlash('success', 'La catégorie a été supprimée avec succès.');
+            } catch (ForeignKeyConstraintViolationException $e) {
+                // Ajoute un message flash pour informer l'utilisateur de l'erreur
+                $this->addFlash('error', 'Cette catégorie ne peut pas être supprimée car elle contient des produits associés.');
+            } catch (\Exception $e) {
+                // Gestion d'autres types d'exceptions si nécessaire
+                $this->addFlash('error', 'Une erreur est survenue lors de la suppression de la catégorie.');
+            }
         }
-
+    
         return $this->redirectToRoute('back_category_index', [], Response::HTTP_SEE_OTHER);
     }
 }
