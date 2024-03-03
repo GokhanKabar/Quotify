@@ -3,6 +3,17 @@
 {% block title %}Liste des sociétés{% endblock %}
 
 {% block body %}
+    {% for flash_message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+
+    {% for flash_message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
     {% set visibilityConfig = {
         'address': 'hidden md:hidden sm:hidden lg:table-cell',
         'email': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 #[Route('/company')]
 class CompanyController extends AbstractController
@@ -81,10 +82,19 @@ class CompanyController extends AbstractController
     public function delete(Request $request, Company $company, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$company->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($company);
-            $entityManager->flush();
+            try {
+                $entityManager->remove($company);
+                $entityManager->flush();
+                $this->addFlash('success', 'L\'entreprise a été supprimée avec succès.');
+            } catch (ForeignKeyConstraintViolationException $e) {
+                // Ajoute un message flash pour informer l'utilisateur de l'erreur
+                $this->addFlash('error', 'Cette entreprise ne peut pas être supprimée car elle est référencée par d\'autres entités.');
+            } catch (\Exception $e) {
+                // Gestion d'autres types d'exceptions si nécessaire
+                $this->addFlash('error', 'Une erreur est survenue lors de la suppression de l\'entreprise.');
+            }
         }
-
+    
         return $this->redirectToRoute('back_company_index', [], Response::HTTP_SEE_OTHER);
     }
 }
