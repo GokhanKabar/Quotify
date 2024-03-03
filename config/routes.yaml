@@ -39,3 +39,11 @@ controller_stripe:
 controller_webhook:
     resource: ../src/Controller/WebhookController.php
     type: attribute
+
+invoice_download:
+    path: /documents/invoices/{filename}
+    controller: App\Controller\InvoiceController::downloadInvoice
+
+quotation_download:
+    path: /documents/quotations/{filename}
+    controller: App\Controller\QuotationController::downloadQuotation

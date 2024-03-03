@@ -48,7 +48,8 @@ security:
     - { path: ^/dashboard/payment/accountant, roles: ROLE_ACCOUNTANT }
     - { path: ^/dashboard/payment, roles: ROLE_COMPANY }
     - { path: ^/dashboard, roles: [ROLE_COMPANY, ROLE_ACCOUNTANT] }
-    
+    - { path: '^/documents/invoices/', roles: 'ROLE_COMPANY' }    
+    - { path: '^/documents/quotations/', roles: 'ROLE_COMPANY' } 
 
   role_hierarchy:
     ROLE_ADMIN: [ ROLE_ADMIN ]

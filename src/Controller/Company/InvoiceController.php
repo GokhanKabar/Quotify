@@ -23,6 +23,20 @@ use App\Form\ProductType;
 #[Route('/invoice')]
 class InvoiceController extends AbstractController
 {
+    #[Route('/documents/invoices/{filename}', name: 'invoice_download')]
+    public function downloadInvoice(string $filename): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/invoices/' . $filename;
+
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('Le fichier n\'existe pas.');
+        }
+
+        return new BinaryFileResponse($filePath);
+    }
+
     #[Route('/', name: 'invoice_index')]
     public function index(CompanyRepository $companyRepository, Security $security): Response
     {
