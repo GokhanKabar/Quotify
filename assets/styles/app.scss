@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
-    background-color: lightgray;
+    scroll-behavior: smooth;
+    background-attachment: scroll;
 }

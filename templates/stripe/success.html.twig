@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Succès du Paiement{% endblock %}
+
+{% block body %}
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; text-align: center;">
+        <h1 style="color: #28a745;">Paiement Effectué avec Succès</h1>
+        <p style="font-size: 18px;">Votre paiement a été traité avec succès.</p>
+        <img src="{{ asset('paiement_success') }}" alt="Paiement réussi" style="max-width: 100%; margin-top: 20px;">
+        <p style="font-size: 16px; margin-top: 20px;">Merci pour votre transaction.</p>
+        <a href="{{ path('your_homepage_route') }}" style="text-decoration: none; background-color: #007BFF; color: #fff; padding: 10px 15px; border-radius: 5px; display: inline-block; margin-top: 20px;">Retour à la page d'accueil</a>
+    </div>
+{% endblock %}

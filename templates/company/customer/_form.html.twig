@@ -1,0 +1,8 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    {% include 'components/_button.html.twig' with {
+        'text': 'Sauvegarder',
+        'bgColor': 'green',
+        'textColor': 'white',
+    } %}
+{{ form_end(form) }}

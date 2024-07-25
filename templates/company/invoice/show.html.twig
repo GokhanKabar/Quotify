@@ -1,0 +1,92 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Détail de la facture{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Détails de la facture</h1>
+            </div>
+            <div class="flex gap-2">
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_invoice_index', 
+                    'text': 'Retour à la liste', 
+                    'bgColor': 'blue', 
+                    'textColor': 'white',
+                } %}
+                
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_invoice_edit', 
+                    'id': invoice.id,
+                    'text': 'Modifier', 
+                    'bgColor': 'blue', 
+                    'textColor': 'white',
+                } %}
+                {{ include('company/invoice/_delete_form.html.twig') }}
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_invoice_pdf', 
+                    'id': invoice.id,
+                    'text': 'Exporter la facture (PDF)', 
+                    'bgColor': 'blue', 
+                    'textColor': 'white',
+                } %}
+            </div>
+        </div>
+        {% embed "components/_table.html.twig" with {
+            'arrayLabel': [
+                '#', 'Date de création'
+            ],
+            'properties': [
+                'id', 'creationDate'
+            ],
+            'arrayList': [
+                {
+                    'id': invoice.id, 
+                    'creationDate': invoice.creationDate,
+                }
+            ],
+            'buttonPaymentStatus': invoice.paymentStatus == 'En attente' ? true : false,
+        } %}
+        {% endembed %}
+
+        {% set arrayList = [] %}
+        {% for detail in invoice.invoiceDetails %}
+            {% set detailObject = {
+                'productName': detail.product.productName,
+                'description': detail.product.description, 
+                'quantity': detail.quantity,  
+                'unitPrice': detail.product.unitPrice, 
+                'categoryName': detail.product.category.categoryName
+            } %}
+            {% set arrayList = arrayList|merge([detailObject]) %}
+        {% endfor %}
+
+        {% embed "components/_table.html.twig" with {
+            'arrayLabel': [
+                'Nom du produit', 'Description', 'Quantité', 'Prix', 'Catégorie'
+            ],
+            'properties': [
+                'productName', 'description', 'quantity', 'unitPrice', 'categoryName'
+            ],
+            'arrayList': arrayList,
+        } %}
+        {% endembed %}
+        <div class="flex flex-col items-end">
+            <p>Total TTC : <span class="totalTTC">
+                {% if invoice is defined %}
+                    {{ invoice.totalTTC }} €
+                {% else %}
+                    0.00 €
+                {% endif %}
+            </span></p>
+            <p>Total HT : <span class="totalHT">
+                {% if invoice is defined %}
+                    {{ invoice.totalHT }} €
+                {% else %}
+                    0.00 €
+                {% endif %}
+            </span></p>
+        </div>
+    </div>
+{% endblock %}

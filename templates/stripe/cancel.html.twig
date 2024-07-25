@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annulation du Paiement{% endblock %}
+
+{% block body %}
+    <div class="max-w-md mx-auto text-center">
+        <h1 class="text-3xl font-bold text-red-500 mb-4">Paiement Annulé</h1>
+        <p class="text-lg mb-6">Votre paiement a été annulé avec succès.</p>
+        <img src="{{ asset('cancel_paiement.jpeg') }}" alt="Annulation d'un paiement" class="max-w-full mb-8">
+        <p class="text-base mb-8">Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+        <a href="{{ path('front_homepage') }}" class="bg-primary text-white py-2 px-4 rounded inline-block text-base">Retour à la page d'accueil</a>
+    </div>
+{% endblock %}

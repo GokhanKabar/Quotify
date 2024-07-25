@@ -1,0 +1,56 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    {% set visibilityConfig = {
+        'firstname': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+        'lastname': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+    } %}
+
+    {% set visibilityConfigLabel = {
+        'Prénom': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+        'Nom': 'hidden table-cell md:table-cell sm:hidden lg:table-cell',
+    } %}
+
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Liste des utilisateurs</h1>
+            </div>
+            <div class="flex gap-2">
+                {% include 'components/_button.html.twig' with {
+                    'path': 'back_user_new',
+                    'text': 'Ajouter un utilisateur',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+            </div>
+        </div>
+        {% embed 'components/_table.html.twig' with {
+            'arrayLabel': [
+                '#', 'Adresse email', 'Rôles', 'Prénom', 'Nom'
+            ],
+            'properties': [
+                'id', 'email', 'roles', 'firstname', 'lastname'
+            ],
+            'arrayList': users,
+            'route_show': 'back_user_show',
+            'route_edit': 'back_user_edit',
+            'visibilityConfig': visibilityConfig,
+            'visibilityConfigLabel': visibilityConfigLabel,
+        } %}
+        {% endembed %}
+    </div>
+    <div class="flex justify-center items-center space-x-1 mt-4">
+        {% if currentPage > 1 %}
+            <a href="{{ path('back_user_index', {'page': currentPage - 1}) }}" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-blue-500 hover:text-white rounded-md">Précédent</a>
+        {% endif %}
+        {% for i in 1..totalPages %}
+            <a href="{{ path('back_user_index', {'page': i}) }}" class="px-4 py-2 {{ i == currentPage ? 'text-white bg-blue-500' : 'text-gray-700 bg-gray-200' }} hover:bg-blue-500 hover:text-white rounded-md">{{ i }}</a>
+        {% endfor %}
+        {% if currentPage < totalPages %}
+            <a href="{{ path('back_user_index', {'page': currentPage + 1}) }}" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-blue-500 hover:text-white rounded-md">Suivant</a>
+        {% endif %}
+    </div>
+{% endblock %}

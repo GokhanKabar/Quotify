@@ -1,0 +1,15 @@
+{% block subject %}Devis n°{{ quotation.getId() }}{% endblock %}
+
+{% block body %}
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Devis n°{{ quotation.getId() }}</h2>
+
+        <p>Bonjour,</p>
+
+        <p>Vous trouverez ci-joint le devis demandé.</p>
+
+        <p>Merci de votre confiance.</p>
+
+        <p style="margin-top: 30px;">Cordialement,<br/>L'équipe Quotify</p>
+    </div>
+{% endblock %}

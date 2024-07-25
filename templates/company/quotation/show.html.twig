@@ -1,0 +1,75 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Détail du devis{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Détails du devis</h1>
+            </div>
+            <div class="flex gap-2">
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_quotation_index',
+                    'text': 'Retour à la liste',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_quotation_edit',
+                    'id': quotation.id,
+                    'text': 'Modifier', 
+                    'bgColor': 'blue', 
+                    'textColor': 'white',
+                } %}
+                {{ include('company/quotation/_delete_form.html.twig') }}
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_quotation_pdf',
+                    'id': quotation.id,
+                    'text': 'Exporter le devis (PDF)', 
+                    'bgColor': 'blue', 
+                    'textColor': 'white',
+                } %}
+            </div>
+        </div>
+        {% embed "components/_table.html.twig" with {
+            'arrayLabel': [
+                '#', 'Date de création', 'Status du devis'
+            ],
+            'properties': [
+                'id', 'creationDate', 'status'
+            ],
+            'arrayList': [
+                {
+                    'id': quotation.id, 
+                    'creationDate': quotation.creationDate, 
+                    'status': quotation.status
+                }
+            ],
+        } %}
+        {% endembed %}
+
+        {% set arrayList = [] %}
+        {% for detail in quotation.quotationDetails %}
+            {% set detailObject = {
+                'productName': detail.product.productName,
+                'description': detail.product.description, 
+                'quantity': detail.quantity,  
+                'unitPrice': detail.product.unitPrice, 
+                'categoryName': detail.product.category.categoryName
+            } %}
+            {% set arrayList = arrayList|merge([detailObject]) %}
+        {% endfor %}
+
+        {% embed "components/_table.html.twig" with {
+            'arrayLabel': [
+                'Nom du produit', 'Description', 'Quantité', 'Prix', 'Catégorie'
+            ],
+            'properties': [
+                'productName', 'description', 'quantity', 'unitPrice', 'categoryName'
+            ],
+            'arrayList': arrayList,
+        } %}
+        {% endembed %}
+    </div>
+{% endblock %}

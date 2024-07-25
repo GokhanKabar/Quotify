@@ -1,0 +1,37 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Modifier le client{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Modifier le client</h1>
+            </div>
+            <div class="flex gap-2">
+                {{ include('company/customer/_delete_form.html.twig') }}
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_customer_index',
+                    'text': 'Retour à la liste',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+                {% include 'components/_button.html.twig' with {
+                    'text': 'Retour à la fiche du client',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                    'path': 'company_customer_show',
+                    'id': user.id,
+                } %}
+            </div>
+        </div>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {% include 'components/_button.html.twig' with {
+                'text': 'Sauvegarder les modifications',
+                'bgColor': 'green',
+                'textColor': 'white',
+            } %}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

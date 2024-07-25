@@ -1,0 +1,47 @@
+{% form_theme form 'forms.html.twig' %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Quotify{% endblock %}
+
+{% block body %}
+		{{component('cards_rows', {
+    title: "Découvrez la Puissance de Quotify !",
+    description: "Explorez de nouvelles possibilités avec Quotify, notre solution tout-en-un qui simplifie la gestion financière de votre entreprise. Créez des factures et des devis en toute simplicité, suivez efficacement les paiements de vos clients, et bénéficiez d'une comptabilité intégrée pour des rapports financiers clairs. Notre équipe dédiée est prête à vous guider à travers les fonctionnalités personnalisables de Quotify, adaptées à vos besoins spécifiques. Pour une gestion financière plus efficace et une visibilité accrue, prenez contact avec nous dès maintenant en utilisant le formulaire ci-dessous. Transformez la manière dont vous abordez vos finances avec Quotify - votre succès financier commence ici !",
+    image: asset('images/contact.jpeg'),
+    button: "Prendre contact",
+    link: "#contact",	
+}
+)}}
+    <section id="contact" class="flex flex-col justify-center items-center min-h-screen bg-gray-100">
+        <div class="bg-white bg-opacity-70 w-full md:w-2/3 lg:w-1/2 p-8 rounded-md shadow-md">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-semibold">Contact</h1>
+            </div>
+            {{ form_start(form, {'attr': {'class': 'grid grid-cols-1 gap-4'}}) }}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        {{ form_row(form.firstname, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
+                    </div>
+                    <div>
+                        {{ form_row(form.lastname, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
+                    </div>
+                </div>
+                {{ form_row(form.email, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
+                {{ form_row(form.subject, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
+                {{ form_row(form.message, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
+                {{ form_row(form.captcha, {'attr': {'class': 'w-full px-4 py-2 border rounded-md'}}) }}
+                {{ form_errors(form.captcha) }}
+                <div class="text-center">
+                    {% include 'components/_button.html.twig' with {
+                        'text': 'Envoyer',
+                        'bgColor': 'blue',
+                        'textColor': 'white',
+                        'type': 'submit',
+                        'class': 'px-6 py-3 rounded-md bg-primary hover:bg-gray-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-800'
+                    } %}
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% block subject %}Vos informations de connexion{% endblock %}
+
+{% block body %}
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Bienvenue sur Quotify !</h2>
+        <p>Merci de vous être inscrit. Voici vos informations de connexion :</p>
+        <ul>
+            <li><strong>E-mail :</strong> {{ user.email }}</li>
+            <li><strong>Mot de passe :</strong> {{ plaintextPassword }}</li>
+        </ul>
+        
+        <p style="color: red; font-weight: bold;">Veuillez changer votre mot de passe dès votre première connexion.</p>
+        
+        <p>Connectez-vous dès maintenant et commencez à utiliser notre plateforme.</p>
+        <p style="margin-top: 30px; text-align: center;">Cordialement,<br/>L'équipe Quotify</p>
+    </div>
+{% endblock %}

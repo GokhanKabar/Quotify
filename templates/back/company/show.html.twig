@@ -1,0 +1,39 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Company{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Détail d'une société</h1>
+            </div>
+            <div class="flex gap-2">
+                {% include 'components/_button.html.twig' with {
+                    'path': 'back_company_index',
+                    'text': 'Retour à la liste',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+                {{ include('back/company/_delete_form.html.twig') }}
+                {% include 'components/_button.html.twig' with {
+                    'path': 'back_company_edit',
+                    'id': company.id,
+                    'text': 'Modifier',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+            </div>
+        </div>
+        {% embed 'components/_table.html.twig' with {
+            'arrayLabel': [
+                '#', 'Nom de la société', 'Adresse', 'Email', 'Numéro de Siret'
+            ],
+            'properties': [
+                'id', 'companyName', 'address', 'email', 'siretNumber'
+            ],
+            'arrayList': [company],
+        } %}
+        {% endembed %}
+    </div>
+{% endblock %}

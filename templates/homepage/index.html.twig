@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quotify
+{% endblock %}
+
+{% block body %}
+	<section class="flex flex-col justify-center items-center">
+		<div class="bg-white bg-opacity-70 w-full flex md:flex-col lg:flex-row flex-col justify-center items-center h-3/5 p-5">
+			<div>
+				<img class="w-20" src="{{ asset('images/Logo.png') }}" alt="Quotify"/>
+			</div>
+			<div class="flex flex-col gap-5 text-center">
+				<h1 class="lg:text-2xl md:text-6xl text-6xl font-semibold">uotify</h1>
+			</div>
+		</div>
+	</section>
+	{{component('cards_rows', {
+    title: "Créez et Gérez vos Factures en un Clic",
+    description: "Gagnez en efficacité avec Quotify ! Notre solution simplifie la création et la gestion de vos factures pour vous permettre de vous concentrer sur ce qui compte vraiment : votre entreprise. En quelques secondes, générez des devis professionnels, convertissez-les en factures et suivez vos paiements en temps réel. Dites adieu au casse-tête administratif et bonjour à la clarté et à la simplicité. Essayez dès maintenant et transformez votre gestion financière.",
+    image: asset('images/women-table.png'),
+    button: "Démarrer avec Quotify",
+    link: path('front_contact'),	
+}
+)}}
+
+	<div class="bg-gray-800 text-white text-center py-8 w-full">
+		<div class="px-4 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">500K+</div>
+				<div class="text-xl mt-2">Factures traitées</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">200K+</div>
+				<div class="text-xl mt-2">Devis créés</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">50K+</div>
+				<div class="text-xl mt-2">Utilisateurs enregistrés</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">1M+</div>
+				<div class="text-xl mt-2">Transactions</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">100+</div>
+				<div class="text-xl mt-2">Clients servis</div>
+			</div>
+			<div class="flex flex-col items-center justify-center py-4">
+				<div class="text-5xl font-semibold">30+</div>
+				<div class="text-xl mt-2">Partenaires et intégrations</div>
+			</div>
+		</div>
+	</div>
+
+	{{component('cards_rows_reverse', {
+    title: "Analyse Financière Approfondie",
+    description: "Dépassez la simple facturation avec des rapports financiers complets et personnalisables qui vous offrent une perspective précise des performances de votre entreprise. Notre application Quotify transforme vos données en insights puissants, vous permettant de prendre des décisions éclairées et d'affiner votre stratégie financière. Adaptés à vos besoins spécifiques, nos rapports sont conçus pour vous donner le contrôle et la clarté nécessaires pour une gestion comptable optimale.",
+    image: asset('images/tableau-femme.png'),
+    button: "Simplifie la vie de ton comptable !",
+    link: path('front_contact'),	
+}	
+)}}
+
+	<div class="p-6 flex flex-col md:flex-row items-center mx-auto max-w-4xl">
+		<div class="mb-4 md:mb-0 md:mr-4 w-full md:w-1/2">
+			<h2 class="text-2xl font-bold mb-2 text-gray-800">Sécurité Avancée pour vos Factures & Devis</h2>
+			<p class="text-gray-700 mb-4">Chez Quotify, la sécurité n'est pas une option, c'est une promesse. Protégez vos transactions et conservez vos données en toute sécurité avec notre système de cryptage de pointe. Nous nous engageons à assurer la confidentialité et l'intégrité de vos informations avec des sauvegardes automatiques et une surveillance continue.
+			</p>
+		</div>
+		<div class="w-full md:w-1/2 hidden md:block">
+			<img src="{{ asset('images/sheild-dynamic-color.png') }}" alt="Image description" class="w-1/2 h-auto mx-auto"/>
+		</div>
+	</div>
+
+		{{component('cards_rows', {
+    title: "Gestion et Suivi de Paiements Simplifiés",
+    description: "Restez maître de votre trésorerie grâce à notre outil de suivi des paiements intégré. Quotify vous offre une visibilité parfaite sur les flux de paiements de votre entreprise. Avec des statuts de paiement mis à jour automatiquement, vous avez l'assurance d'un suivi précis et en temps réel des paiements en attente et reçus. Plus besoin de vous perdre dans les relevés de compte, Quotify vous alerte dès qu'un paiement est effectué ou dû, vous permettant de rester proactif dans la gestion de vos finances.",
+    image: asset('images/facture-cafe.png'),
+    button: "Démarrer avec Quotify",
+    link: path('front_contact'),	
+}
+)}}
+	<div class="bg-primary p-6">
+		<div class="text-center">
+			<h2 class="text-white text-3xl font-semibold mb-6">Ils nous font déjà confiance</h2>
+		</div>
+		<div class="flex flex-wrap justify-center items-center space-x-4">
+			<div class="bg-white rounded-lg shadow-lg m-4">
+				<div class="p-4 flex items-center justify-center">
+					<img src="{{ asset('images/ldlc.gif') }}" alt="" class="h-12">
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow-lg m-4">
+				<div class="p-4 flex items-center justify-center">
+					<img src="{{ asset('images/hyperburo.png') }}" alt="" class="h-12">
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow-lg m-4">
+				<div class="p-4 flex items-center justify-center">
+					<img src="{{ asset('images/metro.png') }}" alt="" class="h-12">
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

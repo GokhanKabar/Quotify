@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture n°{{ invoice.id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Facture n°{{ invoice.id }}</h1>
+    <p>Date de création: {{ invoice.creationDate|date('d/m/Y') }}</p>
+    <p>Status de paiement: {{ invoice.paymentStatus }}</p>
+</div>
+<div>
+    <div>
+        <h3>Informations Client</h3>
+        <p>Facture adressée à : {{ invoice.userReference.gender }}. {{ invoice.userReference.firstname }} {{ invoice.userReference.lastname }}</p>
+        <p>Adresse mail : {{ invoice.userReference.email }}</p>
+        <p>Numéro de téléphone : {{ invoice.userReference.phoneNumber }}</p>
+        <p>Adresse : {{ invoice.userReference.address }}, {{ invoice.userReference.postalCode }} {{ invoice.userReference.city }}</p>
+    </div>
+    <div>
+        <h3>Informations Entreprise</h3>
+        <p>Entreprise: {{ invoice.userReference.company.companyName }}</p>
+        <p>Numéro de siret : {{ invoice.userReference.company.siretNumber }}</p>
+    </div>
+</div>
+<div>
+    <h3>Détails de la facture</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix Unitaire</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for detail in invoice.invoiceDetails %}
+            <tr>
+                <td>{{ detail.product.productName }}</td>
+                <td>{{ detail.quantity }}</td>
+                <td>{{ detail.product.unitPrice|number_format(2, ',', ' ') }} €</td>
+                <td>{{ (detail.quantity * detail.product.unitPrice)|number_format(2, ',', ' ') }} €</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div>
+    <p>Total HT : {{ invoice.totalHT|number_format(2, ',', ' ') }} €</p>
+    <p>TVA : {{ (invoice.totalTTC - invoice.totalHT)|number_format(2, ',', ' ') }} €</p>
+    <p>Total TTC : {{ invoice.totalTTC|number_format(2, ',', ' ') }} €</p>
+</div>
+</body>
+</html>

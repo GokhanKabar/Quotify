@@ -1,0 +1,28 @@
+{% use 'tailwind_2_layout.html.twig' %}
+
+{%- block form_row -%}
+    {%- set row_class = row_class|default('md:flex md:items-start md:flex-col mb-6') -%}
+    {{- parent() -}}
+{%- endblock form_row -%}
+
+{%- block widget_attributes -%}
+    {%- set widget_class = widget_class|default('bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500') -%}
+    {%- set widget_disabled_class = widget_disabled_class|default('my disabled widget classes') -%}
+    {%- set widget_errors_class = widget_errors_class|default('my widget with error classes') -%}
+    {{- parent() -}}
+{%- endblock widget_attributes -%}
+
+{%- block form_label -%}
+    {%- set label_class = label_class|default('block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4') -%}
+    {{- parent() -}}
+{%- endblock form_label -%}
+
+{%- block form_help -%}
+    {%- set help_class = help_class|default('text-gray-600 text-xs italic') -%}
+    {{- parent() -}}
+{%- endblock form_help -%}
+
+{%- block form_errors -%}
+    {%- set error_item_class = error_item_class|default('text-red-500 text-xs italic') -%}
+    {{- parent() -}}
+{%- endblock form_errors -%}

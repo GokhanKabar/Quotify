@@ -1,0 +1,8 @@
+<form method="post" action="{{ path('company_invoice_delete', {'id': invoice.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ invoice.id) }}">
+    {% include 'components/_button.html.twig' with {
+        'text': 'Supprimer',
+        'bgColor': 'red',
+        'textColor': 'white',
+    } %}
+</form>

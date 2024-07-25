@@ -1,0 +1,30 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Modification d'un devis{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Modification d'un devis</h1>
+            </div>
+            <div class="flex gap-2">
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_quotation_convert',
+                    'id': quotation.id,
+                    'text': 'Convertir en facture',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+                {{ include('company/quotation/_delete_form.html.twig') }}
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_quotation_index',
+                    'text': 'Retour à la liste',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+            </div>
+        </div>
+        {{ include('company/quotation/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+    </div>
+{% endblock %}

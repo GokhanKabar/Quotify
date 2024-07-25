@@ -1,3 +1,45 @@
-controllers:
-    resource: ../src/Controller/
+controllers_front:
+    resource: ../src/Controller/Front
     type: attribute
+    name_prefix: front_
+
+controllers_back:
+    resource: ../src/Controller/Back
+    type: attribute
+    name_prefix: back_
+    prefix: /admin/
+
+controllers_company:
+    resource: ../src/Controller/Company
+    type: attribute
+    name_prefix: company_
+    prefix: /dashboard/
+
+controller_reset_password:
+    resource: ../src/Controller/ResetPasswordController.php
+    type: attribute
+
+controller_security:
+    resource: ../src/Controller/SecurityController.php
+    type: attribute
+
+controller_mail:
+    resource: ../src/Controller/MailerController.php
+    type: attribute
+
+controller_dashboard:
+    resource: ../src/Controller/Dashboard/DashboardController.php
+    type: attribute
+    prefix: /dashboard/
+
+controller_stripe:
+    resource: ../src/Controller/StripeController.php
+    type: attribute
+
+invoice_download:
+    path: /documents/invoices/{filename}
+    controller: App\Controller\InvoiceController::downloadInvoice
+
+quotation_download:
+    path: /documents/quotations/{filename}
+    controller: App\Controller\QuotationController::downloadQuotation

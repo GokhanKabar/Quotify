@@ -5,7 +5,18 @@ module.exports = {
     "./templates/**/*.html.twig",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+      },
+      colors: {
+        'primary': '#1F2937',
+        'secondary': '#836349',
+      },
+      backgroundColor: {
+        'footerBg': '#F8F9FA',
+        'navbarBg': '#1F2937',
+      },
+    },
   },
-  plugins: [],
 }

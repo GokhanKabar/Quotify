@@ -1,0 +1,23 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Modification d'une facture{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Modification d'une facture</h1>
+            </div>
+            <div class="flex gap-2">
+                {{ include('company/invoice/_delete_form.html.twig') }}
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_invoice_index',
+                    'text': 'Retour à la liste',
+                    'bgColor': 'blue',
+                    'textColor': 'white',
+                } %}
+            </div>
+        </div>
+        {{ include('company/invoice/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+    </div>
+{% endblock %}

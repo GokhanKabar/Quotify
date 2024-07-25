@@ -1,0 +1,48 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Quotify{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-gray-100 rounded-lg shadow-lg">
+            <div class="text-center p-8">
+                <h1 class="text-4xl font-bold text-indigo-600 mb-4">Bienvenue sur votre espace de gestion</h1>
+                <p class="text-lg text-gray-700 mx-auto max-w-md">
+                    Profitez d'une expérience sur mesure, <span class="text-indigo-500 font-medium">{{ app.user.gender }}. {{ app.user.firstname }} {{ app.user.lastname }}</span>, avec toutes les informations clés à portée de main pour faciliter votre gestion.
+                </p>
+            </div>
+            <div class="flex flex-wrap justify-center items-center gap-8 py-8 px-12">
+                <div class="w-full md:w-1/2 lg:w-1/4 h-72">
+                    <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                        <img src="/images/devis.png" alt="devis" class="w-32 h-32 mx-auto mb-4 object-contain" />
+                        <p class="text-gray-800 text-center">Convertissez facilement les devis approuvés en factures en un seul clic, sans ressaisie des données.</p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 lg:w-1/4 h-72">
+                    <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                        <img src="/images/factures.jpg" alt="facture" class="w-32 h-32 rounded-full mx-auto mb-4 object-contain" />
+                        <p class="text-gray-800 text-center">Suivez en temps réel le statut de vos paiements et gérez efficacement les factures en attente ou en retard.</p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 lg:w-1/4 h-72">
+                    <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                        <img src="/images/clients.png" alt="client" class="w-32 h-32 mx-auto mb-4 object-contain" />
+                        <p class="text-gray-800 text-center">Gérez facilement votre base de données clients et maintenez des relations solides avec eux.</p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 lg:w-1/4 h-72">
+                    <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                        <img src="/images/produits.png" alt="produit" class="w-32 h-32 mx-auto mb-4 object-contain" />
+                        <p class="text-gray-800 text-center">Organisez et suivez vos produits ou services pour une meilleure gestion des stocks et des ventes.</p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 lg:w-1/4 h-72">
+                    <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                        <img src="/images/graphiques.jpg" alt="graphique" class="w-32 h-32 mx-auto mb-4 object-contain" />
+                        <p class="text-gray-800 text-center">Visualisez les performances de votre entreprise grâce à des graphiques intuitifs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

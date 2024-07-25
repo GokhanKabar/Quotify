@@ -1,0 +1,39 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Détail du client{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col p-5 gap-5">
+        <div class="flex items-center justify-between">
+            <div class="flex">
+                <h1 class="lg:text-4xl md:text-2xl text-2xl">Détail du client</h1>
+            </div>
+            <div class="flex gap-2">
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_customer_index', 
+                    'text': 'Retour à la liste', 
+                    'bgColor': 'blue', 
+                    'textColor': 'white',
+                } %}
+                
+                {% include 'components/_button.html.twig' with {
+                    'path': 'company_customer_edit',
+                    'id': user.id,
+                    'text': 'Modifier', 
+                    'bgColor': 'blue', 
+                    'textColor': 'white',
+                } %}
+            </div>
+        </div>
+        {% embed "components/_table.html.twig" with {
+            'arrayLabel': [
+                'Nom', 'Prénom', 'Email', 'Adresse', 'Numéro de téléphone', 'Créé le', 'Modifié le'
+            ],
+            'properties': [
+                'lastName', 'firstName', 'email', 'address', 'phoneNumber', 'createdAt', 'updatedAt'
+            ],
+            'arrayList': [user],
+        } %}
+        {% endembed %}
+    </div>
+{% endblock %}
